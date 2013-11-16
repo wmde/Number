@@ -49,13 +49,15 @@ DataValues Number has been written by the Wikidata team, as [Wikimedia Germany]
 
 Initial release with these features:
 
-	* QuantityValue
-	* DecimalFormatter
-	* QuantityFormatter
-	* DecimalParser
-	* FloatParser
-	* IntParser
-	* QuantityParser
+* DecimalMath
+* DecimalValue
+* QuantityValue
+* DecimalFormatter
+* QuantityFormatter
+* DecimalParser
+* FloatParser
+* IntParser
+* QuantityParser
 
 ## Links
 

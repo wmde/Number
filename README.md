@@ -6,6 +6,7 @@ into such value objects, and formatters to turn them back into user consumable r
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
 [![Build Status](https://secure.travis-ci.org/DataValues/Number.png?branch=master)](http://travis-ci.org/DataValues/Number)
+[![Coverage Status](https://coveralls.io/repos/DataValues/Number/badge.png)](https://coveralls.io/r/DataValues/Number)
 
 On [Packagist](https://packagist.org/packages/data-values/number):
 [![Latest Stable Version](https://poser.pugx.org/data-values/number/version.png)](https://packagist.org/packages/data-values/number)

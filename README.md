@@ -48,7 +48,7 @@ DataValues Number has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.1 (dev)
+### 0.1 (2013-11-17)
 
 Initial release with these features:
 

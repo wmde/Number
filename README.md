@@ -6,7 +6,7 @@ into such value objects, and formatters to turn them back into user consumable r
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
 [![Build Status](https://secure.travis-ci.org/DataValues/Number.png?branch=master)](http://travis-ci.org/DataValues/Number)
-[![Coverage Status](https://coveralls.io/repos/DataValues/Number/badge.png)](https://coveralls.io/r/DataValues/Number)
+[![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Number/badges/coverage.png?s=a62dd85d05eaf0c5505deed4e2bd53d34e50d158)](https://scrutinizer-ci.com/g/DataValues/Number/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Number/badges/quality-score.png?s=03279530fa55439de3ce094b985f861959ee7162)](https://scrutinizer-ci.com/g/DataValues/Number/)
 
 On [Packagist](https://packagist.org/packages/data-values/number):

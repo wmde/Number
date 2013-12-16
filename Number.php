@@ -15,7 +15,7 @@ if ( defined( 'DATAVALUES_NUMBER_VERSION' ) ) {
 	return 1;
 }
 
-define( 'DATAVALUES_NUMBER_VERSION', '0.1' );
+define( 'DATAVALUES_NUMBER_VERSION', '0.2' );
 
 if ( defined( 'MEDIAWIKI' ) ) {
 	$GLOBALS['wgExtensionCredits']['datavalues'][] = array(
@@ -23,7 +23,7 @@ if ( defined( 'MEDIAWIKI' ) ) {
 		'name' => 'DataValues Number',
 		'version' => DATAVALUES_NUMBER_VERSION,
 		'author' => array(
-			'The Wikidata team',
+			'Daniel Kinzler',
 		),
 		'url' => 'https://github.com/DataValues/Number',
 		'description' => 'Numerical value objects, parsers and formatters',

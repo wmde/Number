@@ -51,6 +51,11 @@ DataValues Number has been written by the Wikidata team, as [Wikimedia Germany]
 
 ### 0.2 (2013-12-16)
 
+#### Removals
+
+* IntParser got moved to data-values/common
+* FloatParser got moved to data-values/common
+
 #### Additions
 
 * DecimalMath::min

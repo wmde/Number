@@ -8,10 +8,7 @@ use InvalidArgumentException;
  * This may for instance be used to re-format a numeric string according to
  * the rules of a given locale.
  *
- * @since 0.1
- *
- * @file
- * @ingroup ValueFormatters
+ * @since 0.2
  *
  * @licence GNU GPL v2+
  * @author Daniel Kinzler

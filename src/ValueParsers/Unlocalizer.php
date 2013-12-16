@@ -5,6 +5,8 @@ namespace ValueParsers;
 /**
  * Interface for services that convert a string to canonical form.
  *
+ * @since 0.2
+ *
  * @license GPL 2+
  * @author Daniel Kinzler
  */

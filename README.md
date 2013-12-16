@@ -49,6 +49,26 @@ DataValues Number has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.2 (2013-12-16)
+
+#### Additions
+
+* DecimalMath::min
+* DecimalMath::max
+* DecimalMath::shift
+* Added option to force displaying the sign in DecimalFormatter
+
+#### Improvements
+
+* QuantityParser and DecimalParser now support scientific notation
+* DecimalParser now supports localized parsing of values
+* DecimalFormatter now supports localization of values
+
+#### Bug fixes
+
+* Floating point errors that occurred when manipulating decimal values have been fixed.
+([bug 56682](https://bugzilla.wikimedia.org/show_bug.cgi?id=56682))
+
 ### 0.1 (2013-11-17)
 
 Initial release with these features:

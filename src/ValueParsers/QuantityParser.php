@@ -17,9 +17,26 @@ use DataValues\QuantityValue;
  */
 class QuantityParser extends StringValueParser {
 
-	const NUMBER_PATTERN = '(?:[-+]\s*)?(?:[0-9,\'`]+\.[0-9,\'`]*|\.?[0-9,\'`]+)?';
+	const NUMBER_PATTERN = '(?:[-+]\s*)?(?:[0-9,\'`]+\.[0-9,\'`]*|\.?[0-9,\'`]+)(?:[eE][-+]?[0-9,\'`]+)?';
 
 	const UNIT_PATTERN = '[a-zA-ZµåÅöÖ°%][-.a-zA-Z0-9åÅöÖ°%²³^]*';
+
+	/**
+	 * @var DecimalParser
+	 */
+	protected $decimalParser;
+
+	/**
+	 * @since 0.1
+	 *
+	 * @param DecimalParser $decimalParser
+	 * @param ParserOptions|null $options
+	 */
+	public function __construct( DecimalParser $decimalParser, ParserOptions $options = null ) {
+		parent::__construct( $options );
+
+		$this->decimalParser = $decimalParser;
+	}
 
 	/**
 	 * @see StringValueParser::stringParse
@@ -62,15 +79,14 @@ class QuantityParser extends StringValueParser {
 	 * @return QuantityValue
 	 */
 	private function newQuantityFromParts( $amount, $exactness, $margin, $unit ) {
-		$decimalParser = new DecimalParser( $this->options );
-		$amountValue = $decimalParser->parse( $amount );
+		$amountValue = $this->decimalParser->parse( $amount );
 
 		if ( $exactness === '!' ) {
 			// the amount is an exact number
 			$quantity = $this->newExactQuantity( $amountValue, $unit );
 		} elseif ( $margin !== null ) {
 			// uncertainty margin given
-			$marginValue = $decimalParser->parse( $margin );
+			$marginValue = $this->decimalParser->parse( $margin );
 			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
 		} else {
 			// derive uncertainty from given decimals
@@ -105,7 +121,7 @@ class QuantityParser extends StringValueParser {
 		$pattern = '@^'
 			. '\s*(' . self::NUMBER_PATTERN . ')' // $1: amount
 			. '\s*(?:'
-				. '([!~])'  // $2: '!' for "exact", '~' for "approx", or nothing
+				. '([~!])'  // $2: '!' for "exact", '~' for "approx", or nothing
 				. '|(?:\+/?-|±)\s*(' . self::NUMBER_PATTERN . ')' // $3: plus/minus offset (uncertainty margin)
 				. '|' // or nothing
 			. ')'

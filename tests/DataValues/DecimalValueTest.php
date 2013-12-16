@@ -158,11 +158,14 @@ class DecimalValueTest extends DataValueTest {
 
 		$argLists[] = array( new DecimalValue( 42 ), '+42' );
 		$argLists[] = array( new DecimalValue( -42 ), '-42' );
+		$argLists[] = array( new DecimalValue( -42.0 ), '-42' );
 		$argLists[] = array( new DecimalValue( '-42' ), '-42' );
 		$argLists[] = array( new DecimalValue( 4.5 ), '+4.5' );
 		$argLists[] = array( new DecimalValue( -4.5 ), '-4.5' );
 		$argLists[] = array( new DecimalValue( '+4.2' ), '+4.2' );
 		$argLists[] = array( new DecimalValue( 0 ), '+0' );
+		$argLists[] = array( new DecimalValue( 0.0 ), '+0' );
+		$argLists[] = array( new DecimalValue( 1.0 ), '+1' );
 		$argLists[] = array( new DecimalValue( 0.5 ), '+0.5' );
 		$argLists[] = array( new DecimalValue( '-0.42' ), '-0.42' );
 		$argLists[] = array( new DecimalValue( '-0.0' ), '+0.0' );

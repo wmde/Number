@@ -2,6 +2,8 @@
 
 namespace DataValues;
 
+use LogicException;
+
 /**
  * Class representing a quantity with associated unit and uncertainty interval.
  * The amount is stored as a @see DecimalValue object.
@@ -289,16 +291,12 @@ class QuantityValue extends DataValueObject {
 	 * @return DecimalValue
 	 */
 	public function getUncertaintyMargin() {
-		//TODO: use bcmath if available
-		$amount = $this->getAmount()->getValueFloat();
-		$upperBound = $this->getUpperBound()->getValueFloat();
-		$lowerBound = $this->getLowerBound()->getValueFloat();
+		$math = new DecimalMath();
 
-		$offset = max( $amount - $lowerBound, $upperBound - $amount );
+		$lowerMargin = $math->sum( $this->getAmount(), $this->getLowerBound()->computeComplement() );
+		$upperMargin = $math->sum( $this->getUpperBound(), $this->getAmount()->computeComplement() );
 
-		$margin = new DecimalValue( $offset );
-		//TODO: round the margin using getSignificantDigitsOf()
-
+		$margin = $math->max( $lowerMargin, $upperMargin );
 		return $margin;
 	}
 

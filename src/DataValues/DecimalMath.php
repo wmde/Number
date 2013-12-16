@@ -104,6 +104,50 @@ class DecimalMath {
 	}
 
 	/**
+	 * Returns the minimum of the two values
+	 *
+	 * @param DecimalValue $a
+	 * @param DecimalValue $b
+	 *
+	 * @return DecimalValue
+	 */
+	public function min( DecimalValue $a, DecimalValue $b ) {
+
+		if ( $this->useBC ) {
+			$scale = max( strlen( $a->getFractionalPart() ), strlen( $b->getFractionalPart() ) );
+			$comp = bccomp( $a->getValue(), $b->getValue(), $scale );
+			$min = $comp > 0 ? $b : $a;
+		} else {
+			$min = min( $a->getValueFloat(), $b->getValueFloat() );
+			$min = $this->makeDecimalValue( $min );
+		}
+
+		return $min;
+	}
+
+	/**
+	 * Returns the maximum of the two values
+	 *
+	 * @param DecimalValue $a
+	 * @param DecimalValue $b
+	 *
+	 * @return DecimalValue
+	 */
+	public function max( DecimalValue $a, DecimalValue $b ) {
+
+		if ( $this->useBC ) {
+			$scale = max( strlen( $a->getFractionalPart() ), strlen( $b->getFractionalPart() ) );
+			$comp = bccomp( $a->getValue(), $b->getValue(), $scale );
+			$max = $comp > 0 ? $a : $b;
+		} else {
+			$max = max( $a->getValueFloat(), $b->getValueFloat() );
+			$max = $this->makeDecimalValue( $max );
+		}
+
+		return $max;
+	}
+
+	/**
 	 * Returns the given value, with any insignificant digits removed or zeroed.
 	 *
 	 * Rounding is applied  using the "round half away from zero" rule (that is, +0.5 is
@@ -224,8 +268,17 @@ class DecimalMath {
 		// just keep the remainder of the value as is (this includes the sign)
 		$rounded = substr( $value, 0, $i +1 ) . $rounded;
 
+		if ( strlen( $rounded ) < $significantDigits + 1 ) {
+			if ( $inIntPart ) {
+				$rounded .= '.';
+			}
+
+			$rounded = str_pad( $rounded, $significantDigits+1, '0', STR_PAD_RIGHT );
+		}
+
 		// strip trailing decimal point
 		$rounded = rtrim( $rounded, '.' );
+
 		return $rounded;
 	}
 
@@ -428,13 +481,91 @@ class DecimalMath {
 		// preserve prefix
 		$slumped = substr( $value, 0, $i ) . $slumped;
 
-		// strip leading zeros
-		$slumped = preg_replace( '/^([-+])(0+)([0-9]+(\.|$))/', '\1\3', $slumped );
+		$slumped = $this->stripLeadingZeros( $slumped );
 
 		if ( $slumped === '-0' ) {
 			$slumped = '+0';
 		}
 
 		return $slumped;
+	}
+
+	/**
+	 * @param string $digits
+	 *
+	 * @return string
+	 */
+	protected function stripLeadingZeros( $digits ) {
+		$digits = preg_replace( '/^([-+])(0+)([0-9]+(\.|$))/', '\1\3', $digits );
+		return $digits;
+	}
+
+	/**
+	 * Shift the decimal point according to the given exponent.
+	 *
+	 * @param DecimalValue $decimal
+	 * @param int $exponent The exponent to apply (digits to shift by). A Positive exponent
+	 * shifts the decimal point to the right, a negative exponent shifts to the left.
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return DecimalValue
+	 */
+	public function shift( DecimalValue $decimal, $exponent ) {
+		if ( !is_int( $exponent ) ) {
+			throw new \InvalidArgumentException( '$exponent must be an integer' );
+		}
+
+		if ( $exponent == 0 ) {
+			return $decimal;
+		}
+
+		$sign = $decimal->getSign();
+		$intPart = $decimal->getIntegerPart();
+		$fractPart = $decimal->getFractionalPart();
+
+		if ( $exponent < 0 ) {
+			$intPart = $this->shiftLeft( $intPart, $exponent );
+		} else {
+			$fractPart = $this->shiftRight( $fractPart, $exponent );
+		}
+
+		$digits = $sign . $intPart . $fractPart;
+		$digits = $this->stripLeadingZeros( $digits );
+
+		return new DecimalValue( $digits );
+	}
+
+	/**
+	 * @param string $intPart
+	 * @param int $exponent must be negative
+	 *
+	 * @return string
+	 */
+	private function shiftLeft( $intPart, $exponent ) {
+		//note: $exponent is negative!
+		if ( -$exponent < strlen( $intPart ) ) {
+			$intPart = substr( $intPart, 0, $exponent ) . '.' . substr( $intPart, $exponent );
+		} else {
+			$intPart = '0.' . str_pad( $intPart, -$exponent, '0', STR_PAD_LEFT );
+		}
+
+		return $intPart;
+	}
+
+	/**
+	 * @param string $fractPart
+	 * @param int $exponent must be positive
+	 *
+	 * @return string
+	 */
+	private function shiftRight( $fractPart, $exponent ) {
+		//note: $exponent is positive.
+		if ( $exponent < strlen( $fractPart ) ) {
+			$fractPart = substr( $fractPart, 0, $exponent ) . '.' . substr( $fractPart, $exponent );
+		} else {
+			$fractPart = str_pad( $fractPart, $exponent, '0', STR_PAD_RIGHT );
+		}
+
+		return $fractPart;
 	}
 }

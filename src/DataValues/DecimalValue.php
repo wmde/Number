@@ -101,8 +101,8 @@ class DecimalValue extends DataValueObject {
 			throw new \InvalidArgumentException( '$number must not be NAN or INF' );
 		}
 
-		if ( is_int( $number ) ) {
-			$decimal = strval( abs( $number ) );
+		if ( is_int( $number ) || ( $number === floor( $number ) ) ) {
+			$decimal = strval( abs( (int)$number ) );
 		} else {
 			$decimal = trim( number_format( abs( $number ), 100, '.', '' ), 0 );
 

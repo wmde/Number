@@ -2,7 +2,11 @@
 
 namespace ValueParsers\Test;
 
+use DataValues\DecimalValue;
 use DataValues\QuantityValue;
+use ValueParsers\DecimalParser;
+use ValueParsers\QuantityParser;
+use ValueParsers\Test\StringValueParserTest;
 
 /**
  * @covers ValueParsers\QuantityParser
@@ -46,6 +50,13 @@ class QuantityParserTest extends StringValueParserTest {
 			'2.1250' => QuantityValue::newFromNumber( '+2.1250', '1', '+2.1251', '+2.1249' ),
 			'100,003' => QuantityValue::newFromNumber( 100003, '1', 100004, 100002 ),
 			'100\'003' => QuantityValue::newFromNumber( 100003, '1', 100004, 100002 ),
+
+			'1.4e-2' => QuantityValue::newFromNumber( '+0.014', '1', '+0.015', '+0.013' ),
+			'1.4e3' => QuantityValue::newFromNumber( '+1400', '1', '+1401', '+1399' ),
+			'1.4e3!m' => QuantityValue::newFromNumber( '+1400', 'm', '+1400', '+1400' ),
+			'1.4e3m2' => QuantityValue::newFromNumber( '+1400', 'm2', '+1401', '+1399' ),
+			'1.4ev' => QuantityValue::newFromNumber( '+1.4', 'ev', '+1.5', '+1.3' ),
+			'1.4e' => QuantityValue::newFromNumber( '+1.4', 'e', '+1.5', '+1.3' ),
 
 			// precision
 			'0!' => QuantityValue::newFromNumber( 0, '1', 0, 0 ),
@@ -143,6 +154,17 @@ class QuantityParserTest extends StringValueParserTest {
 	 */
 	protected function getParserClass() {
 		return 'ValueParsers\QuantityParser';
+	}
+
+	/**
+	 * @since 0.1
+	 * @return QuantityParser
+	 */
+	protected function getInstance() {
+		$options = $this->newParserOptions();
+
+		$class = $this->getParserClass();
+		return new $class( new DecimalParser( $options ), $options );
 	}
 
 }

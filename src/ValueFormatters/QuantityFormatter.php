@@ -77,9 +77,8 @@ class QuantityFormatter extends ValueFormatterBase {
 			// round to the order of uncertainty
 			return $quantity->getOrderOfUncertainty();
 		} elseif ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === false ) {
-			// some number larger than the actual number of digits,
-			// but no where near -PHP_INT_MAX.
-			return -strlen( $quantity->getAmount() ) * 2 - 100;
+			// to keep all digits, use the negative length of the fractional part
+			return -strlen( $quantity->getAmount()->getFractionalPart() );
 		} else {
 			return (int)$this->options->getOption( self::OPT_APPLY_ROUNDING );
 		}

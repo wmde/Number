@@ -6,7 +6,7 @@ if ( php_sapi_name() !== 'cli' ) {
 
 $pwd = exec( 'pwd' );
 chdir( __DIR__ . '/..' );
-echo passthru( 'composer update' ) . "\n";
+passthru( 'composer update' );
 chdir( $pwd );
 
 require_once( __DIR__ . '/../vendor/autoload.php' );

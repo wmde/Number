@@ -69,16 +69,16 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 		$localizer = $this->getMock( 'ValueFormatters\Localizer' );
 
 		$localizer->expects( $this->once() )
-			->method( 'localize' )
-			->will( $this->returnCallback( function ( $number, $language ) {
-				return "$language:$number";
+			->method( 'localizeNumber' )
+			->will( $this->returnCallback( function ( $number ) {
+				return "n:$number";
 			} ) );
 
-		$options = new FormatterOptions( array( ValueFormatter::OPT_LANG => 'en' ) );
+		$options = new FormatterOptions( );
 		$value = new DecimalValue( '+12345' );
 		$formatter = new DecimalFormatter( $options, $localizer );
 
-		$this->assertEquals( 'en:12345', $formatter->format( $value ) );
+		$this->assertEquals( 'n:12345', $formatter->format( $value ) );
 	}
 
 }

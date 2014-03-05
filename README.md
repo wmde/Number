@@ -49,6 +49,13 @@ DataValues Number has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.3 (dev)
+* Unlocalizer: added getNumberRegex() and getUnitRegex()
+* Unlocalizer: replaced unlocalize() with unlocalizeNumber()
+* Localizer: replaced localize() with localizeNumber()
+* Localizer and Unlocalizer: no longer require the target language and options in method calls
+* QuantityParser: fixed parsing of internationalized quantity strings
+
 ### 0.2 (2013-12-16)
 
 #### Removals

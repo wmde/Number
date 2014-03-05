@@ -104,11 +104,18 @@ class DecimalParserTest extends StringValueParserTest {
 
 	public function testUnlocalization() {
 		$unlocalizer = $this->getMock( 'ValueParsers\Unlocalizer' );
+
 		$unlocalizer->expects( $this->once() )
-			->method( 'unlocalize' )
-			->will( $this->returnCallback( function( $number, $language, ParserOptions $options ) {
+			->method( 'unlocalizeNumber' )
+			->will( $this->returnCallback( function( $number ) {
 				return str_replace( '#', '', $number );
 			} ) );
+
+		$unlocalizer->expects( $this->never() )
+			->method( 'getNumberRegex' );
+
+		$unlocalizer->expects( $this->never() )
+			->method( 'getUnitRegex' );
 
 		$options = new ParserOptions();
 		$parser = new DecimalParser( $options, $unlocalizer );

@@ -124,8 +124,8 @@ class QuantityParser extends StringValueParser {
 		//TODO: allow explicitly specifying the number of significant figures
 		//TODO: allow explicitly specifying the uncertainty interval
 
-		$numberPattern = $this->unlocalizer->getNumberRegex();
-		$unitPattern = $this->unlocalizer->getUnitRegex();
+		$numberPattern = $this->unlocalizer->getNumberRegex( '@' );
+		$unitPattern = $this->unlocalizer->getUnitRegex( '@' );
 
 		$pattern = '@^'
 			. '\s*(' . $numberPattern . ')' // $1: amount

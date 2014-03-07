@@ -32,8 +32,12 @@ class DecimalParser extends StringValueParser {
 	 * @param ParserOptions|null $options
 	 * @param Unlocalizer|null $unlocalizer
 	 */
-	public function __construct( ParserOptions $options = null, Unlocalizer $unlocalizer = null) {
+	public function __construct( ParserOptions $options = null, Unlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
+
+		if ( !$unlocalizer ) {
+			$unlocalizer = new BasicUnlocalizer();
+		}
 
 		$this->unlocalizer = $unlocalizer;
 	}
@@ -72,10 +76,7 @@ class DecimalParser extends StringValueParser {
 	 * @throws ParseException
 	 */
 	protected function stringParse( $value ) {
-		if ( $this->unlocalizer !== null ) {
-			$lang = $this->options->getOption( ValueParser::OPT_LANG );
-			$value = $this->unlocalizer->unlocalize( $value, $lang, $this->options );
-		}
+		$value = $this->unlocalizer->unlocalizeNumber( $value );
 
 		//handle scientific notation
 		if ( preg_match( '/^(.*)([eE]|x10\^)([-+]?[,\d]+)$/', $value, $matches ) ) {

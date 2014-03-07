@@ -2,11 +2,10 @@
 
 namespace ValueParsers\Test;
 
-use DataValues\DecimalValue;
 use DataValues\QuantityValue;
-use ValueParsers\DecimalParser;
+use ValueParsers\BasicUnlocalizer;
 use ValueParsers\QuantityParser;
-use ValueParsers\Test\StringValueParserTest;
+use ValueParsers\ValueParser;
 
 /**
  * @covers ValueParsers\QuantityParser
@@ -44,12 +43,9 @@ class QuantityParserTest extends StringValueParserTest {
 			'.5' => QuantityValue::newFromNumber( '+0.5', '1', '+0.6', '+0.4' ),
 			'-.125' => QuantityValue::newFromNumber( '-0.125', '1', '-0.124', '-0.126' ),
 			'3.' => QuantityValue::newFromNumber( 3, '1', 4, 2 ),
-			',3,' => QuantityValue::newFromNumber( 3, '1', 4, 2 ),
 			' 3 ' => QuantityValue::newFromNumber( 3, '1', 4, 2 ),
 			'2.125' => QuantityValue::newFromNumber( '+2.125', '1', '+2.126', '+2.124' ),
 			'2.1250' => QuantityValue::newFromNumber( '+2.1250', '1', '+2.1251', '+2.1249' ),
-			'100,003' => QuantityValue::newFromNumber( 100003, '1', 100004, 100002 ),
-			'100\'003' => QuantityValue::newFromNumber( 100003, '1', 100004, 100002 ),
 
 			'1.4e-2' => QuantityValue::newFromNumber( '+0.014', '1', '+0.015', '+0.013' ),
 			'1.4e3' => QuantityValue::newFromNumber( '+1400', '1', '+1401', '+1399' ),
@@ -116,6 +112,10 @@ class QuantityParserTest extends StringValueParserTest {
 			'1-1',
 			'1.2.3',
 
+			',3,',
+			'10,000',
+			'10\'000',
+
 			'2!!',
 			'!2',
 			'2!2',
@@ -164,7 +164,41 @@ class QuantityParserTest extends StringValueParserTest {
 		$options = $this->newParserOptions();
 
 		$class = $this->getParserClass();
-		return new $class( new DecimalParser( $options ), $options );
+		return new $class( $options, new BasicUnlocalizer() );
+	}
+
+	public function testParseLocalizedQuantity() {
+		$options = $this->newParserOptions( array( ValueParser::OPT_LANG => 'test' ) );
+
+		$unlocalizer = $this->getMock( 'ValueParsers\Unlocalizer' );
+
+		$charmap = array(
+			' ' => '',
+			',' => '.',
+		);
+
+		$unlocalizer->expects( $this->any() )
+			->method( 'unlocalizeNumber' )
+			->will( $this->returnCallback(
+				function( $number ) use ( $charmap ) {
+					return str_replace( array_keys( $charmap ), array_values( $charmap ), $number );
+				}
+			) );
+
+		$unlocalizer->expects( $this->any() )
+			->method( 'getNumberRegex' )
+			->will(  $this->returnValue( '[0-9 ]+(?:,[0-9]+)?' ) );
+
+		$unlocalizer->expects( $this->any() )
+			->method( 'getUnitRegex' )
+			->will( $this->returnValue( '[a-z~]+' ) );
+
+		$parser = new QuantityParser( $options, $unlocalizer );
+
+		$quantity = $parser->parse( '1 22 333,77+-3a~b' );
+
+		$this->assertEquals( '122333.77', $quantity->getAmount() );
+		$this->assertEquals( 'a~b', $quantity->getUnit() );
 	}
 
 }

@@ -17,25 +17,31 @@ use DataValues\QuantityValue;
  */
 class QuantityParser extends StringValueParser {
 
-	const NUMBER_PATTERN = '(?:[-+]\s*)?(?:[0-9,\'`]+\.[0-9,\'`]*|\.?[0-9,\'`]+)(?:[eE][-+]?[0-9,\'`]+)?';
-
-	const UNIT_PATTERN = '[a-zA-ZµåÅöÖ°%][-.a-zA-Z0-9åÅöÖ°%²³^]*';
-
 	/**
 	 * @var DecimalParser
 	 */
 	protected $decimalParser;
 
 	/**
+	 * @var Unlocalizer
+	 */
+	protected $unlocalizer;
+
+	/**
 	 * @since 0.1
 	 *
-	 * @param DecimalParser $decimalParser
 	 * @param ParserOptions|null $options
+	 * @param Unlocalizer $unlocalizer
 	 */
-	public function __construct( DecimalParser $decimalParser, ParserOptions $options = null ) {
+	public function __construct( ParserOptions $options = null, Unlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
 
-		$this->decimalParser = $decimalParser;
+		if ( !$unlocalizer ) {
+			$unlocalizer = new BasicUnlocalizer();
+		}
+
+		$this->decimalParser = new DecimalParser( $options, $unlocalizer );
+		$this->unlocalizer = $unlocalizer;
 	}
 
 	/**
@@ -118,14 +124,17 @@ class QuantityParser extends StringValueParser {
 		//TODO: allow explicitly specifying the number of significant figures
 		//TODO: allow explicitly specifying the uncertainty interval
 
+		$numberPattern = $this->unlocalizer->getNumberRegex( '@' );
+		$unitPattern = $this->unlocalizer->getUnitRegex( '@' );
+
 		$pattern = '@^'
-			. '\s*(' . self::NUMBER_PATTERN . ')' // $1: amount
+			. '\s*(' . $numberPattern . ')' // $1: amount
 			. '\s*(?:'
 				. '([~!])'  // $2: '!' for "exact", '~' for "approx", or nothing
-				. '|(?:\+/?-|±)\s*(' . self::NUMBER_PATTERN . ')' // $3: plus/minus offset (uncertainty margin)
+				. '|(?:\+/?-|±)\s*(' . $numberPattern . ')' // $3: plus/minus offset (uncertainty margin)
 				. '|' // or nothing
 			. ')'
-			. '\s*(' . self::UNIT_PATTERN . ')?' // $4: unit
+			. '\s*(' . $unitPattern . ')?' // $4: unit
 			. '\s*$@u';
 
 		if ( !preg_match( $pattern, $value, $groups ) ) {

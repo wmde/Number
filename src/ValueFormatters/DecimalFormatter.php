@@ -37,6 +37,10 @@ class DecimalFormatter extends ValueFormatterBase {
 
 		parent::__construct( $options );
 
+		if ( !$localizer ) {
+			$localizer = new BasicLocalizer();
+		}
+
 		$this->localizer = $localizer;
 	}
 
@@ -63,11 +67,8 @@ class DecimalFormatter extends ValueFormatterBase {
 			$decimal = ltrim( $decimal, '+' );
 		}
 
-		if ( $this->localizer ) {
-			// apply number localization
-			$language = $this->getOption( ValueFormatter::OPT_LANG );
-			$decimal = $this->localizer->localize( $decimal, $language, $this->options );
-		}
+		// apply number localization
+		$decimal = $this->localizer->localizeNumber( $decimal );
 
 		return $decimal;
 	}

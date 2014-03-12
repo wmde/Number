@@ -49,7 +49,7 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.3 (dev)
+### 0.3
 * Unlocalizer: added getNumberRegex() and getUnitRegex()
 * Unlocalizer: replaced unlocalize() with unlocalizeNumber()
 * Localizer: replaced localize() with localizeNumber()

@@ -2,8 +2,6 @@
 
 namespace DataValues;
 
-use LogicException;
-
 /**
  * Class representing a quantity with associated unit and uncertainty interval.
  * The amount is stored as a @see DecimalValue object.

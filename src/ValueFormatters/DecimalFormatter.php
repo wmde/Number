@@ -4,7 +4,6 @@ namespace ValueFormatters;
 
 use DataValues\DecimalValue;
 use InvalidArgumentException;
-use Language;
 
 /**
  * Formatter for decimal values

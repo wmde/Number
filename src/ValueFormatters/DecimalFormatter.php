@@ -23,21 +23,21 @@ class DecimalFormatter extends ValueFormatterBase {
 	const OPT_FORCE_SIGN = 'forceSign';
 
 	/**
-	 * @var Localizer
+	 * @var NumberLocalizer
 	 */
 	protected $localizer;
 
 	/**
 	 * @param FormatterOptions $options
-	 * @param Localizer|null $localizer
+	 * @param NumberLocalizer|null $localizer
 	 */
-	public function __construct( FormatterOptions $options, Localizer $localizer = null ) {
+	public function __construct( FormatterOptions $options, NumberLocalizer $localizer = null ) {
 		$options->defaultOption( self::OPT_FORCE_SIGN, false );
 
 		parent::__construct( $options );
 
 		if ( !$localizer ) {
-			$localizer = new BasicLocalizer();
+			$localizer = new BasicNumberLocalizer();
 		}
 
 		$this->localizer = $localizer;

@@ -66,7 +66,7 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 	}
 
 	public function testLocalization() {
-		$localizer = $this->getMock( 'ValueFormatters\Localizer' );
+		$localizer = $this->getMock( 'ValueFormatters\NumberLocalizer' );
 
 		$localizer->expects( $this->once() )
 			->method( 'localizeNumber' )

@@ -103,7 +103,7 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	public function testUnlocalization() {
-		$unlocalizer = $this->getMock( 'ValueParsers\Unlocalizer' );
+		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
 
 		$unlocalizer->expects( $this->once() )
 			->method( 'unlocalizeNumber' )

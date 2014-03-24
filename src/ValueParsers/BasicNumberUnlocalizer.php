@@ -12,7 +12,7 @@ namespace ValueParsers;
  * @license GPL 2+
  * @author Daniel Kinzler
  */
-class BasicUnlocalizer implements Unlocalizer {
+class BasicNumberUnlocalizer implements NumberUnlocalizer {
 
 	/**
 	 * Converts a localized number to canonical/internal representation.

@@ -3,7 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\QuantityValue;
-use ValueParsers\BasicUnlocalizer;
+use ValueParsers\BasicNumberUnlocalizer;
 use ValueParsers\QuantityParser;
 use ValueParsers\ValueParser;
 
@@ -164,13 +164,13 @@ class QuantityParserTest extends StringValueParserTest {
 		$options = $this->newParserOptions();
 
 		$class = $this->getParserClass();
-		return new $class( $options, new BasicUnlocalizer() );
+		return new $class( $options, new BasicNumberUnlocalizer() );
 	}
 
 	public function testParseLocalizedQuantity() {
 		$options = $this->newParserOptions( array( ValueParser::OPT_LANG => 'test' ) );
 
-		$unlocalizer = $this->getMock( 'ValueParsers\Unlocalizer' );
+		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
 
 		$charmap = array(
 			' ' => '',

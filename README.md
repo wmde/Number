@@ -49,9 +49,15 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.3.1 (dev)
+### 0.4 (dev)
+
+* Unlocalizer interface renamed to NumberUnlocalizer
+* Localizer interface renamed to NumberLocalizer
+* BasicUnlocalizer interface renamed to BasicNumberUnlocalizer
+* BasicLocalizer interface renamed to BasicNumberLocalizer
 
 ### 0.3 (2014-03-12)
+
 * Unlocalizer: added getNumberRegex() and getUnitRegex()
 * Unlocalizer: replaced unlocalize() with unlocalizeNumber()
 * Localizer: replaced localize() with localizeNumber()

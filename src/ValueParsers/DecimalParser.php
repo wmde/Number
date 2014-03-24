@@ -22,7 +22,7 @@ class DecimalParser extends StringValueParser {
 	private $math;
 
 	/**
-	 * @var null|Unlocalizer
+	 * @var null|NumberUnlocalizer
 	 */
 	protected $unlocalizer;
 
@@ -30,13 +30,13 @@ class DecimalParser extends StringValueParser {
 	 * @since 0.1
 	 *
 	 * @param ParserOptions|null $options
-	 * @param Unlocalizer|null $unlocalizer
+	 * @param NumberUnlocalizer|null $unlocalizer
 	 */
-	public function __construct( ParserOptions $options = null, Unlocalizer $unlocalizer = null ) {
+	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
 
 		if ( !$unlocalizer ) {
-			$unlocalizer = new BasicUnlocalizer();
+			$unlocalizer = new BasicNumberUnlocalizer();
 		}
 
 		$this->unlocalizer = $unlocalizer;

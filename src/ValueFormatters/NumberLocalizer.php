@@ -16,7 +16,7 @@ use InvalidArgumentException;
  * @licence GNU GPL v2+
  * @author Daniel Kinzler
  */
-interface Localizer {
+interface NumberLocalizer {
 
 	/**
 	 * Localizes a number.

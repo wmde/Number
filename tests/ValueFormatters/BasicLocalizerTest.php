@@ -2,7 +2,7 @@
 
 namespace ValueParsers\Test;
 
-use ValueFormatters\BasicLocalizer;
+use ValueFormatters\BasicNumberLocalizer;
 
 /**
  * @covers ValueFormatters\BasicLocalizer
@@ -36,7 +36,7 @@ class BasicLocalizerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider provideLocalizeNumber
 	 */
 	public function testLocalizeNumber( $localized, $expected ) {
-		$unlocalizer = new BasicLocalizer();
+		$unlocalizer = new BasicNumberLocalizer();
 		$unlocalized = $unlocalizer->localizeNumber( $localized );
 
 		$this->assertEquals( $expected, $unlocalized );

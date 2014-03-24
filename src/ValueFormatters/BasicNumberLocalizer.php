@@ -12,7 +12,7 @@ namespace ValueFormatters;
  * @licence GNU GPL v2+
  * @author Daniel Kinzler
  */
-class BasicLocalizer implements Localizer {
+class BasicNumberLocalizer implements NumberLocalizer {
 
 	/**
 	 * @see Localizer::localizeNumber()

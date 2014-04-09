@@ -55,6 +55,10 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 * Localizer interface renamed to NumberLocalizer
 * BasicUnlocalizer interface renamed to BasicNumberUnlocalizer
 * BasicLocalizer interface renamed to BasicNumberLocalizer
+* Introduced FORMAT_NAME class constants on ValueParsers in order to use them as
+	expectedFormat
+* Changed ValueParsers to pass rawValue and expectedFormat when constructing
+	a ParseException
 
 ### 0.3 (2014-03-12)
 

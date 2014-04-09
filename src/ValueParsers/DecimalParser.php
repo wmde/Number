@@ -16,6 +16,8 @@ use DataValues\IllegalValueException;
  */
 class DecimalParser extends StringValueParser {
 
+	const FORMAT_NAME = 'decimal';
+
 	/**
 	 * @var DecimalMath
 	 */
@@ -76,6 +78,8 @@ class DecimalParser extends StringValueParser {
 	 * @throws ParseException
 	 */
 	protected function stringParse( $value ) {
+		$rawValue = $value;
+
 		$value = $this->unlocalizer->unlocalizeNumber( $value );
 
 		//handle scientific notation
@@ -91,7 +95,7 @@ class DecimalParser extends StringValueParser {
 		$value = $this->normalizeDecimal( $value );
 
 		if ( $value === '' ) {
-			throw new ParseException( 'Decimal value must not be empty' );
+			throw new ParseException( 'Decimal value must not be empty', $rawValue, self::FORMAT_NAME );
 		}
 
 		try {
@@ -104,7 +108,7 @@ class DecimalParser extends StringValueParser {
 
 			return $decimal;
 		} catch ( IllegalValueException $ex ) {
-			throw new ParseException( $ex->getMessage() );
+			throw new ParseException( $ex->getMessage(), $rawValue, self::FORMAT_NAME );
 		}
 	}
 

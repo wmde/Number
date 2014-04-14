@@ -5,7 +5,7 @@ namespace ValueParsers\Test;
 use ValueParsers\BasicNumberUnlocalizer;
 
 /**
- * @covers ValueParsers\BasicUnlocalizer
+ * @covers ValueParsers\BasicNumberUnlocalizer
  *
  * @since 0.3
  *
@@ -15,7 +15,7 @@ use ValueParsers\BasicNumberUnlocalizer;
  * @licence GNU GPL v2+
  * @author Daniel Kinzler
  */
-class BasicUnlocalizerTest extends \PHPUnit_Framework_TestCase {
+class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function provideUnlocalizeNumber() {
 		return array(

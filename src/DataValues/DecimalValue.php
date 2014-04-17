@@ -2,6 +2,9 @@
 
 namespace DataValues;
 
+use InvalidArgumentException;
+use LogicException;
+
 /**
  * Class representing a decimal number with (nearly) arbitrary precision.
  *
@@ -33,7 +36,7 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @var string
 	 */
-	protected $value;
+	private $value;
 
 	/**
 	 * Regular expression for matching decimal strings that conform to the format
@@ -52,7 +55,7 @@ class DecimalValue extends DataValueObject {
 			$value = self::convertToDecimal( $value );
 		}
 
-		self::assertNumberString( $value, '$value' );
+		self::assertNumberString( $value );
 
 		// make "negative" zero positive
 		$value = preg_replace( '/^-(0+(\.0+)?)$/', '+\1', $value );
@@ -64,21 +67,20 @@ class DecimalValue extends DataValueObject {
 	 * Checks that the given value is a number string.
 	 *
 	 * @param string $number The value to check
-	 * @param string $name  The name to use in error messages
 	 *
 	 * @throws IllegalValueException
 	 */
-	protected static function assertNumberString( $number, $name ) {
+	protected static function assertNumberString( $number ) {
 		if ( !is_string( $number ) ) {
-			throw new IllegalValueException( $name . ' must be a numeric string' );
-		}
-
-		if ( !preg_match( self::QUANTITY_VALUE_PATTERN, $number ) ) {
-			throw new IllegalValueException( $name . ' must match the pattern for numeric values: bad value: `' . $number . '`' );
+			throw new IllegalValueException( '$number must be a numeric string.' );
 		}
 
 		if ( strlen( $number ) > 127 ) {
-			throw new IllegalValueException( $name . ' must be at most 127 characters long.' );
+			throw new IllegalValueException( 'Value must be at most 127 characters long.' );
+		}
+
+		if ( !preg_match( self::QUANTITY_VALUE_PATTERN, $number ) ) {
+			throw new IllegalValueException( 'Value must match the pattern for decimal values.' );
 		}
 	}
 
@@ -90,15 +92,15 @@ class DecimalValue extends DataValueObject {
 	 * @param int|float $number
 	 *
 	 * @return string
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
 	protected static function convertToDecimal( $number ) {
 		if ( !is_int( $number ) && !is_float( $number ) ) {
-			throw new \InvalidArgumentException( '$number must be an int or float' );
+			throw new InvalidArgumentException( '$number must be an int or float.' );
 		}
 
 		if ( $number === NAN || abs( $number ) === INF ) {
-			throw new \InvalidArgumentException( '$number must not be NAN or INF' );
+			throw new InvalidArgumentException( '$number must not be NAN or INF.' );
 		}
 
 		if ( is_int( $number ) || ( $number === floor( $number ) ) ) {
@@ -119,7 +121,7 @@ class DecimalValue extends DataValueObject {
 
 		$decimal = ( ( $number >= 0.0 ) ? '+' : '-' ) . $decimal;
 
-		self::assertNumberString( $decimal, '$number' );
+		self::assertNumberString( $decimal );
 		return $decimal;
 	}
 
@@ -130,7 +132,7 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @param DecimalValue $that
 	 *
-	 * @throws \LogicException
+	 * @throws LogicException
 	 * @return int +1 if $this > $that, 0 if $this == $that, -1 if $this < $that
 	 */
 	public function compare( DecimalValue $that ) {
@@ -393,4 +395,5 @@ class DecimalValue extends DataValueObject {
 	public function __toString() {
 		return $this->value;
 	}
+
 }

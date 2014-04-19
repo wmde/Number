@@ -6,6 +6,7 @@ use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
+use InvalidArgumentException;
 
 /**
  * ValueParser that parses the string representation of a quantity.
@@ -110,7 +111,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @param string $value
 	 *
-	 * @throws \InvalidArgumentException If $value is not a string
+	 * @throws InvalidArgumentException If $value is not a string
 	 * @throws ParseException If $value does not match the expected pattern
 	 *
 	 * @return array list( $amount, $exactness, $margin, $unit ).
@@ -118,7 +119,7 @@ class QuantityParser extends StringValueParser {
 	 */
 	private function splitQuantityString( $value ) {
 		if ( !is_string( $value ) ) {
-			throw new \InvalidArgumentException( '$value must be a string' );
+			throw new InvalidArgumentException( '$value must be a string.' );
 		}
 
 		//TODO: allow explicitly specifying the number of significant figures
@@ -138,7 +139,7 @@ class QuantityParser extends StringValueParser {
 			. '\s*$@u';
 
 		if ( !preg_match( $pattern, $value, $groups ) ) {
-			throw new ParseException( 'Malformed quantity: ' . $value );
+			throw new ParseException( 'Malformed quantity.' );
 		}
 
 		for ( $i = 1; $i <= 4; $i++ ) {
@@ -229,4 +230,5 @@ class QuantityParser extends StringValueParser {
 
 		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
 	}
+
 }

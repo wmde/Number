@@ -49,7 +49,7 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.4 (dev)
+### 0.4 (2014-04-24)
 
 * Unlocalizer interface renamed to NumberUnlocalizer
 * Localizer interface renamed to NumberLocalizer

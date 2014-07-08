@@ -32,8 +32,6 @@ class DecimalValue extends DataValueObject {
 	 * The $value as a decimal string, in the format described in the class
 	 * level documentation of @see DecimalValue, matching @see QUANTITY_VALUE_PATTERN.
 	 *
-	 * @since 0.1
-	 *
 	 * @var string
 	 */
 	private $value;
@@ -192,8 +190,6 @@ class DecimalValue extends DataValueObject {
 	/**
 	 * @see Serializable::serialize
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function serialize() {
@@ -202,8 +198,6 @@ class DecimalValue extends DataValueObject {
 
 	/**
 	 * @see Serializable::unserialize
-	 *
-	 * @since 0.1
 	 *
 	 * @param string $data
 	 *
@@ -217,8 +211,6 @@ class DecimalValue extends DataValueObject {
 	/**
 	 * @see DataValue::getType
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public static function getType() {
@@ -227,8 +219,6 @@ class DecimalValue extends DataValueObject {
 
 	/**
 	 * @see DataValue::getSortKey
-	 *
-	 * @since 0.1
 	 *
 	 * @return float
 	 */
@@ -244,8 +234,6 @@ class DecimalValue extends DataValueObject {
 	 * optional, but must not be the last character. Trailing zeros are significant.
 	 *
 	 * @see DataValue::getValue
-	 *
-	 * @since 0.1
 	 *
 	 * @return string
 	 */
@@ -364,8 +352,6 @@ class DecimalValue extends DataValueObject {
 	/**
 	 * @see DataValue::getArrayValue
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getArrayValue() {
@@ -376,9 +362,7 @@ class DecimalValue extends DataValueObject {
 	 * Constructs a new instance of the DataValue from the provided data.
 	 * This can round-trip with @see getArrayValue
 	 *
-	 * @since 0.1
-	 *
-	 * @param string $data
+	 * @param string|int|float $data
 	 *
 	 * @return DecimalValue
 	 * @throws IllegalValueException
@@ -388,8 +372,6 @@ class DecimalValue extends DataValueObject {
 	}
 
 	/**
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function __toString() {

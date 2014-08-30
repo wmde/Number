@@ -2,6 +2,8 @@
 
 namespace DataValues;
 
+use InvalidArgumentException;
+
 /**
  * Class representing a quantity with associated unit and uncertainty interval.
  * The amount is stored as a @see DecimalValue object.
@@ -104,7 +106,7 @@ class QuantityValue extends DataValueObject {
 		$upperBound = self::asDecimalValue( 'upperBound', $upperBound, $amount );
 		$lowerBound = self::asDecimalValue( 'lowerBound', $lowerBound, $amount );
 
-		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new self( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**
@@ -129,17 +131,17 @@ class QuantityValue extends DataValueObject {
 	 * @param DecimalValue|null $default
 	 *
 	 * @throws IllegalValueException
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
 	private static function asDecimalValue( $name, $number, DecimalValue $default = null ) {
 		if ( !is_string( $name ) ) {
-			throw new \InvalidArgumentException( '$name must be a string' );
+			throw new InvalidArgumentException( '$name must be a string' );
 		}
 
 		if ( $number === null ) {
 			if ( $default === null ) {
-				throw new \InvalidArgumentException( '$' . $name . ' must not be null' );
+				throw new InvalidArgumentException( '$' . $name . ' must not be null' );
 			}
 
 			$number = $default;
@@ -397,20 +399,20 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @param mixed ... Any extra parameters will be passed to the $transformation function.
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 * @return QuantityValue
 	 */
 	public function transform( $newUnit, $transformation ) {
 		if ( !is_callable( $transformation ) ) {
-			throw new \InvalidArgumentException( '$transformation must be callable.' );
+			throw new InvalidArgumentException( '$transformation must be callable.' );
 		}
 
 		if ( !is_string( $newUnit ) ) {
-			throw new \InvalidArgumentException( '$newUnit must be a string. Use "1" as the unit for unit-less quantities.' );
+			throw new InvalidArgumentException( '$newUnit must be a string. Use "1" as the unit for unit-less quantities.' );
 		}
 
 		if ( $newUnit === '' ) {
-			throw new \InvalidArgumentException( '$newUnit must not be empty. Use "1" as the unit for unit-less quantities.' );
+			throw new InvalidArgumentException( '$newUnit must not be empty. Use "1" as the unit for unit-less quantities.' );
 		}
 
 		$oldUnit = $this->getUnit();
@@ -435,7 +437,7 @@ class QuantityValue extends DataValueObject {
 		$lowerBound = call_user_func_array( $transformation, $args );
 
 		// use a preliminary QuantityValue to determine the significant number of digits
-		$transformed = new QuantityValue( $amount, $newUnit, $upperBound, $lowerBound );
+		$transformed = new self( $amount, $newUnit, $upperBound, $lowerBound );
 		$roundingExponent = $transformed->getOrderOfUncertainty();
 
 		// apply rounding to the significant digits
@@ -445,7 +447,7 @@ class QuantityValue extends DataValueObject {
 		$upperBound = $math->roundToExponent( $upperBound, $roundingExponent );
 		$lowerBound = $math->roundToExponent( $lowerBound, $roundingExponent );
 
-		return new QuantityValue( $amount, $newUnit, $upperBound, $lowerBound );
+		return new self( $amount, $newUnit, $upperBound, $lowerBound );
 	}
 
 	public function __toString() {
@@ -502,18 +504,14 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @param mixed $that
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function equals( $that ) {
 		if ( $that === $this ) {
 			return true;
 		}
 
-		if ( !is_object( $that ) ) {
-			return false;
-		}
-
-		if ( !( $that instanceof QuantityValue ) ) {
+		if ( !( $that instanceof self ) ) {
 			return false;
 		}
 
@@ -523,4 +521,5 @@ class QuantityValue extends DataValueObject {
 
 		return false;
 	}
+
 }

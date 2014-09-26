@@ -27,5 +27,6 @@ if ( defined( 'MEDIAWIKI' ) ) {
 		),
 		'url' => 'https://github.com/DataValues/Number',
 		'description' => 'Numerical value objects, parsers and formatters',
+		'license-name' => 'GPL-2.0+'
 	);
 }

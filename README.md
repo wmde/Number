@@ -50,6 +50,10 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.4.1 (2014-10-09)
+
+* The component can now be installed together with DataValues 1.x
+
 ### 0.4 (2014-04-24)
 
 * Unlocalizer interface renamed to NumberUnlocalizer

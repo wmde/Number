@@ -7,8 +7,6 @@ use ValueParsers\BasicNumberUnlocalizer;
 /**
  * @covers ValueParsers\BasicNumberUnlocalizer
  *
- * @since 0.3
- *
  * @group DataValue
  * @group DataValueExtensions
  *

@@ -11,8 +11,6 @@ use ValueFormatters\ValueFormatter;
 /**
  * @covers ValueFormatters\QuantityFormatter
  *
- * @since 0.1
- *
  * @group ValueFormatters
  * @group DataValueExtensions
  *

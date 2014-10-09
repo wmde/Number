@@ -7,8 +7,6 @@ use DataValues\DecimalValue;
 /**
  * @covers DataValues\DecimalValue
  *
- * @since 0.1
- *
  * @group DataValue
  * @group DataValueExtensions
  *

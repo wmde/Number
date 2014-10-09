@@ -10,8 +10,6 @@ use ValueParsers\ValueParser;
 /**
  * @covers ValueParsers\DecimalParser
  *
- * @since 0.1
- *
  * @group DataValue
  * @group DataValueExtensions
  *

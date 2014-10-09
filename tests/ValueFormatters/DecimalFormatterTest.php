@@ -11,8 +11,6 @@ use Wikibase\Lib\Serializers\SerializationOptions;
 /**
  * @covers ValueFormatters\DecimalFormatter
  *
- * @since 0.1
- *
  * @group ValueFormatters
  * @group DataValueExtensions
  *

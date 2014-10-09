@@ -5,9 +5,7 @@ namespace ValueParsers\Test;
 use ValueFormatters\BasicNumberLocalizer;
 
 /**
- * @covers ValueFormatters\BasicLocalizer
- *
- * @since 0.3
+ * @covers ValueFormatters\BasicNumberLocalizer
  *
  * @group DataValue
  * @group DataValueExtensions

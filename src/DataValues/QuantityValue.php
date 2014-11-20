@@ -502,24 +502,17 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @param mixed $that
+	 * @param mixed $target
 	 *
 	 * @return bool
 	 */
-	public function equals( $that ) {
-		if ( $that === $this ) {
+	public function equals( $target ) {
+		if ( $this === $target ) {
 			return true;
 		}
 
-		if ( !( $that instanceof self ) ) {
-			return false;
-		}
-
-		if ( $this->toArray() == $that->toArray() ) {
-			return true;
-		}
-
-		return false;
+		return $target instanceof self
+			&& $this->toArray() === $target->toArray();
 	}
 
 }

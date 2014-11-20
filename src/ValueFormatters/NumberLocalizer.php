@@ -29,4 +29,5 @@ interface NumberLocalizer {
 	 * @throws InvalidArgumentException
 	 */
 	public function localizeNumber( $number );
+
 }

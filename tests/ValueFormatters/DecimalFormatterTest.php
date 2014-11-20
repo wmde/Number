@@ -5,8 +5,6 @@ namespace ValueFormatters\Test;
 use DataValues\DecimalValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
-use ValueFormatters\ValueFormatter;
-use Wikibase\Lib\Serializers\SerializationOptions;
 
 /**
  * @covers ValueFormatters\DecimalFormatter

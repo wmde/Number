@@ -2,6 +2,8 @@
 
 namespace DataValues;
 
+use InvalidArgumentException;
+
 /**
  * Class for performing basic arithmetic and other transformations
  * on DecimalValues.
@@ -159,7 +161,7 @@ class DecimalMath {
 	 * @param int $significantDigits The number of digits to retain, counting the decimal point,
 	 *        but not counting the leading sign.
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
 	public function roundToDigit( DecimalValue $decimal, $significantDigits ) {
@@ -181,7 +183,7 @@ class DecimalMath {
 	 *        e.g. -1 for "keep the first digit after the decimal point", or 2 for
 	 *        "zero the last two digits before the decimal point".
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
 	public function roundToExponent( DecimalValue $decimal, $significantExponent ) {
@@ -235,12 +237,12 @@ class DecimalMath {
 	 * @param string $value
 	 * @param int $significantDigits
 	 *
-	 * @throws \InvalidArgumentException if $significantDigits is smaller than 0
+	 * @throws InvalidArgumentException if $significantDigits is smaller than 0
 	 * @return string
 	 */
 	protected function roundDigits( $value, $significantDigits ) {
 		if ( !is_int( $significantDigits ) ) {
-			throw new \InvalidArgumentException( '$significantDigits must be an integer' );
+			throw new InvalidArgumentException( '$significantDigits must be an integer' );
 		}
 
 		// keeping no digits results in zero.
@@ -249,7 +251,7 @@ class DecimalMath {
 		}
 
 		if ( $significantDigits < 0 ) {
-			throw new \InvalidArgumentException( '$significantDigits must be larger than zero.' );
+			throw new InvalidArgumentException( '$significantDigits must be larger than zero.' );
 		}
 
 		// whether the last character is already part of the integer part of the decimal value
@@ -507,12 +509,12 @@ class DecimalMath {
 	 * @param int $exponent The exponent to apply (digits to shift by). A Positive exponent
 	 * shifts the decimal point to the right, a negative exponent shifts to the left.
 	 *
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
 	public function shift( DecimalValue $decimal, $exponent ) {
 		if ( !is_int( $exponent ) ) {
-			throw new \InvalidArgumentException( '$exponent must be an integer' );
+			throw new InvalidArgumentException( '$exponent must be an integer' );
 		}
 
 		if ( $exponent == 0 ) {
@@ -568,4 +570,5 @@ class DecimalMath {
 
 		return $fractPart;
 	}
+
 }

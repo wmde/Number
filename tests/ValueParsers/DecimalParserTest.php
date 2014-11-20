@@ -5,7 +5,6 @@ namespace ValueParsers\Test;
 use DataValues\DecimalValue;
 use ValueParsers\DecimalParser;
 use ValueParsers\ParserOptions;
-use ValueParsers\ValueParser;
 
 /**
  * @covers ValueParsers\DecimalParser

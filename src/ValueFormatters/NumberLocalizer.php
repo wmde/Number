@@ -9,7 +9,7 @@ use InvalidArgumentException;
  * This may for instance be used to re-format a numeric string according to
  * the rules of a given locale.
  *
- * @see ValueParsers\Unlocalizer
+ * @see \ValueParsers\NumberUnlocalizer
  *
  * @since 0.2
  *
@@ -25,8 +25,9 @@ interface NumberLocalizer {
 	 *
 	 * @param string|int|float $number
 	 *
-	 * @return string
 	 * @throws InvalidArgumentException
+	 * @return string
 	 */
 	public function localizeNumber( $number );
+
 }

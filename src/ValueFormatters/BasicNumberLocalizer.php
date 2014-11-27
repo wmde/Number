@@ -5,7 +5,7 @@ namespace ValueFormatters;
 /**
  * Basic (dummy) localizer.
  *
- * @see ValueParsers\Unlocalizer
+ * @see \ValueParsers\NumberUnlocalizer
  *
  * @since 0.3
  *
@@ -15,11 +15,9 @@ namespace ValueFormatters;
 class BasicNumberLocalizer implements NumberLocalizer {
 
 	/**
-	 * @see Localizer::localizeNumber()
+	 * @see NumberLocalizer::localizeNumber
 	 *
 	 * Returns PHP's default representation of the given number.
-	 *
-	 * @since 0.3
 	 *
 	 * @param string|int|float $number
 	 *
@@ -28,4 +26,5 @@ class BasicNumberLocalizer implements NumberLocalizer {
 	public function localizeNumber( $number ) {
 		return "$number";
 	}
+
 }

@@ -40,7 +40,6 @@ class QuantityValueTest extends DataValueTest {
 	public function invalidConstructorArgumentsProvider() {
 		$argLists = array();
 
-		$argLists[] = array();
 		$argLists[] = array( new DecimalValue( '+0' ), '', new DecimalValue( '+0' ), new DecimalValue( '+0' ) );
 		$argLists[] = array( new DecimalValue( '+0' ), 1, new DecimalValue( '+0' ), new DecimalValue( '+0' ) );
 

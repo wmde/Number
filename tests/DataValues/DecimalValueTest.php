@@ -51,9 +51,6 @@ class DecimalValueTest extends DataValueTest {
 	public function invalidConstructorArgumentsProvider() {
 		$argLists = array();
 
-		$argLists[] = array();
-
-
 		$argLists[] = array( 'foo' );
 		$argLists[] = array( '' );
 		$argLists[] = array( '4.2' );
@@ -315,4 +312,5 @@ class DecimalValueTest extends DataValueTest {
 			array( new DecimalValue( '-0.001' ),   false ),
 		);
 	}
+
 }

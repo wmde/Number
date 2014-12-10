@@ -166,14 +166,12 @@ class QuantityValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		$data = array(
+		return serialize( array(
 			$this->amount,
 			$this->unit,
 			$this->upperBound,
 			$this->lowerBound,
-		);
-
-		return serialize( $data );
+		) );
 	}
 
 	/**
@@ -182,18 +180,10 @@ class QuantityValue extends DataValueObject {
 	 * @since 0.1
 	 *
 	 * @param string $data
-	 *
-	 * @return DecimalValue
 	 */
 	public function unserialize( $data ) {
-		$data = unserialize( $data );
-
-		$amount = array_shift( $data );
-		$unit = array_shift( $data );
-		$upperBound = array_shift( $data );
-		$lowerBound = array_shift( $data );
-
-		$this->__construct( $amount, $unit, $upperBound, $lowerBound);
+		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
+		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**

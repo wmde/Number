@@ -4,8 +4,8 @@ namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
 use ValueFormatters\DecimalFormatter;
-use ValueFormatters\QuantityFormatter;
 use ValueFormatters\FormatterOptions;
+use ValueFormatters\QuantityFormatter;
 use ValueFormatters\ValueFormatter;
 
 /**
@@ -97,4 +97,5 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 		$class = $this->getFormatterClass();
 		return new $class( $decimalFormatter, $options );
 	}
+
 }

@@ -436,4 +436,5 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 		return $argLists;
 	}
+
 }

@@ -198,7 +198,6 @@ class QuantityValueTest extends DataValueTest {
 		);
 	}
 
-
 	/**
 	 * @dataProvider getOrderOfUncertaintyProvider
 	 */
@@ -227,7 +226,6 @@ class QuantityValueTest extends DataValueTest {
 			26 => array( QuantityValue::newFromNumber( '+1000', '1', '+1100', '+900' ), 2 ),
 		);
 	}
-
 
 	/**
 	 * @dataProvider getSignificantFiguresProvider

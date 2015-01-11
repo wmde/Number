@@ -28,4 +28,5 @@ class BasicNumberLocalizer implements NumberLocalizer {
 	public function localizeNumber( $number ) {
 		return "$number";
 	}
+
 }

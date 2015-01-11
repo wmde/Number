@@ -5,7 +5,7 @@ namespace ValueParsers;
 /**
  * Interface for services that convert a string to canonical form.
  *
- * @see ValueFormatters\Localizer
+ * @see \ValueFormatters\NumberLocalizer
  *
  * @since 0.2
  *
@@ -40,11 +40,11 @@ interface NumberUnlocalizer {
 	 *
 	 * @since 0.3
 	 *
-	 * @param string $delim the regex delimiter, used for escaping.
+	 * @param string $delimiter The regex delimiter, used for escaping.
 	 *
 	 * @return string regular expression
 	 */
-	public function getNumberRegex( $delim = '/' );
+	public function getNumberRegex( $delimiter = '/' );
 
 	/**
 	 * Returns a PCRE style regular expression (without delimiters)
@@ -61,10 +61,10 @@ interface NumberUnlocalizer {
 	 *
 	 * @since 0.3
 	 *
-	 * @param string $delim the regex delimiter, used for escaping.
+	 * @param string $delimiter The regex delimiter, used for escaping.
 	 *
 	 * @return string regular expression
 	 */
-	public function getUnitRegex( $delim = '/' );
+	public function getUnitRegex( $delimiter = '/' );
 
 }

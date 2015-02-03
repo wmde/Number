@@ -200,12 +200,9 @@ class DecimalValue extends DataValueObject {
 	 * @see Serializable::unserialize
 	 *
 	 * @param string $data
-	 *
-	 * @return DecimalValue
 	 */
 	public function unserialize( $data ) {
-		$value = unserialize( $data );
-		$this->__construct( $value );
+		$this->__construct( unserialize( $data ) );
 	}
 
 	/**

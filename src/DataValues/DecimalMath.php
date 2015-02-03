@@ -202,7 +202,9 @@ class DecimalMath {
 	 * @example: the position of exponent -2 in "+1.037" is 4.
 	 *
 	 * @param int $exponent
-	 * @param string $decimal
+	 * @param DecimalValue $decimal
+	 *
+	 * @return int
 	 */
 	public function getPositionForExponent( $exponent, DecimalValue $decimal ) {
 		$decimal = $decimal->getValue();

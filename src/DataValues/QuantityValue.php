@@ -110,9 +110,14 @@ class QuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * @see self::newFromNumber()
+	 * @see newFromNumber
 	 *
-	 * @deprecated use newFromNumber() instead
+	 * @deprecated since 0.1, use newFromNumber instead
+	 *
+	 * @param string|int|float|DecimalValue $amount
+	 * @param string $unit
+	 * @param string|int|float|DecimalValue|null $upperBound
+	 * @param string|int|float|DecimalValue|null $lowerBound
 	 *
 	 * @return QuantityValue
 	 */

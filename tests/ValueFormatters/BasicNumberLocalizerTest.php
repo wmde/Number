@@ -13,7 +13,7 @@ use ValueFormatters\BasicNumberLocalizer;
  * @licence GNU GPL v2+
  * @author Daniel Kinzler
  */
-class BasicLocalizerTest extends \PHPUnit_Framework_TestCase {
+class BasicNumberLocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function provideLocalizeNumber() {
 		return array(

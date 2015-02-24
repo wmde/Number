@@ -121,4 +121,43 @@ class DecimalParserTest extends StringValueParserTest {
 		$this->assertEquals( '20000000', $value->getValue() );
 	}
 
+	public function provideSplitDecimalExponent() {
+		return array(
+			'no exponent' => array( '1.2', '1.2', 0 ),
+			'exponent' => array( '1.2E3', '1.2', 3 ),
+			'negative exponent' => array( '+1.2e-2', '+1.2', -2 ),
+			'positive exponent' => array( '-12e+3', '-12', 3 ),
+		);
+	}
+
+	/**
+	 * @dataProvider provideSplitDecimalExponent
+	 */
+	public function testSplitDecimalExponent( $valueString, $expectedDecimal, $expectedExponent ) {
+		$parser = new DecimalParser();
+		list( $decimal, $exponent ) = $parser->splitDecimalExponent( $valueString );
+
+		$this->assertSame( $expectedDecimal, $decimal );
+		$this->assertSame( $expectedExponent, $exponent );
+	}
+
+
+	public function provideApplyDecimalExponent() {
+		return array(
+			'no exponent' => array( new DecimalValue( '+1.2' ), 0, new DecimalValue( '+1.2' ) ),
+			'negative exponent' => array( new DecimalValue( '-1.2' ), -2, new DecimalValue( '-0.012' ) ),
+			'positive exponent' => array( new DecimalValue( '-12' ), 3, new DecimalValue( '-12000' ) ),
+		);
+	}
+
+	/**
+	 * @dataProvider provideApplyDecimalExponent
+	 */
+	public function testApplyDecimalExponent( DecimalValue $decimal, $exponent, DecimalValue $expectedDecimal ) {
+		$parser = new DecimalParser();
+		$actualDecimal = $parser->applyDecimalExponent( $decimal, $exponent );
+
+		$this->assertSame( $expectedDecimal->getValue(), $actualDecimal->getValue() );
+	}
+
 }

@@ -46,9 +46,9 @@ class QuantityParserTest extends StringValueParserTest {
 			'2.1250' => QuantityValue::newFromNumber( '+2.1250', '1', '+2.1251', '+2.1249' ),
 
 			'1.4e-2' => QuantityValue::newFromNumber( '+0.014', '1', '+0.015', '+0.013' ),
-			'1.4e3' => QuantityValue::newFromNumber( '+1400', '1', '+1401', '+1399' ),
+			'1.4e3' => QuantityValue::newFromNumber( '+1400', '1', '+1500', '+1300' ),
 			'1.4e3!m' => QuantityValue::newFromNumber( '+1400', 'm', '+1400', '+1400' ),
-			'1.4e3m2' => QuantityValue::newFromNumber( '+1400', 'm2', '+1401', '+1399' ),
+			'1.4e3m2' => QuantityValue::newFromNumber( '+1400', 'm2', '+1500', '+1300' ),
 			'1.4ev' => QuantityValue::newFromNumber( '+1.4', 'ev', '+1.5', '+1.3' ),
 			'1.4e' => QuantityValue::newFromNumber( '+1.4', 'e', '+1.5', '+1.3' ),
 
@@ -67,6 +67,9 @@ class QuantityParserTest extends StringValueParserTest {
 
 			'5.3 +/- +0.2' => QuantityValue::newFromNumber( '+5.3', '1', '+5.5', '+5.1' ),
 			'5.3+-+0.2' => QuantityValue::newFromNumber( '+5.3', '1', '+5.5', '+5.1' ),
+
+			'5.3e3 +/- 0.2e2' => QuantityValue::newFromNumber( '+5300', '1', '+5320', '+5280' ),
+			'2e-2+/-1.1e-1' => QuantityValue::newFromNumber( '+0.02', '1', '+0.13', '-0.09' ),
 
 			// negative
 			'5.3 +/- -0.2' => QuantityValue::newFromNumber( '+5.3', '1', '+5.5', '+5.1' ),

@@ -21,6 +21,12 @@ class QuantityParser extends StringValueParser {
 	const FORMAT_NAME = 'quantity';
 
 	/**
+	 * The unit of the value to parse. If this option is given, it's illegal to also specify
+	 * a unit in the input string.
+	 */
+	const OPT_UNIT = 'unit';
+
+	/**
 	 * @var DecimalParser
 	 */
 	protected $decimalParser;
@@ -38,6 +44,8 @@ class QuantityParser extends StringValueParser {
 	 */
 	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
+
+		$this->defaultOption( self::OPT_UNIT, null );
 
 		if ( !$unlocalizer ) {
 			$unlocalizer = new BasicNumberUnlocalizer();
@@ -60,8 +68,16 @@ class QuantityParser extends StringValueParser {
 	protected function stringParse( $value ) {
 		list( $amount, $exactness, $margin, $unit ) = $this->splitQuantityString( $value );
 
+		$unitOption = $this->getOptions()->getOption( self::OPT_UNIT );
+
 		if ( $unit === null ) {
-			$unit = '1';
+			if ( $unitOption !== null ) {
+				$unit = $unitOption;
+			} else {
+				$unit = '1';
+			}
+		} elseif ( $unitOption !== null ) {
+			throw new ParseException( 'Cannot specify a unit in input if a unit was fixed via options.' );
 		}
 
 		try {

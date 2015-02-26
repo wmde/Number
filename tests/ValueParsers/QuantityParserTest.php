@@ -166,7 +166,8 @@ class QuantityParserTest extends StringValueParserTest {
 	}
 
 	public function testParseLocalizedQuantity() {
-		$options = $this->newParserOptions( array( ValueParser::OPT_LANG => 'test' ) );
+		$options = $this->newParserOptions();
+		$options->setOption( ValueParser::OPT_LANG, 'test' );
 
 		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
 
@@ -197,6 +198,26 @@ class QuantityParserTest extends StringValueParserTest {
 
 		$this->assertEquals( '122333.77', $quantity->getAmount() );
 		$this->assertEquals( 'a~b', $quantity->getUnit() );
+	}
+
+	public function testUnitOption() {
+		$options = $this->newParserOptions();
+		$options->setOption( QuantityParser::OPT_UNIT, 'kittens' );
+
+		$parser = new QuantityParser( $options );
+
+		$quantity = $parser->parse( '17' );
+		$this->assertEquals( 'kittens', $quantity->getUnit() );
+	}
+
+	public function testUnitOption_conflict() {
+		$options = $this->newParserOptions( array( QuantityParser::OPT_UNIT => 'kittens' ) );
+		$options->setOption( QuantityParser::OPT_UNIT, 'kittens' );
+
+		$parser = new QuantityParser( $options );
+
+		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$parser->parse( '17m' );
 	}
 
 }

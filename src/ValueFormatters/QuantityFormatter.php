@@ -48,17 +48,16 @@ class QuantityFormatter extends ValueFormatterBase {
 	protected $decimalFormatter;
 
 	/**
-	 * @param DecimalFormatter $decimalFormatter
-	 * @param FormatterOptions $options
+	 * @param DecimalFormatter|null $decimalFormatter
+	 * @param FormatterOptions|null $options
 	 */
-	public function __construct( DecimalFormatter $decimalFormatter, FormatterOptions $options ) {
-		$options = clone $options; // copy, so we don't modify the options that were passed in.
-		$options->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
-		$options->defaultOption( self::OPT_APPLY_ROUNDING, true );
-
+	public function __construct( DecimalFormatter $decimalFormatter = null, FormatterOptions $options = null ) {
 		parent::__construct( $options );
 
-		$this->decimalFormatter = $decimalFormatter;
+		$this->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
+		$this->defaultOption( self::OPT_APPLY_ROUNDING, true );
+
+		$this->decimalFormatter = $decimalFormatter ?: new DecimalFormatter( $this->options );
 
 		// plain composition should be sufficient
 		$this->decimalMath = new DecimalMath();

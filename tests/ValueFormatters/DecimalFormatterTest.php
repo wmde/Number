@@ -25,19 +25,17 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 	 * @return array
 	 */
 	public function validProvider() {
-		$options = new FormatterOptions();
-
 		$optionsForceSign = new FormatterOptions( array(
 			DecimalFormatter::OPT_FORCE_SIGN => true
 		) );
 
 		$decimals = array(
-			'+0' => array( '0', $options ),
-			'+0.0' => array( '0.0', $options ),
-			'-0.0130' => array( '-0.0130', $options ),
-			'+10000.013' => array( '10000.013', $options ),
+			'+0' => array( '0', null ),
+			'+0.0' => array( '0.0', null ),
+			'-0.0130' => array( '-0.0130', null ),
+			'+10000.013' => array( '10000.013', null ),
 			'+20000.4' => array( '+20000.4', $optionsForceSign ),
-			'-12' => array( '-12', $options )
+			'-12' => array( '-12', null )
 		);
 
 		$argLists = array();
@@ -70,9 +68,8 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 				return "n:$number";
 			} ) );
 
-		$options = new FormatterOptions( );
 		$value = new DecimalValue( '+12345' );
-		$formatter = new DecimalFormatter( $options, $localizer );
+		$formatter = new DecimalFormatter( null, $localizer );
 
 		$this->assertEquals( 'n:12345', $formatter->format( $value ) );
 	}

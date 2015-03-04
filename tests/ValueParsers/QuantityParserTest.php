@@ -20,10 +20,6 @@ class QuantityParserTest extends StringValueParserTest {
 
 	/**
 	 * @see ValueParserTestBase::validInputProvider
-	 *
-	 * @since 0.1
-	 *
-	 * @return array
 	 */
 	public function validInputProvider() {
 		$amounts = array(
@@ -51,6 +47,8 @@ class QuantityParserTest extends StringValueParserTest {
 			'1.4e3m2' => QuantityValue::newFromNumber( '+1400', 'm2', '+1500', '+1300' ),
 			'1.4ev' => QuantityValue::newFromNumber( '+1.4', 'ev', '+1.5', '+1.3' ),
 			'1.4e' => QuantityValue::newFromNumber( '+1.4', 'e', '+1.5', '+1.3' ),
+			'12e3e4' => QuantityValue::newFromNumber( '+12000', 'e4', '+13000', '+11000' ),
+			// FIXME: Add support for 12x10^3, see DecimalParser.
 
 			// precision
 			'0!' => QuantityValue::newFromNumber( 0, '1', 0, 0 ),
@@ -95,6 +93,9 @@ class QuantityParserTest extends StringValueParserTest {
 		return $argLists;
 	}
 
+	/**
+	 * @see ValueParserTestBase::invalidInputProvider
+	 */
 	public function invalidInputProvider() {
 		$argLists = parent::invalidInputProvider();
 

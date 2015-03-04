@@ -37,11 +37,7 @@ class DecimalParser extends StringValueParser {
 	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
 
-		if ( !$unlocalizer ) {
-			$unlocalizer = new BasicNumberUnlocalizer();
-		}
-
-		$this->unlocalizer = $unlocalizer;
+		$this->unlocalizer = $unlocalizer ?: new BasicNumberUnlocalizer();
 	}
 
 	/**

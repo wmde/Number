@@ -47,12 +47,8 @@ class QuantityParser extends StringValueParser {
 
 		$this->defaultOption( self::OPT_UNIT, null );
 
-		if ( !$unlocalizer ) {
-			$unlocalizer = new BasicNumberUnlocalizer();
-		}
-
-		$this->decimalParser = new DecimalParser( $options, $unlocalizer );
-		$this->unlocalizer = $unlocalizer;
+		$this->unlocalizer = $unlocalizer ?: new BasicNumberUnlocalizer();
+		$this->decimalParser = new DecimalParser( $this->getOptions(), $this->unlocalizer );
 	}
 
 	/**

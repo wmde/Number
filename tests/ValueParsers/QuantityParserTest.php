@@ -3,7 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\QuantityValue;
-use ValueParsers\BasicNumberUnlocalizer;
+use ValueParsers\ParserOptions;
 use ValueParsers\QuantityParser;
 use ValueParsers\ValueParser;
 
@@ -155,18 +155,14 @@ class QuantityParserTest extends StringValueParserTest {
 	}
 
 	/**
-	 * @since 0.1
 	 * @return QuantityParser
 	 */
 	protected function getInstance() {
-		$options = $this->newParserOptions();
-
-		$class = $this->getParserClass();
-		return new $class( $options, new BasicNumberUnlocalizer() );
+		return new QuantityParser();
 	}
 
 	public function testParseLocalizedQuantity() {
-		$options = $this->newParserOptions();
+		$options = new ParserOptions();
 		$options->setOption( ValueParser::OPT_LANG, 'test' );
 
 		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
@@ -201,7 +197,7 @@ class QuantityParserTest extends StringValueParserTest {
 	}
 
 	public function testUnitOption() {
-		$options = $this->newParserOptions();
+		$options = new ParserOptions();
 		$options->setOption( QuantityParser::OPT_UNIT, 'kittens' );
 
 		$parser = new QuantityParser( $options );
@@ -211,7 +207,7 @@ class QuantityParserTest extends StringValueParserTest {
 	}
 
 	public function testUnitOption_conflict() {
-		$options = $this->newParserOptions( array( QuantityParser::OPT_UNIT => 'kittens' ) );
+		$options = new ParserOptions();
 		$options->setOption( QuantityParser::OPT_UNIT, 'kittens' );
 
 		$parser = new QuantityParser( $options );

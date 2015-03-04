@@ -4,7 +4,6 @@ namespace ValueParsers\Test;
 
 use DataValues\DecimalValue;
 use ValueParsers\DecimalParser;
-use ValueParsers\ParserOptions;
 
 /**
  * @covers ValueParsers\DecimalParser
@@ -114,8 +113,7 @@ class DecimalParserTest extends StringValueParserTest {
 		$unlocalizer->expects( $this->never() )
 			->method( 'getUnitRegex' );
 
-		$options = new ParserOptions();
-		$parser = new DecimalParser( $options, $unlocalizer );
+		$parser = new DecimalParser( null, $unlocalizer );
 
 		$input = '###20#000#000###';
 		$value = $parser->parse( $input );

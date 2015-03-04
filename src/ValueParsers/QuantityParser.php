@@ -29,12 +29,12 @@ class QuantityParser extends StringValueParser {
 	/**
 	 * @var DecimalParser
 	 */
-	protected $decimalParser;
+	private $decimalParser;
 
 	/**
 	 * @var NumberUnlocalizer
 	 */
-	protected $unlocalizer;
+	private $unlocalizer;
 
 	/**
 	 * @since 0.1
@@ -176,14 +176,12 @@ class QuantityParser extends StringValueParser {
 	 * The amount is assumed to be absolutely exact, that is,
 	 * the upper and lower bound will be the same as the amount.
 	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $amount
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 *
 	 * @return QuantityValue
 	 */
-	protected function newExactQuantity( DecimalValue $amount, $unit = '1' ) {
+	private function newExactQuantity( DecimalValue $amount, $unit = '1' ) {
 		$lowerBound = $amount;
 		$upperBound = $amount;
 
@@ -199,15 +197,13 @@ class QuantityParser extends StringValueParser {
 	 * E.g. "+0.01" would have upperBound "+0.02" and lowerBound "+0.01",
 	 * while "-100" would have upperBound "-99" and lowerBound "-101".
 	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $amount The quantity
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 * @param DecimalValue $margin
 	 *
 	 * @return QuantityValue
 	 */
-	protected function newUncertainQuantityFromMargin( DecimalValue $amount, $unit = '1', DecimalValue $margin ) {
+	private function newUncertainQuantityFromMargin( DecimalValue $amount, $unit = '1', DecimalValue $margin ) {
 		$decimalMath = new DecimalMath();
 		$margin = $margin->computeAbsolute();
 
@@ -226,15 +222,13 @@ class QuantityParser extends StringValueParser {
 	 * E.g. "+0.01" would have upperBound "+0.02" and lowerBound "+0.01",
 	 * while "-100" would have upperBound "-99" and lowerBound "-101".
 	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $amount The quantity
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 *
 	 * @return QuantityValue
 	 * @throws IllegalValueException
 	 */
-	protected function newUncertainQuantityFromDigits( DecimalValue $amount, $unit = '1' ) {
+	private function newUncertainQuantityFromDigits( DecimalValue $amount, $unit = '1' ) {
 		$math = new DecimalMath();
 
 		if ( $amount->getSign() === '+' ) {

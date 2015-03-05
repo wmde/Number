@@ -19,6 +19,22 @@ use ValueParsers\ValueParser;
 class QuantityParserTest extends StringValueParserTest {
 
 	/**
+	 * @deprecated since 0.3, just use getInstance.
+	 */
+	protected function getParserClass() {
+		return 'ValueParsers\QuantityParser';
+	}
+
+	/**
+	 * @see ValueParserTestBase::getInstance
+	 *
+	 * @return QuantityParser
+	 */
+	protected function getInstance() {
+		return new QuantityParser();
+	}
+
+	/**
 	 * @see ValueParserTestBase::validInputProvider
 	 *
 	 * @since 0.1
@@ -143,22 +159,6 @@ class QuantityParserTest extends StringValueParserTest {
 		}
 
 		return $argLists;
-	}
-
-	/**
-	 * @see ValueParserTestBase::getParserClass
-	 * @since 0.1
-	 * @return string
-	 */
-	protected function getParserClass() {
-		return 'ValueParsers\QuantityParser';
-	}
-
-	/**
-	 * @return QuantityParser
-	 */
-	protected function getInstance() {
-		return new QuantityParser();
 	}
 
 	public function testParseLocalizedQuantity() {

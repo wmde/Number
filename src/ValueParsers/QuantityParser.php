@@ -48,7 +48,7 @@ class QuantityParser extends StringValueParser {
 		$this->defaultOption( self::OPT_UNIT, null );
 
 		$this->unlocalizer = $unlocalizer ?: new BasicNumberUnlocalizer();
-		$this->decimalParser = new DecimalParser( $this->getOptions(), $this->unlocalizer );
+		$this->decimalParser = new DecimalParser( $this->options, $this->unlocalizer );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class QuantityParser extends StringValueParser {
 	protected function stringParse( $value ) {
 		list( $amount, $exactness, $margin, $unit ) = $this->splitQuantityString( $value );
 
-		$unitOption = $this->getOptions()->getOption( self::OPT_UNIT );
+		$unitOption = $this->getOption( self::OPT_UNIT );
 
 		if ( $unit === null ) {
 			if ( $unitOption !== null ) {

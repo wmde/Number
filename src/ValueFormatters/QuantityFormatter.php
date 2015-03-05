@@ -43,7 +43,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	protected $decimalMath;
 
 	/**
-	 * @var DecimalMath
+	 * @var DecimalFormatter
 	 */
 	protected $decimalFormatter;
 
@@ -51,6 +51,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * @param DecimalFormatter|null $decimalFormatter
 	 * @param FormatterOptions|null $options
 	 */
+	// FIXME: In all other ValueFormatters the FormatterOption parameter is the first one.
 	public function __construct( DecimalFormatter $decimalFormatter = null, FormatterOptions $options = null ) {
 		parent::__construct( $options );
 

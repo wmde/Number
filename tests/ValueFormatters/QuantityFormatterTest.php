@@ -6,7 +6,6 @@ use DataValues\QuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
-use ValueFormatters\ValueFormatter;
 
 /**
  * @covers ValueFormatters\QuantityFormatter
@@ -18,6 +17,24 @@ use ValueFormatters\ValueFormatter;
  * @author Daniel Kinzler
  */
 class QuantityFormatterTest extends ValueFormatterTestBase {
+
+	/**
+	 * @deprecated since 0.2, just use getInstance.
+	 */
+	protected function getFormatterClass() {
+		throw new \LogicException( 'Should not be called, use getInstance' );
+	}
+
+	/**
+	 * @see ValueFormatterTestBase::getInstance
+	 *
+	 * @param FormatterOptions|null $options
+	 *
+	 * @return QuantityFormatter
+	 */
+	protected function getInstance( FormatterOptions $options = null ) {
+		return new QuantityFormatter( new DecimalFormatter( $options ), $options );
+	}
 
 	/**
 	 * @see ValueFormatterTestBase::validProvider
@@ -72,30 +89,6 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 			'+3.125/fs' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '+3.13', $forceSign ),
 		);
-	}
-
-	/**
-	 * @see ValueFormatterTestBase::getFormatterClass
-	 *
-	 * @since 0.1
-	 *
-	 * @return string
-	 */
-	protected function getFormatterClass() {
-		return 'ValueFormatters\QuantityFormatter';
-	}
-
-	/**
-	 * @see ValueFormatterTestBase::getInstance
-	 *
-	 * @param FormatterOptions $options
-	 *
-	 * @return ValueFormatter
-	 */
-	protected function getInstance( FormatterOptions $options ) {
-		$decimalFormatter = new DecimalFormatter( $options );
-		$class = $this->getFormatterClass();
-		return new $class( $decimalFormatter, $options );
 	}
 
 }

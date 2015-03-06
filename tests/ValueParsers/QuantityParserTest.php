@@ -196,24 +196,46 @@ class QuantityParserTest extends StringValueParserTest {
 		$this->assertEquals( 'a~b', $quantity->getUnit() );
 	}
 
-	public function testUnitOption() {
+	/**
+	 * @dataProvider unitOptionProvider
+	 */
+	public function testUnitOption( $value, $unit ) {
 		$options = new ParserOptions();
-		$options->setOption( QuantityParser::OPT_UNIT, 'kittens' );
+		$options->setOption( QuantityParser::OPT_UNIT, $unit );
 
 		$parser = new QuantityParser( $options );
 
-		$quantity = $parser->parse( '17' );
-		$this->assertEquals( 'kittens', $quantity->getUnit() );
+		$quantity = $parser->parse( $value );
+		$this->assertEquals( $unit, $quantity->getUnit() );
 	}
 
-	public function testUnitOption_conflict() {
+	public function unitOptionProvider() {
+		return array(
+			array( '17', 'kittens' ),
+			array( '17 kittens', 'kittens' ),
+			array( '17m', 'm' ),
+		);
+	}
+
+	/**
+	 * @dataProvider conflictingUnitOptionProvider
+	 */
+	public function testConflictingUnitOption( $value, $unit ) {
 		$options = new ParserOptions();
-		$options->setOption( QuantityParser::OPT_UNIT, 'kittens' );
+		$options->setOption( QuantityParser::OPT_UNIT, $unit );
 
 		$parser = new QuantityParser( $options );
 
 		$this->setExpectedException( 'ValueParsers\ParseException' );
-		$parser->parse( '17m' );
+		$parser->parse( $value );
+	}
+
+	public function conflictingUnitOptionProvider() {
+		return array(
+			array( '17 kittens', 'm' ),
+			array( '17m', 'kittens' ),
+			array( '17m', '' ),
+		);
 	}
 
 }

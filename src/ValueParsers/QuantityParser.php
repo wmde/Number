@@ -67,12 +67,8 @@ class QuantityParser extends StringValueParser {
 		$unitOption = $this->getOption( self::OPT_UNIT );
 
 		if ( $unit === null ) {
-			if ( $unitOption !== null ) {
-				$unit = $unitOption;
-			} else {
-				$unit = '1';
-			}
-		} elseif ( $unitOption !== null ) {
+			$unit = $unitOption !== null ? $unitOption : '1';
+		} elseif ( $unitOption !== null && $unit !== $unitOption ) {
 			throw new ParseException( 'Cannot specify a unit in input if a unit was fixed via options.' );
 		}
 
@@ -115,7 +111,6 @@ class QuantityParser extends StringValueParser {
 		}
 
 		return $quantity;
-
 	}
 
 	/**

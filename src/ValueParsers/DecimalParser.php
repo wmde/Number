@@ -5,6 +5,7 @@ namespace ValueParsers;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
+use InvalidArgumentException;
 
 /**
  * ValueParser that parses the string representation of a decimal number.
@@ -52,6 +53,50 @@ class DecimalParser extends StringValueParser {
 	}
 
 	/**
+	 * Splits the exponent from the scientific notation of a decimal number.
+	 *
+	 * @example splitDecimalExponent( '1.2' )  is  array( '1.2', 0 )
+	 * @example splitDecimalExponent( '1.2e3' )  is  array( '1.2', 3 )
+	 * @example splitDecimalExponent( '1.2e-2' )  is  array( '1.2', -2 )
+	 *
+	 * @param string $valueString A decimal string, possibly using scientific notation.
+	 *
+	 * @return array list( $decimal, $exponent ) A pair of the decimal value without the
+	 *         decimal exponent, and the decimal exponent as an integer. If $valueString
+	 *         does not use scientific notation, $exponent will be 0.
+	 */
+	public function splitDecimalExponent( $valueString ) {
+		if ( preg_match( '/^(.*)([eE]|x10\^)([-+]?[,\d]+)$/', $valueString, $matches ) ) {
+			$exponent = $this->normalizeDecimal( $matches[3] );
+			return array( $matches[1], intval( $exponent ) );
+		}
+
+		return array( $valueString, 0 );
+	}
+
+	/**
+	 * Applies a decimal exponent, by shifting the decimal point in the decimal string
+	 * representation of the value.
+	 *
+	 * @example applyDecimalExponent( new DecimalValue( '1.2' ), 0 )  is  new DecimalValue( '1.2' )
+	 * @example applyDecimalExponent( new DecimalValue( '1.2' ), 3 )  is  new DecimalValue( '1200' )
+	 * @example applyDecimalExponent( new DecimalValue( '1.2' ), -2 )  is  new DecimalValue( '0.012' )
+	 *
+	 * @param DecimalValue $decimal
+	 * @param int $exponent
+	 *
+	 * @return DecimalValue
+	 */
+	public function applyDecimalExponent( DecimalValue $decimal, $exponent ) {
+		if ( $exponent !== 0 ) {
+			$math = $this->getMath();
+			$decimal = $math->shift( $decimal, $exponent );
+		}
+
+		return $decimal;
+	}
+
+	/**
 	 * Creates a DecimalValue from a given string.
 	 *
 	 * The decimal notation for the value is based on ISO 31-0, with some modifications:
@@ -79,14 +124,7 @@ class DecimalParser extends StringValueParser {
 		$value = $this->unlocalizer->unlocalizeNumber( $value );
 
 		//handle scientific notation
-		if ( preg_match( '/^(.*)([eE]|x10\^)([-+]?[,\d]+)$/', $value, $matches ) ) {
-			$exponent = $this->normalizeDecimal( $matches[3] );
-			$exponent = intval( $exponent );
-
-			$value = $matches[1];
-		} else {
-			$exponent = 0;
-		}
+		list( $value, $exponent ) = $this->splitDecimalExponent( $value );
 
 		$value = $this->normalizeDecimal( $value );
 
@@ -96,11 +134,7 @@ class DecimalParser extends StringValueParser {
 
 		try {
 			$decimal = new DecimalValue( $value );
-
-			if ( $exponent ) {
-				$math = $this->getMath();
-				$decimal = $math->shift( $decimal, $exponent );
-			}
+			$decimal = $this->applyDecimalExponent( $decimal, $exponent );
 
 			return $decimal;
 		} catch ( IllegalValueException $ex ) {

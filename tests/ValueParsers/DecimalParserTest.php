@@ -18,10 +18,6 @@ class DecimalParserTest extends StringValueParserTest {
 
 	/**
 	 * @see ValueParserTestBase::validInputProvider
-	 *
-	 * @since 0.1
-	 *
-	 * @return array
 	 */
 	public function validInputProvider() {
 		$argLists = array();
@@ -67,6 +63,9 @@ class DecimalParserTest extends StringValueParserTest {
 		return $argLists;
 	}
 
+	/**
+	 * @see ValueParserTestBase::invalidInputProvider
+	 */
 	public function invalidInputProvider() {
 		$argLists = parent::invalidInputProvider();
 
@@ -119,6 +118,50 @@ class DecimalParserTest extends StringValueParserTest {
 		$value = $parser->parse( $input );
 
 		$this->assertEquals( '20000000', $value->getValue() );
+	}
+
+	public function splitDecimalExponentProvider() {
+		return array(
+			'no exponent' => array( '1.2', '1.2', 0 ),
+			'exponent' => array( '1.2E3', '1.2', 3 ),
+			'negative exponent' => array( '+1.2e-2', '+1.2', -2 ),
+			'positive exponent' => array( '-12e+3', '-12', 3 ),
+			'leading zero' => array( '12e+09', '12', 9 ),
+			'trailing decimal point' => array( '12.e+3', '12.', 3 ),
+			'leading decimal point' => array( '.12e+3', '.12', 3 ),
+			'space' => array( '12 e+3', '12 ', 3 ),
+			'x10 syntax' => array( '12x10^3', '12', 3 ),
+			'comma' => array( '12e3,4', '12', 34 ),
+		);
+	}
+
+	/**
+	 * @dataProvider splitDecimalExponentProvider
+	 */
+	public function testSplitDecimalExponent( $valueString, $expectedDecimal, $expectedExponent ) {
+		$parser = new DecimalParser();
+		list( $decimal, $exponent ) = $parser->splitDecimalExponent( $valueString );
+
+		$this->assertSame( $expectedDecimal, $decimal );
+		$this->assertSame( $expectedExponent, $exponent );
+	}
+
+	public function applyDecimalExponentProvider() {
+		return array(
+			'no exponent' => array( new DecimalValue( '+1.2' ), 0, new DecimalValue( '+1.2' ) ),
+			'negative exponent' => array( new DecimalValue( '-1.2' ), -2, new DecimalValue( '-0.012' ) ),
+			'positive exponent' => array( new DecimalValue( '-12' ), 3, new DecimalValue( '-12000' ) ),
+		);
+	}
+
+	/**
+	 * @dataProvider applyDecimalExponentProvider
+	 */
+	public function testApplyDecimalExponent( DecimalValue $decimal, $exponent, DecimalValue $expectedDecimal ) {
+		$parser = new DecimalParser();
+		$actualDecimal = $parser->applyDecimalExponent( $decimal, $exponent );
+
+		$this->assertSame( $expectedDecimal->getValue(), $actualDecimal->getValue() );
 	}
 
 }

@@ -49,6 +49,10 @@ class QuantityParserTest extends StringValueParserTest {
 			'1.4e' => QuantityValue::newFromNumber( '+1.4', 'e', '+1.5', '+1.3' ),
 			'12e3e4' => QuantityValue::newFromNumber( '+12000', 'e4', '+13000', '+11000' ),
 			// FIXME: Add support for 12x10^3, see DecimalParser.
+			'0.004e3' => QuantityValue::newFromNumber( '+4', '1', '+5', '+3' ),
+			'0.004e-3' => QuantityValue::newFromNumber( '+0.000004', '1', '+0.000005', '+0.000003' ),
+			'4000e3' => QuantityValue::newFromNumber( '+4000000', '1', '+4001000', '+3999000' ),
+			'4000e-3' => QuantityValue::newFromNumber( '+4.000', '1', '+4.001', '+3.999' ),
 
 			// precision
 			'0!' => QuantityValue::newFromNumber( 0, '1', 0, 0 ),

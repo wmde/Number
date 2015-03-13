@@ -17,6 +17,22 @@ use ValueParsers\DecimalParser;
 class DecimalParserTest extends StringValueParserTest {
 
 	/**
+	 * @deprecated since 0.3, just use getInstance.
+	 */
+	protected function getParserClass() {
+		return 'ValueParsers\DecimalParser';
+	}
+
+	/**
+	 * @see ValueParserTestBase::getInstance
+	 *
+	 * @return DecimalParser
+	 */
+	protected function getInstance() {
+		return new DecimalParser();
+	}
+
+	/**
 	 * @see ValueParserTestBase::validInputProvider
 	 */
 	public function validInputProvider() {
@@ -86,15 +102,6 @@ class DecimalParserTest extends StringValueParserTest {
 		}
 
 		return $argLists;
-	}
-
-	/**
-	 * @see ValueParserTestBase::getParserClass
-	 * @since 0.1
-	 * @return string
-	 */
-	protected function getParserClass() {
-		return 'ValueParsers\DecimalParser';
 	}
 
 	public function testUnlocalization() {

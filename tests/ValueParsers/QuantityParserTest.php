@@ -22,7 +22,7 @@ class QuantityParserTest extends StringValueParserTest {
 	 * @deprecated since 0.3, just use getInstance.
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\QuantityParser';
+		throw new \LogicException( 'Should not be called, use getInstance' );
 	}
 
 	/**

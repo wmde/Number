@@ -28,19 +28,15 @@ class DecimalFormatter extends ValueFormatterBase {
 	protected $localizer;
 
 	/**
-	 * @param FormatterOptions $options
+	 * @param FormatterOptions|null $options
 	 * @param NumberLocalizer|null $localizer
 	 */
-	public function __construct( FormatterOptions $options, NumberLocalizer $localizer = null ) {
-		$options->defaultOption( self::OPT_FORCE_SIGN, false );
-
+	public function __construct( FormatterOptions $options = null, NumberLocalizer $localizer = null ) {
 		parent::__construct( $options );
 
-		if ( !$localizer ) {
-			$localizer = new BasicNumberLocalizer();
-		}
+		$this->defaultOption( self::OPT_FORCE_SIGN, false );
 
-		$this->localizer = $localizer;
+		$this->localizer = $localizer ?: new BasicNumberLocalizer();
 	}
 
 	/**

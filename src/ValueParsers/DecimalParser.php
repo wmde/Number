@@ -5,7 +5,6 @@ namespace ValueParsers;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
-use InvalidArgumentException;
 
 /**
  * ValueParser that parses the string representation of a decimal number.
@@ -27,7 +26,7 @@ class DecimalParser extends StringValueParser {
 	/**
 	 * @var null|NumberUnlocalizer
 	 */
-	protected $unlocalizer;
+	private $unlocalizer;
 
 	/**
 	 * @since 0.1
@@ -66,9 +65,9 @@ class DecimalParser extends StringValueParser {
 	 *         does not use scientific notation, $exponent will be 0.
 	 */
 	public function splitDecimalExponent( $valueString ) {
-		if ( preg_match( '/^(.*)([eE]|x10\^)([-+]?[,\d]+)$/', $valueString, $matches ) ) {
-			$exponent = $this->normalizeDecimal( $matches[3] );
-			return array( $matches[1], intval( $exponent ) );
+		if ( preg_match( '/^(.*)(?:[eE]|x10\^)([-+]?[\d,]+)$/', $valueString, $matches ) ) {
+			$exponent = (int)str_replace( ',', '', $matches[2] );
+			return array( $matches[1], $exponent );
 		}
 
 		return array( $valueString, 0 );
@@ -149,7 +148,7 @@ class DecimalParser extends StringValueParser {
 	 *
 	 * @return string
 	 */
-	protected function normalizeDecimal( $number ) {
+	private function normalizeDecimal( $number ) {
 		// strip fluff
 		$number = preg_replace( '/[ \r\n\t\'_,`]/u', '', $number );
 

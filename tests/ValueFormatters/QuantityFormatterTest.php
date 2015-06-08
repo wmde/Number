@@ -3,6 +3,8 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
+use RuntimeException;
+use ValueFormatters\BasicQuantityUnitFormatter;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
@@ -33,7 +35,9 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 * @return QuantityFormatter
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
-		return new QuantityFormatter( new DecimalFormatter( $options ), $options );
+		$unitFormatter = new BasicQuantityUnitFormatter();
+		$decimalFormatter = new DecimalFormatter( $options );
+		return new QuantityFormatter( $unitFormatter, $decimalFormatter, $options );
 	}
 
 	/**
@@ -67,6 +71,10 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			DecimalFormatter::OPT_FORCE_SIGN => true,
 		) );
 
+		$noUnit= new FormatterOptions( array(
+			QuantityFormatter::OPT_APPLY_UNIT => false,
+		) );
+
 		return array(
 			'+0/nm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $noMargin ),
 			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withMargin ),
@@ -79,6 +87,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100m', $withMargin ),
 			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100m', $noRounding ),
 			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00±100.00m', $exactRounding ),
+			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100', $noUnit ),
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),
 			'+3.025/wm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.004', $withMargin ),

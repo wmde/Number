@@ -500,7 +500,7 @@ class DecimalMath {
 	 * @return string
 	 */
 	private function stripLeadingZeros( $digits ) {
-		$digits = preg_replace( '/^([-+])(0+)([0-9]+(\.|$))/', '\1\3', $digits );
+		$digits = preg_replace( '/^([-+])0+(?=\d)/', '\1', $digits );
 		return $digits;
 	}
 

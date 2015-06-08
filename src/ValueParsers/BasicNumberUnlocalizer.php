@@ -3,7 +3,7 @@
 namespace ValueParsers;
 
 /**
- * @see \ValueFormatters\NumberLocalizer
+ * @see \ValueFormatters\BasicNumberLocalizer
  *
  * @since 0.3
  *

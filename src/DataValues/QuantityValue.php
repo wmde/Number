@@ -22,28 +22,28 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @var DecimalValue
 	 */
-	protected $amount;
+	private $amount;
 
 	/**
 	 * The quantity's unit identifier (use "1" for unitless quantities).
 	 *
 	 * @var string
 	 */
-	protected $unit;
+	private $unit;
 
 	/**
 	 * The quantity's upper bound
 	 *
 	 * @var DecimalValue
 	 */
-	protected $upperBound;
+	private $upperBound;
 
 	/**
 	 * The quantity's lower bound
 	 *
 	 * @var DecimalValue
 	 */
-	protected $lowerBound;
+	private $lowerBound;
 
 	/**
 	 * Constructs a new QuantityValue object, representing the given value.

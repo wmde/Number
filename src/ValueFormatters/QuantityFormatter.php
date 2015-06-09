@@ -3,6 +3,7 @@
 namespace ValueFormatters;
 
 use DataValues\DecimalMath;
+use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use InvalidArgumentException;
 
@@ -13,6 +14,7 @@ use InvalidArgumentException;
  *
  * @licence GNU GPL v2+
  * @author Daniel Kinzler
+ * @author Thiemo Mättig
  */
 class QuantityFormatter extends ValueFormatterBase {
 
@@ -46,12 +48,12 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @var DecimalMath
 	 */
-	protected $decimalMath;
+	private $decimalMath;
 
 	/**
 	 * @var DecimalFormatter
 	 */
-	protected $decimalFormatter;
+	private $decimalFormatter;
 
 	/**
 	 * @var QuantityUnitFormatter
@@ -82,6 +84,50 @@ class QuantityFormatter extends ValueFormatterBase {
 	}
 
 	/**
+	 * @see ValueFormatter::format
+	 *
+	 * @since 0.1
+	 *
+	 * @param QuantityValue $value
+	 *
+	 * @throws InvalidArgumentException
+	 * @return string Text
+	 */
+	public function format( $value ) {
+		if ( !( $value instanceof QuantityValue ) ) {
+			throw new InvalidArgumentException( 'Data value type mismatch. Expected a QuantityValue.' );
+		}
+
+		return $this->formatQuantityValue( $value );
+	}
+
+	/**
+	 * @param QuantityValue $quantity
+	 *
+	 * @return string Text
+	 */
+	private function formatQuantityValue( QuantityValue $quantity ) {
+		$roundingExponent = $this->getRoundingExponent( $quantity );
+
+		$amount = $quantity->getAmount();
+		$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
+		$formatted = $this->decimalFormatter->format( $roundedAmount );
+
+		$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
+		if ( $margin !== null ) {
+			// TODO: use localizable pattern for constructing the output.
+			$formatted .= '±' . $margin;
+		}
+
+		$unit = $quantity->getUnit();
+		if ( $this->options->getOption( self::OPT_APPLY_UNIT ) && $unit !== '1' && $unit !== '' ) {
+			$formatted = $this->unitFormatter->applyUnit( $unit, $formatted );
+		}
+
+		return $formatted;
+	}
+
+	/**
 	 * Returns the rounding exponent based on the given $quantity
 	 * and the @see QuantityFormatter::OPT_APPLY_ROUNDING option.
 	 *
@@ -89,7 +135,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 *
 	 * @return int
 	 */
-	protected function getRoundingExponent( QuantityValue $quantity ) {
+	private function getRoundingExponent( QuantityValue $quantity ) {
 		if ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === true ) {
 			// round to the order of uncertainty
 			return $quantity->getOrderOfUncertainty();
@@ -102,53 +148,22 @@ class QuantityFormatter extends ValueFormatterBase {
 	}
 
 	/**
-	 * Formats a QuantityValue data value
+	 * @param DecimalValue $margin
+	 * @param int $roundingExponent
 	 *
-	 * @since 0.1
-	 *
-	 * @param mixed $dataValue value to format
-	 *
-	 * @return string
-	 * @throws InvalidArgumentException
+	 * @return string|null Text
 	 */
-	public function format( $dataValue ) {
-		if ( !( $dataValue instanceof QuantityValue ) ) {
-			throw new InvalidArgumentException( 'DataValue is not a QuantityValue.' );
-		}
-
-		$roundingExponent = $this->getRoundingExponent( $dataValue );
-
-		$amountValue = $dataValue->getAmount();
-		$amountValue = $this->decimalMath->roundToExponent( $amountValue, $roundingExponent );
-		$amount = $this->decimalFormatter->format( $amountValue );
-
-		$unit = $dataValue->getUnit();
-
-		$margin = '';
-
+	private function formatMargin( DecimalValue $margin, $roundingExponent ) {
 		if ( $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN ) ) {
-
 			// TODO: never round to 0! See bug #56892
-			$marginValue = $dataValue->getUncertaintyMargin();
-			$marginValue = $this->decimalMath->roundToExponent( $marginValue, $roundingExponent );
+			$roundedMargin = $this->decimalMath->roundToExponent( $margin, $roundingExponent );
 
-			if ( !$marginValue->isZero() ) {
-				$margin = $this->decimalFormatter->format( $marginValue );
+			if ( !$roundedMargin->isZero() ) {
+				return $this->decimalFormatter->format( $roundedMargin );
 			}
 		}
 
-		$quantity = $amount;
-
-		if ( $margin !== '' ) {
-			//TODO: use localizable pattern for constructing the output.
-			$quantity .= '±' . $margin;
-		}
-
-		if ( $this->options->getOption( self::OPT_APPLY_UNIT ) && $unit !== '1' && $unit !== '' ) {
-			$quantity = $this->unitFormatter->applyUnit( $unit, $quantity );
-		}
-
-		return $quantity;
+		return null;
 	}
 
 }

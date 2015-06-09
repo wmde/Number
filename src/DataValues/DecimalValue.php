@@ -50,10 +50,10 @@ class DecimalValue extends DataValueObject {
 	 */
 	public function __construct( $value ) {
 		if ( is_int( $value ) || is_float( $value ) ) {
-			$value = self::convertToDecimal( $value );
+			$value = $this->convertToDecimal( $value );
 		}
 
-		self::assertNumberString( $value );
+		$this->assertNumberString( $value );
 
 		// make "negative" zero positive
 		$value = preg_replace( '/^-(0+(\.0+)?)$/', '+\1', $value );
@@ -68,7 +68,7 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @throws IllegalValueException
 	 */
-	protected static function assertNumberString( $number ) {
+	private function assertNumberString( $number ) {
 		if ( !is_string( $number ) ) {
 			throw new IllegalValueException( '$number must be a numeric string.' );
 		}
@@ -92,7 +92,7 @@ class DecimalValue extends DataValueObject {
 	 * @return string
 	 * @throws InvalidArgumentException
 	 */
-	protected static function convertToDecimal( $number ) {
+	private function convertToDecimal( $number ) {
 		if ( !is_int( $number ) && !is_float( $number ) ) {
 			throw new InvalidArgumentException( '$number must be an int or float.' );
 		}
@@ -119,7 +119,7 @@ class DecimalValue extends DataValueObject {
 
 		$decimal = ( ( $number >= 0.0 ) ? '+' : '-' ) . $decimal;
 
-		self::assertNumberString( $decimal );
+		$this->assertNumberString( $decimal );
 		return $decimal;
 	}
 

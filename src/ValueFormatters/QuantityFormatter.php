@@ -49,21 +49,25 @@ class QuantityFormatter extends ValueFormatterBase {
 	protected $decimalMath;
 
 	/**
-	 * @var QuantityUnitFormatter
-	 */
-	private $unitFormatter;
-
-	/**
 	 * @var DecimalFormatter
 	 */
 	protected $decimalFormatter;
 
 	/**
-	 * @param DecimalFormatter|null $decimalFormatter
-	 * @param FormatterOptions|null $options
-	 * @param QuantityUnitFormatter $unitFormatter
+	 * @var QuantityUnitFormatter
 	 */
-	public function __construct( QuantityUnitFormatter $unitFormatter, DecimalFormatter $decimalFormatter = null, FormatterOptions $options = null ) {
+	private $unitFormatter;
+
+	/**
+	 * @param DecimalFormatter|null $decimalFormatter
+	 * @param QuantityUnitFormatter|null $unitFormatter
+	 * @param FormatterOptions|null $options
+	 */
+	public function __construct(
+		DecimalFormatter $decimalFormatter = null,
+		QuantityUnitFormatter $unitFormatter = null,
+		FormatterOptions $options = null
+	) {
 		parent::__construct( $options );
 
 		$this->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
@@ -71,7 +75,7 @@ class QuantityFormatter extends ValueFormatterBase {
 		$this->defaultOption( self::OPT_APPLY_UNIT, true );
 
 		$this->decimalFormatter = $decimalFormatter ?: new DecimalFormatter( $this->options );
-		$this->unitFormatter = $unitFormatter;
+		$this->unitFormatter = $unitFormatter ?: new BasicQuantityUnitFormatter();
 
 		// plain composition should be sufficient
 		$this->decimalMath = new DecimalMath();

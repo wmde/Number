@@ -28,4 +28,5 @@ class BasicQuantityUnitFormatter implements QuantityUnitFormatter {
 			return $numberText . $unit;
 		}
 	}
+
 }

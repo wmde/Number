@@ -23,4 +23,5 @@ interface QuantityUnitFormatter {
 	 * @return string A text representing the given number with the given unit applied.
 	 */
 	public function applyUnit( $unit, $numberText );
+
 }

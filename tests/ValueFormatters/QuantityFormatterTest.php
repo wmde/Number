@@ -3,7 +3,6 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
-use RuntimeException;
 use ValueFormatters\BasicQuantityUnitFormatter;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
@@ -35,9 +34,9 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 * @return QuantityFormatter
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
-		$unitFormatter = new BasicQuantityUnitFormatter();
 		$decimalFormatter = new DecimalFormatter( $options );
-		return new QuantityFormatter( $unitFormatter, $decimalFormatter, $options );
+		$unitFormatter = new BasicQuantityUnitFormatter();
+		return new QuantityFormatter( $decimalFormatter, $unitFormatter, $options );
 	}
 
 	/**
@@ -56,22 +55,22 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true
 		) );
 
-		$noRounding= new FormatterOptions( array(
+		$noRounding = new FormatterOptions( array(
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true,
 			QuantityFormatter::OPT_APPLY_ROUNDING => false
 		) );
 
-		$exactRounding= new FormatterOptions( array(
+		$exactRounding = new FormatterOptions( array(
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true,
 			QuantityFormatter::OPT_APPLY_ROUNDING => -2
 		) );
 
-		$forceSign= new FormatterOptions( array(
+		$forceSign = new FormatterOptions( array(
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => false,
 			DecimalFormatter::OPT_FORCE_SIGN => true,
 		) );
 
-		$noUnit= new FormatterOptions( array(
+		$noUnit = new FormatterOptions( array(
 			QuantityFormatter::OPT_APPLY_UNIT => false,
 		) );
 

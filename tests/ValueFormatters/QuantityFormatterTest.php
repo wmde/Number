@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
+use ValueFormatters\BasicQuantityUnitFormatter;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
@@ -33,7 +34,9 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 * @return QuantityFormatter
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
-		return new QuantityFormatter( new DecimalFormatter( $options ), $options );
+		$decimalFormatter = new DecimalFormatter( $options );
+		$unitFormatter = new BasicQuantityUnitFormatter();
+		return new QuantityFormatter( $decimalFormatter, $unitFormatter, $options );
 	}
 
 	/**
@@ -52,19 +55,23 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true
 		) );
 
-		$noRounding= new FormatterOptions( array(
+		$noRounding = new FormatterOptions( array(
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true,
 			QuantityFormatter::OPT_APPLY_ROUNDING => false
 		) );
 
-		$exactRounding= new FormatterOptions( array(
+		$exactRounding = new FormatterOptions( array(
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true,
 			QuantityFormatter::OPT_APPLY_ROUNDING => -2
 		) );
 
-		$forceSign= new FormatterOptions( array(
+		$forceSign = new FormatterOptions( array(
 			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => false,
 			DecimalFormatter::OPT_FORCE_SIGN => true,
+		) );
+
+		$noUnit = new FormatterOptions( array(
+			QuantityFormatter::OPT_APPLY_UNIT => false,
 		) );
 
 		return array(
@@ -79,6 +86,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100m', $withMargin ),
 			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100m', $noRounding ),
 			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00±100.00m', $exactRounding ),
+			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100', $noUnit ),
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),
 			'+3.025/wm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.004', $withMargin ),

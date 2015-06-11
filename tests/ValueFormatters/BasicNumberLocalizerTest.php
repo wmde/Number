@@ -34,10 +34,10 @@ class BasicNumberLocalizerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider provideLocalizeNumber
 	 */
 	public function testLocalizeNumber( $localized, $expected ) {
-		$unlocalizer = new BasicNumberLocalizer();
-		$unlocalized = $unlocalizer->localizeNumber( $localized );
+		$localizer = new BasicNumberLocalizer();
+		$localized = $localizer->localizeNumber( $localized );
 
-		$this->assertEquals( $expected, $unlocalized );
+		$this->assertEquals( $expected, $localized );
 	}
 
 }

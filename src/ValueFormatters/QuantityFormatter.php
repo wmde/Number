@@ -38,6 +38,12 @@ class QuantityFormatter extends ValueFormatterBase {
 	const OPT_APPLY_ROUNDING = 'applyRounding';
 
 	/**
+	 * Option key controlling whether the quantity's unit of measurement should be included
+	 * in the output.
+	 */
+	const OPT_APPLY_UNIT = 'applyUnit';
+
+	/**
 	 * @var DecimalMath
 	 */
 	protected $decimalMath;
@@ -48,17 +54,28 @@ class QuantityFormatter extends ValueFormatterBase {
 	protected $decimalFormatter;
 
 	/**
+	 * @var QuantityUnitFormatter
+	 */
+	private $unitFormatter;
+
+	/**
 	 * @param DecimalFormatter|null $decimalFormatter
+	 * @param QuantityUnitFormatter|null $unitFormatter
 	 * @param FormatterOptions|null $options
 	 */
-	// FIXME: In all other ValueFormatters the FormatterOption parameter is the first one.
-	public function __construct( DecimalFormatter $decimalFormatter = null, FormatterOptions $options = null ) {
+	public function __construct(
+		DecimalFormatter $decimalFormatter = null,
+		QuantityUnitFormatter $unitFormatter = null,
+		FormatterOptions $options = null
+	) {
 		parent::__construct( $options );
 
 		$this->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
 		$this->defaultOption( self::OPT_APPLY_ROUNDING, true );
+		$this->defaultOption( self::OPT_APPLY_UNIT, true );
 
 		$this->decimalFormatter = $decimalFormatter ?: new DecimalFormatter( $this->options );
+		$this->unitFormatter = $unitFormatter ?: new BasicQuantityUnitFormatter();
 
 		// plain composition should be sufficient
 		$this->decimalMath = new DecimalMath();
@@ -120,16 +137,15 @@ class QuantityFormatter extends ValueFormatterBase {
 			}
 		}
 
-		//TODO: use localizable pattern for constructing the output.
 		$quantity = $amount;
 
 		if ( $margin !== '' ) {
+			//TODO: use localizable pattern for constructing the output.
 			$quantity .= '±' . $margin;
 		}
 
-		if ( $unit !== '1' ) {
-			//XXX: do we need to localize unit names?
-			$quantity .= $unit;
+		if ( $this->options->getOption( self::OPT_APPLY_UNIT ) && $unit !== '1' && $unit !== '' ) {
+			$quantity = $this->unitFormatter->applyUnit( $unit, $quantity );
 		}
 
 		return $quantity;

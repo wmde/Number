@@ -42,6 +42,8 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * Option key controlling whether the quantity's unit of measurement should be included
 	 * in the output.
+	 *
+	 * @since 0.5
 	 */
 	const OPT_APPLY_UNIT = 'applyUnit';
 

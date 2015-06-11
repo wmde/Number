@@ -50,6 +50,24 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.5.0 (2015-06-11)
+
+#### Breaking changes
+* `QuantityFormatter` constructor parameters changed in an incompatible way
+
+#### Additions
+* Added `QuantityUnitFormatter` interface
+* Added `BasicQuantityUnitFormatter`
+* Added `QuantityFormatter::OPT_APPLY_UNIT` option
+* Added `QuantityParser::OPT_UNIT` option
+* Added `DecimalParser::applyDecimalExponent`
+* Added `DecimalParser::splitDecimalExponent`
+
+#### Other changes
+* `QuantityParser` now correctly detect precision for scientific notation
+* Made constructor parameters optional in `DecimalFormatter` and `QuantityFormatter`
+* Updated DataValues Interfaces dependency to 0.1.5
+
 ### 0.4.1 (2014-10-09)
 
 * The component can now be installed together with DataValues 1.x

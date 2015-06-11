@@ -54,6 +54,8 @@ class DecimalParser extends StringValueParser {
 	/**
 	 * Splits the exponent from the scientific notation of a decimal number.
 	 *
+	 * @since 0.5
+	 *
 	 * @example splitDecimalExponent( '1.2' )  is  array( '1.2', 0 )
 	 * @example splitDecimalExponent( '1.2e3' )  is  array( '1.2', 3 )
 	 * @example splitDecimalExponent( '1.2e-2' )  is  array( '1.2', -2 )
@@ -76,6 +78,8 @@ class DecimalParser extends StringValueParser {
 	/**
 	 * Applies a decimal exponent, by shifting the decimal point in the decimal string
 	 * representation of the value.
+	 *
+	 * @since 0.5
 	 *
 	 * @example applyDecimalExponent( new DecimalValue( '1.2' ), 0 )  is  new DecimalValue( '1.2' )
 	 * @example applyDecimalExponent( new DecimalValue( '1.2' ), 3 )  is  new DecimalValue( '1200' )

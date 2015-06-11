@@ -25,7 +25,7 @@ class DecimalFormatter extends ValueFormatterBase {
 	/**
 	 * @var NumberLocalizer
 	 */
-	protected $localizer;
+	private $localizer;
 
 	/**
 	 * @param FormatterOptions|null $options
@@ -40,18 +40,18 @@ class DecimalFormatter extends ValueFormatterBase {
 	}
 
 	/**
-	 * Formats a QuantityValue data value
+	 * @see ValueFormatter::format
 	 *
 	 * @since 0.1
 	 *
-	 * @param mixed $dataValue value to format
+	 * @param DecimalValue $dataValue
 	 *
-	 * @return string
 	 * @throws InvalidArgumentException
+	 * @return string Text
 	 */
 	public function format( $dataValue ) {
 		if ( !( $dataValue instanceof DecimalValue ) ) {
-			throw new InvalidArgumentException( 'DataValue is not a DecimalValue.' );
+			throw new InvalidArgumentException( 'Data value type mismatch. Expected a DecimalValue.' );
 		}
 
 		// TODO: Implement optional rounding/padding

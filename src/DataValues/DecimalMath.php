@@ -28,7 +28,7 @@ class DecimalMath {
 	 *
 	 * @var bool
 	 */
-	protected $useBC;
+	private $useBC;
 
 	/**
 	 * @param bool|null $useBC Whether to use the bcmath library. If null,
@@ -242,7 +242,7 @@ class DecimalMath {
 	 * @throws InvalidArgumentException if $significantDigits is smaller than 0
 	 * @return string
 	 */
-	protected function roundDigits( $value, $significantDigits ) {
+	private function roundDigits( $value, $significantDigits ) {
 		if ( !is_int( $significantDigits ) ) {
 			throw new InvalidArgumentException( '$significantDigits must be an integer' );
 		}
@@ -393,7 +393,7 @@ class DecimalMath {
 	 * @param string $value
 	 * @return string
 	 */
-	protected function bumpDigits( $value ) {
+	private function bumpDigits( $value ) {
 		if ( $value === '+0' ) {
 			return '+1';
 		}
@@ -452,7 +452,7 @@ class DecimalMath {
 	 * @param string $value
 	 * @return string
 	 */
-	protected function slumpDigits( $value ) {
+	private function slumpDigits( $value ) {
 		if ( $value === '+0' ) {
 			return '-1';
 		}
@@ -499,7 +499,7 @@ class DecimalMath {
 	 *
 	 * @return string
 	 */
-	protected function stripLeadingZeros( $digits ) {
+	private function stripLeadingZeros( $digits ) {
 		$digits = preg_replace( '/^([-+])(0+)([0-9]+(\.|$))/', '\1\3', $digits );
 		return $digits;
 	}

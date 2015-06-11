@@ -3,7 +3,9 @@
 namespace ValueFormatters;
 
 /**
- * A basic QuantityUnitFormatter.
+ * A basic QuantityUnitFormatter that just appends non-default units to the number string.
+ *
+ * @since 0.5
  *
  * @licence GNU GPL v2+
  * @author Daniel Kinzler
@@ -24,9 +26,9 @@ class BasicQuantityUnitFormatter implements QuantityUnitFormatter {
 	public function applyUnit( $unit, $numberText ) {
 		if ( $unit === '1' || $unit === '' ) {
 			return $numberText;
-		} else {
-			return $numberText . $unit;
 		}
+
+		return $numberText . $unit;
 	}
 
 }

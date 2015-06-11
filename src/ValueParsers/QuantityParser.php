@@ -23,6 +23,8 @@ class QuantityParser extends StringValueParser {
 	/**
 	 * The unit of the value to parse. If this option is given, it's illegal to also specify
 	 * a unit in the input string.
+	 *
+	 * @since 0.5
 	 */
 	const OPT_UNIT = 'unit';
 

@@ -106,7 +106,7 @@ class DecimalParser extends StringValueParser {
 	 * - the decimal separator is '.' (period). Comma is not used anywhere.
 	 * - leading and trailing as well as any internal whitespace is ignored
 	 * - the following characters are ignored: comma (","), apostrophe ("'").
-	 * - scientific (exponential) notation is supported using the pattern /e[-+][0-9]+/
+	 * - scientific (exponential) notation is supported using the pattern /e[-+]\d+/
 	 * - the number may start (or end) with a decimal point.
 	 * - leading zeroes are stripped, except directly before the decimal point
 	 * - trailing zeroes are stripped, except directly after the decimal point
@@ -154,7 +154,7 @@ class DecimalParser extends StringValueParser {
 	 */
 	private function normalizeDecimal( $number ) {
 		// strip fluff
-		$number = preg_replace( '/[ \r\n\t\'_,`]/u', '', $number );
+		$number = preg_replace( '/[ \r\n\t\'_,`]+/u', '', $number );
 
 		// strip leading zeros
 		$number = preg_replace( '/^([-+]?)0+([^0]|0$)/', '$1$2', $number );
@@ -166,7 +166,7 @@ class DecimalParser extends StringValueParser {
 		$number = preg_replace( '/\.$/', '', $number );
 
 		// add leading sign
-		$number = preg_replace( '/^([0-9])/', '+$1', $number );
+		$number = preg_replace( '/^(?=\d)/', '+', $number );
 
 		// make "negative" zero positive
 		$number = preg_replace( '/^-(0+(\.0+)?)$/', '+$1', $number );

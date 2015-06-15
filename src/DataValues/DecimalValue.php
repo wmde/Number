@@ -40,7 +40,7 @@ class DecimalValue extends DataValueObject {
 	 * Regular expression for matching decimal strings that conform to the format
 	 * described in the class level documentation of @see DecimalValue.
 	 */
-	const QUANTITY_VALUE_PATTERN = '/^[-+]([1-9][0-9]*|[0-9])(\.[0-9]+)?$/';
+	const QUANTITY_VALUE_PATTERN = '/^[-+]([1-9]\d*|\d)(\.\d+)?$/';
 
 	/**
 	 * Constructs a new DecimalValue object, representing the given value.

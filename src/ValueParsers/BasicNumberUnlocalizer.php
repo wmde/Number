@@ -20,7 +20,7 @@ class BasicNumberUnlocalizer implements NumberUnlocalizer {
 	 * @return string unlocalized number, in a form suitable for floatval resp. intval.
 	 */
 	public function unlocalizeNumber( $number ) {
-		return preg_replace( '/[^-+0-9.eExX]/', '', $number );
+		return preg_replace( '/[^-+\d.EX]+/i', '', $number );
 	}
 
 	/**
@@ -34,7 +34,7 @@ class BasicNumberUnlocalizer implements NumberUnlocalizer {
 	 * @return string regular expression
 	 */
 	public function getNumberRegex( $delimiter = '/' ) {
-		return '(?:[-+]\s*)?(?:[0-9,]+\.[0-9]*|\.?[0-9]+)(?:[eE][-+]?[0-9]+)?';
+		return '(?:[-+]\s*)?(?:[\d,]+\.\d*|\.?\d+)(?:[eE][-+]?\d+)?';
 	}
 
 	/**
@@ -51,7 +51,7 @@ class BasicNumberUnlocalizer implements NumberUnlocalizer {
 	public function getUnitRegex( $delimiter = '/' ) {
 		return '[a-zA-ZµåÅöÖ' . preg_quote( '°%', $delimiter ) . ']+'
 			. '(?:[' . preg_quote( '-.^/', $delimiter ) . ']?'
-			. '[a-zA-Z0-9åÅöÖ' . preg_quote( '°%²³', $delimiter ) . ']+)*';
+			. '[a-zA-Z\dåÅöÖ' . preg_quote( '°%²³', $delimiter ) . ']+)*';
 	}
 
 }

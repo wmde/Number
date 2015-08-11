@@ -66,7 +66,7 @@ class QuantityParser extends StringValueParser {
 	protected function stringParse( $value ) {
 		list( $amount, $exactness, $margin, $unit ) = $this->splitQuantityString( $value );
 
-		$unitOption = $this->getOption( self::OPT_UNIT );
+		$unitOption = $this->getUnitFromOptions();
 
 		if ( $unit === null ) {
 			$unit = $unitOption !== null ? $unitOption : '1';
@@ -80,6 +80,14 @@ class QuantityParser extends StringValueParser {
 		} catch ( IllegalValueException $ex ) {
 			throw new ParseException( $ex->getMessage(), $value, self::FORMAT_NAME );
 		}
+	}
+
+	/**
+	 * @return string|null
+	 */
+	private function getUnitFromOptions() {
+		$unit = $this->getOption( self::OPT_UNIT );
+		return $unit === null ? null : trim( $unit );
 	}
 
 	/**

@@ -207,21 +207,23 @@ class QuantityParserTest extends StringValueParserTest {
 	/**
 	 * @dataProvider unitOptionProvider
 	 */
-	public function testUnitOption( $value, $unit ) {
+	public function testUnitOption( $value, $unit, $expected ) {
 		$options = new ParserOptions();
 		$options->setOption( QuantityParser::OPT_UNIT, $unit );
 
 		$parser = new QuantityParser( $options );
 
 		$quantity = $parser->parse( $value );
-		$this->assertEquals( $unit, $quantity->getUnit() );
+		$this->assertEquals( $expected, $quantity->getUnit() );
 	}
 
 	public function unitOptionProvider() {
 		return array(
-			array( '17', 'kittens' ),
-			array( '17 kittens', 'kittens' ),
-			array( '17m', 'm' ),
+			array( '17 kittens', null, 'kittens' ),
+			array( '17', 'kittens', 'kittens' ),
+			array( '17 kittens', 'kittens', 'kittens' ),
+			array( '17m', 'm', 'm' ),
+			array( ' 17 ', ' http://concept.uri ', 'http://concept.uri' ),
 		);
 	}
 

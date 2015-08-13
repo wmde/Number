@@ -162,7 +162,7 @@ class QuantityParser extends StringValueParser {
 				. '|(?:\+/?-|±)\s*(' . $numberPattern . ')' // $3: plus/minus offset (uncertainty margin)
 				. '|' // or nothing
 			. ')'
-			. '\s*(' . $unitPattern . ')?' // $4: unit
+			. '\s*(\bhttps?://\S+|' . $unitPattern . ')?' // $4: unit
 			. '\s*$@u';
 
 		if ( !preg_match( $pattern, $value, $groups ) ) {

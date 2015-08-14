@@ -50,18 +50,22 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.6.0 (2015-09-04)
+### 0.6.0 (2015-09-09)
 
 #### Breaking changes
-* `QuantityFormatter` constructor parameters changed in an incompatible way
+* `QuantityFormatter` constructor parameters changed in an incompatible way.
+* `BasicNumberUnlocalizer::getUnitRegex` returns an empty string. A `QuantityParser` using this
+	does not accept units as part of the input any more.
 
 #### Additions
-* Added `QuantityHtmlFormatter`
+* Added `QuantityHtmlFormatter`.
+* `QuantityFormatter` supports an optional format string to concatenate number and unit.
 
 #### Other changes
-* Deprecated `QuantityUnitFormatter` interface
-* Deprecated `BasicQuantityUnitFormatter`
-* `QuantityParser` now always trims the unit it gets via option
+* Deprecated `QuantityUnitFormatter` interface.
+* Deprecated `BasicQuantityUnitFormatter`.
+* `QuantityParser` now always trims the unit it gets via option.
+* The component can now be installed together with DataValues Interfaces 0.2.x.
 
 ### 0.5.0 (2015-06-11)
 

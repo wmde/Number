@@ -64,7 +64,7 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 * Added `DecimalParser::splitDecimalExponent`
 
 #### Other changes
-* `QuantityParser` now correctly detect precision for scientific notation
+* `QuantityParser` now correctly detects precision for scientific notation
 * Made constructor parameters optional in `DecimalFormatter` and `QuantityFormatter`
 * Updated DataValues Interfaces dependency to 0.1.5
 

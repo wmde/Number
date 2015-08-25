@@ -19,8 +19,6 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider bumpProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testBump( DecimalValue $value, $expected ) {
 		$math = new DecimalMath();
@@ -51,8 +49,6 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider slumpProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testSlump( DecimalValue $value, $expected ) {
 		$math = new DecimalMath();
@@ -214,8 +210,6 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider roundToDigitProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testRoundToDigit( DecimalValue $value, $digits, $expected ) {
 		$math = new DecimalMath();
@@ -292,8 +286,6 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider getPositionForExponentProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testGetPositionForExponent( $exponent, DecimalValue $decimal, $expected ) {
 		$math = new DecimalMath();
@@ -314,10 +306,9 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 		return $argLists;
 	}
-		/**
+
+	/**
 	 * @dataProvider roundToExponentProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testRoundToExponent( DecimalValue $value, $digits, $expected ) {
 		$math = new DecimalMath();
@@ -388,10 +379,6 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider shiftProvider
-	 *
-	 * @param DecimalValue $value
-	 * @param $exponent
-	 * @param $expected
 	 */
 	public function testShift( DecimalValue $value, $exponent, $expected ) {
 		$math = new DecimalMath();

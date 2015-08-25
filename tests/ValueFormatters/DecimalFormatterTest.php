@@ -37,10 +37,6 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 
 	/**
 	 * @see ValueFormatterTestBase::validProvider
-	 *
-	 * @since 0.1
-	 *
-	 * @return array
 	 */
 	public function validProvider() {
 		$optionsForceSign = new FormatterOptions( array(

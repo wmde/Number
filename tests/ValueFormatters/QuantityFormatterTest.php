@@ -41,10 +41,6 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 	/**
 	 * @see ValueFormatterTestBase::validProvider
-	 *
-	 * @since 0.1
-	 *
-	 * @return array
 	 */
 	public function validProvider() {
 		$noMargin = new FormatterOptions( array(

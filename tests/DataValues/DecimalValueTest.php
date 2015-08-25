@@ -19,8 +19,6 @@ class DecimalValueTest extends DataValueTest {
 	/**
 	 * @see DataValueTest::getClass
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -77,8 +75,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider compareProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testCompare( DecimalValue $a, DecimalValue $b, $expected ) {
 		$actual = $a->compare( $b );
@@ -118,8 +114,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider getSignProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testGetSign( DecimalValue $value, $expected ) {
 		$actual = $value->getSign();
@@ -140,8 +134,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider getValueProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testGetValue( DecimalValue $value, $expected ) {
 		$actual = $value->getValue();
@@ -173,8 +165,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider getValueFloatProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testGetValueFloat( DecimalValue $value, $expected ) {
 		$actual = $value->getValueFloat();
@@ -203,8 +193,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider getGetIntegerPartProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testGetIntegerPart( DecimalValue $value, $expected ) {
 		$actual = $value->getIntegerPart();
@@ -225,8 +213,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider getGetIntegerPartProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testGetFractionalPart( DecimalValue $value, $expected ) {
 		$actual = $value->getIntegerPart();
@@ -246,8 +232,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider computeComplementProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testComputeComplement( DecimalValue $value, $expected ) {
 		$complement = $value->computeComplement();
@@ -269,8 +253,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider computeComputeAbsolute
-	 *
-	 * @since 0.1
 	 */
 	public function testComputeAbsolute( DecimalValue $value, $expected ) {
 		$absolute = $value->computeAbsolute();
@@ -294,8 +276,6 @@ class DecimalValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider isZeroProvider
-	 *
-	 * @since 0.1
 	 */
 	public function testIsZero( DecimalValue $value, $expected ) {
 		$actual = $value->isZero();

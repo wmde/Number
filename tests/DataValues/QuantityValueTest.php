@@ -19,8 +19,6 @@ class QuantityValueTest extends DataValueTest {
 	/**
 	 * @see DataValueTest::getClass
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getClass() {
@@ -51,8 +49,6 @@ class QuantityValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param QuantityValue $quantity
-	 * @param array $arguments
 	 */
 	public function testGetValue( QuantityValue $quantity, array $arguments ) {
 		$this->assertInstanceOf( $this->getClass(), $quantity->getValue() );
@@ -60,8 +56,6 @@ class QuantityValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param QuantityValue $quantity
-	 * @param array $arguments
 	 */
 	public function testGetAmount( QuantityValue $quantity, array $arguments ) {
 		$this->assertEquals( $arguments[0], $quantity->getAmount() );
@@ -69,8 +63,6 @@ class QuantityValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param QuantityValue $quantity
-	 * @param array $arguments
 	 */
 	public function testGetUnit( QuantityValue $quantity, array $arguments ) {
 		$this->assertEquals( $arguments[1], $quantity->getUnit() );
@@ -78,8 +70,6 @@ class QuantityValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param QuantityValue $quantity
-	 * @param array $arguments
 	 */
 	public function testGetUpperBound( QuantityValue $quantity, array $arguments ) {
 		$this->assertEquals( $arguments[2], $quantity->getUpperBound() );
@@ -87,8 +77,6 @@ class QuantityValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param QuantityValue $quantity
-	 * @param array $arguments
 	 */
 	public function testGetLowerBound( QuantityValue $quantity, array $arguments ) {
 		$this->assertEquals( $arguments[3], $quantity->getLowerBound() );
@@ -96,12 +84,6 @@ class QuantityValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider newFromNumberProvider
-	 *
-	 * @param $amount
-	 * @param $unit
-	 * @param $upperBound
-	 * @param $lowerBound
-	 * @param QuantityValue $expected
 	 */
 	public function testNewFromNumber( $amount, $unit, $upperBound, $lowerBound, QuantityValue $expected ) {
 		$quantity = QuantityValue::newFromNumber( $amount, $unit, $upperBound, $lowerBound );

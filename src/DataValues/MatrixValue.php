@@ -50,4 +50,36 @@ class MatrixValue extends DataValueObject {
 		$this->rows = $rows;
 		$this->columns = $columns;
 	}
+
+	/**
+	 * @see Serializable::serialize
+	 *
+	 * @return string
+	 */
+	public function serialize() {
+		return serialize( array(
+            $this->value,
+            $this->rows,
+            $this->columns,
+        ) );
+	}
+
+	/**
+	 * @see Serializable::unserialize
+	 *
+	 * @param string $value
+	 */
+	public function unserialize( $value ) {
+		list( $value, $rows, $columns ) = unserialize( $data );
+		$this->__construct( $value, $rows, $columns );
+	}
+
+	/**
+	 * @see DataValue::getType
+	 *
+	 * @return string
+	 */
+	public static function getType() {
+		return 'matrix';
+	}
 }

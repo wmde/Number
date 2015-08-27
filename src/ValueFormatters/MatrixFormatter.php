@@ -14,15 +14,6 @@ use InvalidArgumentException;
 class MatrixFormatter extends ValueFormatterBase {
 
 	/**
-	 * @param FormatterOptions|null $options
-	 */
-	public function __construct(
-		FormatterOptions $options = null
-	) {
-		parent::__construct( $options );
-	}
-
-	/**
 	 * @see ValueFormatter::format
 	 *
 	 * @param MatrixValue $value

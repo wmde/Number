@@ -2,9 +2,7 @@
 
 namespace ValueParsers\Test;
 
-use DataValues\DecimalValue;
 use DataValues\MatrixValue;
-use ValueParsers\ParserOptions;
 use ValueParsers\MatrixParser;
 
 /**

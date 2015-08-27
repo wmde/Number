@@ -64,6 +64,10 @@ class MatrixValue extends DataValueObject {
             $value_now[] = $row_now;
         }
 
+        if( $columns == null || $columns == 0 ) {
+		    throw new IllegalValueException( 'matrix can not have empty rows' );
+        }
+
 		$this->value = $value_now;
 	}
 

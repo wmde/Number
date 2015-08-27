@@ -46,30 +46,13 @@ class MatrixParser extends StringValueParser {
             throw new InvalidArgumentException( '$value must be a string' );
         }
 
-        $numberPattern = $this->unlocalizer->getNumberRegex( '@' );
-
-        $pattern = '@'
-                . '\[\s*((?:' . $numberPattern . ')(?:,' . $numberPattern . ')*)\s*\]'
-                . '@u';
-
-        preg_match_all( $pattern, $value, $groups );
-
-        $data = array();
-
-        foreach( $groups[1] as $group ) {
-            $row = array();
-            foreach( preg_split( '/\s*,\s*/', $group ) as $element ) {
-                // Adding sign if missing
-                if( !preg_match( '/^[+-]/', $element ) ) {
-                    $element = "+" . $element;
-                }
-                $row[] = new DecimalValue( $element );
-            }
-            $data[] = $row;
+        $decoded = json_decode( $value );
+        if( $decoded == null ) {
+            throw new ParseException( 'can not parse JSON' );
         }
 
         try {
-            return new MatrixValue( $data );
+            return new MatrixValue( $decoded );
         } catch ( IllegalValueException $ex ) {
             throw new ParseException( $ex->getMessage(), $value, self::FORMAT_NAME );
         }

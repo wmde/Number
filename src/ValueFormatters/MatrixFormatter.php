@@ -36,7 +36,7 @@ class MatrixFormatter extends ValueFormatterBase {
 		}
 
         $raw_rows = array();
-        foreach( $value->getArray() as $row ) {
+        foreach( $value->getMatrix() as $row ) {
             $raw_row = array();
             foreach( $row as $element ) {
                 $raw_row[] = $element->getValue();

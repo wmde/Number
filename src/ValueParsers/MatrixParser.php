@@ -2,11 +2,9 @@
 
 namespace ValueParsers;
 
-use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\MatrixValue;
-use DataValues\NumberValue;
 use InvalidArgumentException;
 
 /**
@@ -61,7 +59,11 @@ class MatrixParser extends StringValueParser {
         foreach( $groups[1] as $group ) {
             $row = array();
             foreach( preg_split( '/\s*,\s*/', $group ) as $element ) {
-                $row[] = new NumberValue( floatval( $element ) );
+                // Adding sign if missing
+                if( !preg_match( '/^[+-]/', $element ) ) {
+                    $element = "+" . $element;
+                }
+                $row[] = new DecimalValue( $element );
             }
             $data[] = $row;
         }

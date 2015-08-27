@@ -9,7 +9,7 @@ namespace DataValues;
 class MatrixValue extends DataValueObject {
 
 	/**
-	 * @var int|float
+	 * @var mixed
 	 */
 	private $value;
 
@@ -95,7 +95,7 @@ class MatrixValue extends DataValueObject {
 	 *
 	 * @return mixed array of arrays
 	 */
-	public function getArray() {
+	public function getMatrix() {
 		return $this->value;
 	}
 

@@ -30,6 +30,9 @@ class MatrixValueTest extends DataValueTest {
 		$argLists[] = array( array( $row1, $row1 ) );
 		$argLists[] = array( array( $row2, $row2 ) );
 		$argLists[] = array( array( $row1, $row1, $row1 ) );
+        $argLists[] = array( array( array( 1 ) ) );
+        $argLists[] = array( array( array( 1, 2, 3 ) ) );
+        $argLists[] = array( array( array( 1, 2, 3 ), array( 4, 5, 6 ) ) );
 		return $argLists;
 	}
 
@@ -39,6 +42,7 @@ class MatrixValueTest extends DataValueTest {
 		$argLists = array();
 		$argLists[] = array( array() );
 		$argLists[] = array( array( $row1, $row2 ) );
+        $argLists[] = array( array( array( 1, 2 ), array( 3 ) ) );
 		return $argLists;
 	}
 }

@@ -55,6 +55,7 @@ class MatrixValue extends DataValueObject {
                     if( !preg_match( '/^[+-]/', $element ) ) {
                         $element = "+" . $element;
                     }
+                    $element = new DecimalValue( $element );
                 } else if (!($element instanceof DecimalValue)) {
                     $element = new DecimalValue( $element );
                 }

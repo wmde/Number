@@ -40,9 +40,8 @@ class MatrixParserTest extends StringValueParserTest {
 	public function validInputProvider() {
 		$valid = array(
 			// amounts in various styles and forms
-			'[[1,3,5]]' => new MatrixValue( array( array( new DecimalValue( 1 ),
-                                                          new DecimalValue( 3 ),
-                                                          new DecimalValue( 5 ) ) ) ),
+			'[[1,3,5]]' => new MatrixValue( array( array( 1, 3, 5 ) ) ),
+			'[[+1,3.0,-5.001]]' => new MatrixValue( array( array( 1, "3.0", "-5.001" ) ) ),
 		);
 
 		$argLists = array();

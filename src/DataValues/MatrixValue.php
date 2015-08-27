@@ -7,46 +7,41 @@ namespace DataValues;
  * @author Andrius Merkys < andrius.merkys@gmail.com >
  */
 class MatrixValue extends DataValueObject {
+
 	/**
 	 * @var int|float
 	 */
 	private $value;
 
 	/**
-	 * @var int
-	 */
-	private $rows;
-
-	/**
-	 * @var int
-	 */
-	private $columns;
-
-	/**
 	 * Constructs a new MatrixValue object, representing the given value.
 	 *
-	 * @var NumberValue[] $value An array of numbers.
-	 * @var int $rows The number of rows.
-	 * @var int $columns The number of columns.
+	 * @var mixed $value An array of arrays of numbers.
 	 *
 	 * @throws IllegalValueException
 	 */
-	public function __construct( $value, $rows, $columns ) {
-		if ( $rows <= 0 ) {
-			throw new IllegalValueException( '$rows must be > 0' );
-		}
+	public function __construct( $value ) {
+        if ( !is_array( $value ) ) {
+			throw new IllegalValueException( '$value must be an array' );
+        }
 
-		if ( $columns <= 0 ) {
-			throw new IllegalValueException( '$columns must be > 0' );
-		}
+        if ( count( $value ) == 0 ) {
+			throw new IllegalValueException( '$value can not be an empty array' );
+        }
 
-        if ( count( $value ) != $rows * $columns ) {
-            throw new IllegalValueException( '$value must be of length $rows * $columns' );
+        $columns = null;
+        foreach ( $value as $row ) {
+            if( !is_array( $row ) ) {
+		    	throw new IllegalValueException( '$value must be an array of arrays' );
+            }
+            if( $columns == null ) {
+                $columns = count( $row );
+            } else if( $columns != count( $row ) ) {
+			    throw new IllegalValueException( 'all rows of $value must be of the same length' );
+            }
         }
 
 		$this->value = $value;
-		$this->rows = $rows;
-		$this->columns = $columns;
 	}
 
 	/**
@@ -55,11 +50,7 @@ class MatrixValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array(
-            $this->value,
-            $this->rows,
-            $this->columns,
-        ) );
+		return serialize( $this->value );
 	}
 
 	/**
@@ -68,8 +59,7 @@ class MatrixValue extends DataValueObject {
 	 * @param string $value
 	 */
 	public function unserialize( $data ) {
-		list( $value, $rows, $columns ) = unserialize( $data );
-		$this->__construct( $value, $rows, $columns );
+		$this->__construct( unserialize( $data ) );
 	}
 
 	/**

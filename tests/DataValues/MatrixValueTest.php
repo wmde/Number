@@ -23,17 +23,22 @@ class MatrixValueTest extends DataValueTest {
 	}
 
 	public function validConstructorArgumentsProvider() {
+        $row1 = array( new NumberValue( 1 ) );
+        $row2 = array( new NumberValue( 1 ), new NumberValue( 2 ) );
 		$argLists = array();
-		$argLists[] = array( array( new NumberValue( 1 ) ), 1, 1 );
-		$argLists[] = array( array( new NumberValue( 1 ),
-                                    new NumberValue( 2 ),
-                                    new NumberValue( 3 ),
-                                    new NumberValue( 4 ) ), 2, 2 );
+		$argLists[] = array( array( $row1 ) );
+		$argLists[] = array( array( $row1, $row1 ) );
+		$argLists[] = array( array( $row2, $row2 ) );
+		$argLists[] = array( array( $row1, $row1, $row1 ) );
 		return $argLists;
 	}
+
 	public function invalidConstructorArgumentsProvider() {
+        $row1 = array( new NumberValue( 1 ) );
+        $row2 = array( new NumberValue( 1 ), new NumberValue( 2 ) );
 		$argLists = array();
-		$argLists[] = array( new NumberValue( 1 ), 2, 2 );
+		$argLists[] = array( array() );
+		$argLists[] = array( array( $row1, $row2 ) );
 		return $argLists;
 	}
 }

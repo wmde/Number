@@ -11,7 +11,7 @@ use InvalidArgumentException;
  * ValueParser that parses the string representation of a matrix.
  *
  * @licence GNU GPL v2+
- * @author Andrius Merkys
+ * @author Andrius Merkys < andrius.merkys@gmail.com >
  */
 class MatrixParser extends StringValueParser {
 

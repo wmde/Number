@@ -14,7 +14,7 @@ use ValueFormatters\MatrixFormatter;
  * @group DataValueExtensions
  *
  * @licence GNU GPL v2+
- * @author Andrius Merkys
+ * @author Andrius Merkys < andrius.merkys@gmail.com >
  */
 class MatrixFormatterTest extends ValueFormatterTestBase {
 

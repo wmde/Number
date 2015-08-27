@@ -9,7 +9,7 @@ use InvalidArgumentException;
  * Formatter for matrices
  *
  * @licence GNU GPL v2+
- * @author Andrius Merkys
+ * @author Andrius Merkys < andrius.merkys@gmail.com >
  */
 class MatrixFormatter extends ValueFormatterBase {
 
@@ -23,7 +23,8 @@ class MatrixFormatter extends ValueFormatterBase {
 	 */
 	public function format( $value ) {
 		if ( !( $value instanceof MatrixValue ) ) {
-			throw new InvalidArgumentException( 'Data value type mismatch. Expected a MatrixValue.' );
+			throw new InvalidArgumentException(
+						'Data value type mismatch. Expected a MatrixValue.' );
 		}
 
 		$raw_rows = array();

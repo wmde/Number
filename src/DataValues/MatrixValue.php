@@ -125,5 +125,4 @@ class MatrixValue extends DataValueObject {
 	public function getMatrix() {
 		return $this->value;
 	}
-
 }

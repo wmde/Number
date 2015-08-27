@@ -18,22 +18,6 @@ class MatrixParser extends StringValueParser {
 	const FORMAT_NAME = 'matrix';
 
 	/**
-	 * @var NumberUnlocalizer
-	 */
-	private $unlocalizer;
-
-	/**
-	 * @param ParserOptions|null $options
-	 * @param NumberUnlocalizer $unlocalizer
-	 */
-	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
-		parent::__construct( $options );
-
-		$this->unlocalizer = $unlocalizer ?: new BasicNumberUnlocalizer();
-		$this->decimalParser = new DecimalParser( $this->options, $this->unlocalizer );
-	}
-
-	/**
 	 * @see StringValueParser::stringParse
 	 *
 	 * @param string $value

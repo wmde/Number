@@ -18,7 +18,7 @@ class MatrixValue extends DataValueObject {
 	/**
 	 * Constructs a new MatrixValue object, representing the given value.
 	 *
-	 * @var array[] $value An array of arrays of numbers.
+	 * @var array[] $value 2-dimensional array of numbers (int|float|string|DecimalValue).
 	 *
 	 * @throws IllegalValueException
 	 */
@@ -36,7 +36,7 @@ class MatrixValue extends DataValueObject {
 		$columns = null;
 		foreach ( $value as $row ) {
 			if( !is_array( $row ) ) {
-				throw new IllegalValueException( '$value must be an array of arrays' );
+				throw new IllegalValueException( '$value must be a 2-dimensional array' );
 			}
 			if( $columns == null ) {
 				$columns = count( $row );
@@ -120,7 +120,7 @@ class MatrixValue extends DataValueObject {
 	/**
 	 * Returns the array of arrays.
 	 *
-	 * @return array[] array of arrays
+	 * @return array[] 2-dimensional array of DecimalValue.
 	 */
 	public function getMatrix() {
 		return $this->value;

@@ -1,8 +1,8 @@
 <?php
 namespace DataValues\Tests;
 
-use DataValues\NumberValue;
 use DataValues\MatrixValue;
+use DataValues\NumberValue;
 /**
  * @covers DataValues\MatrixValue
  *

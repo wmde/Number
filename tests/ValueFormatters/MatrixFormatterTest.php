@@ -2,8 +2,8 @@
 
 namespace ValueFormatters\Test;
 
+use DataValues\DecimalValue;
 use DataValues\MatrixValue;
-use DataValues\NumberValue;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\MatrixFormatter;
 
@@ -40,10 +40,10 @@ class MatrixFormatterTest extends ValueFormatterTestBase {
      * @see ValueFormatterTestBase::validProvider
      */
     public function validProvider() {
-        $row1 = array( new NumberValue( 1 ) );
+        $row1 = array( new DecimalValue( 1 ) );
         return array(
-                '[[1]]' => array( new MatrixValue( array( $row1 ) ), '[[1]]' ),
-                '[[1],[1]]' => array( new MatrixValue( array( $row1, $row1 ) ), '[[1],[1]]' ),
+                '[[+1]]' => array( new MatrixValue( array( $row1 ) ), '[[+1]]' ),
+                '[[+1],[+1]]' => array( new MatrixValue( array( $row1, $row1 ) ), '[[+1],[+1]]' ),
         );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 namespace DataValues;
+
+use DataValues\DecimalValue;
 /**
  * Class representing a matrix.
  *
@@ -29,6 +31,8 @@ class MatrixValue extends DataValueObject {
 			throw new IllegalValueException( '$value can not be an empty array' );
         }
 
+        $value_now = array();
+
         $columns = null;
         foreach ( $value as $row ) {
             if( !is_array( $row ) ) {
@@ -39,9 +43,27 @@ class MatrixValue extends DataValueObject {
             } else if( $columns != count( $row ) ) {
 			    throw new IllegalValueException( 'all rows of $value must be of the same length' );
             }
+
+            /**
+             * Filtering the matrix, converting int|float|string into
+             * DecimalValue.
+             */
+            $row_now = array();
+            foreach ( $row as $element ) {
+                if( is_string( $element ) ) {
+                    // Adding sign if missing
+                    if( !preg_match( '/^[+-]/', $element ) ) {
+                        $element = "+" . $element;
+                    }
+                } else if (!($element instanceof DecimalValue)) {
+                    $element = new DecimalValue( $element );
+                }
+                $row_now[] = $element;
+            }
+            $value_now[] = $row_now;
         }
 
-		$this->value = $value;
+		$this->value = $value_now;
 	}
 
 	/**

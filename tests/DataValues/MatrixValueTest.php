@@ -1,8 +1,8 @@
 <?php
 namespace DataValues\Tests;
 
+use DataValues\DecimalValue;
 use DataValues\MatrixValue;
-use DataValues\NumberValue;
 /**
  * @covers DataValues\MatrixValue
  *
@@ -23,8 +23,8 @@ class MatrixValueTest extends DataValueTest {
 	}
 
 	public function validConstructorArgumentsProvider() {
-        $row1 = array( new NumberValue( 1 ) );
-        $row2 = array( new NumberValue( 1 ), new NumberValue( 2 ) );
+        $row1 = array( new DecimalValue( 1 ) );
+        $row2 = array( new DecimalValue( 1 ), new DecimalValue( 2 ) );
 		$argLists = array();
 		$argLists[] = array( array( $row1 ) );
 		$argLists[] = array( array( $row1, $row1 ) );
@@ -34,8 +34,8 @@ class MatrixValueTest extends DataValueTest {
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-        $row1 = array( new NumberValue( 1 ) );
-        $row2 = array( new NumberValue( 1 ), new NumberValue( 2 ) );
+        $row1 = array( new DecimalValue( 1 ) );
+        $row2 = array( new DecimalValue( 1 ), new DecimalValue( 2 ) );
 		$argLists = array();
 		$argLists[] = array( array() );
 		$argLists[] = array( array( $row1, $row2 ) );

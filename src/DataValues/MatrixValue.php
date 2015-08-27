@@ -11,14 +11,14 @@ use DataValues\DecimalValue;
 class MatrixValue extends DataValueObject {
 
 	/**
-	 * @var mixed
+	 * @var array[]
 	 */
 	private $value;
 
 	/**
 	 * Constructs a new MatrixValue object, representing the given value.
 	 *
-	 * @var mixed $value An array of arrays of numbers.
+	 * @var array[] $value An array of arrays of numbers.
 	 *
 	 * @throws IllegalValueException
 	 */

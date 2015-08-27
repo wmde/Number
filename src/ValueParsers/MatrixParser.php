@@ -32,7 +32,7 @@ class MatrixParser extends StringValueParser {
 
 		$decoded = json_decode( $value );
 		if( $decoded == null ) {
-			throw new ParseException( 'can not parse JSON' );
+			throw new ParseException( '$value must be correct JSON string' );
 		}
 
 		try {

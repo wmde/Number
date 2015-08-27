@@ -90,4 +90,13 @@ class MatrixValue extends DataValueObject {
 		return $this;
 	}
 
+	/**
+	 * Returns the array of arrays.
+	 *
+	 * @return mixed array of arrays
+	 */
+	public function getArray() {
+		return $this->value;
+	}
+
 }

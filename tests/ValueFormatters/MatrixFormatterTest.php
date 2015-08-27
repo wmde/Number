@@ -18,34 +18,34 @@ use ValueFormatters\MatrixFormatter;
  */
 class MatrixFormatterTest extends ValueFormatterTestBase {
 
-    /**
-     * @deprecated since 0.2, just use getInstance.
-     */
-    protected function getFormatterClass() {
-        throw new \LogicException( 'Should not be called, use getInstance' );
-    }
+	/**
+	 * @deprecated since 0.2, just use getInstance.
+	 */
+	protected function getFormatterClass() {
+		throw new \LogicException( 'Should not be called, use getInstance' );
+	}
 
-    /**
-     * @see ValueFormatterTestBase::getInstance
-     *
-     * @param FormatterOptions|null $options
-     *
-     * @return MatrixFormatter
-     */
-    protected function getInstance( FormatterOptions $options = null ) {
-        return new MatrixFormatter( $options );
-    }
+	/**
+	 * @see ValueFormatterTestBase::getInstance
+	 *
+	 * @param FormatterOptions|null $options
+	 *
+	 * @return MatrixFormatter
+	 */
+	protected function getInstance( FormatterOptions $options = null ) {
+		return new MatrixFormatter( $options );
+	}
 
-    /**
-     * @see ValueFormatterTestBase::validProvider
-     */
-    public function validProvider() {
-        $row1 = array( new DecimalValue( 1 ) );
+	/**
+	 * @see ValueFormatterTestBase::validProvider
+	 */
+	public function validProvider() {
+		$row1 = array( new DecimalValue( 1 ) );
 
-        $valid = array(
-            '[[1]]' => new MatrixValue( array( $row1 ) ),
-            '[[1],[1]]' => new MatrixValue( array( $row1, $row1 ) ),
-        );
+		$valid = array(
+			'[[1]]' => new MatrixValue( array( $row1 ) ),
+			'[[1],[1]]' => new MatrixValue( array( $row1, $row1 ) ),
+		);
 
 		$argLists = array();
 
@@ -54,5 +54,5 @@ class MatrixFormatterTest extends ValueFormatterTestBase {
 		}
 
 		return $argLists;
-    }
+	}
 }

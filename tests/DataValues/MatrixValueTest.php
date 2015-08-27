@@ -23,26 +23,26 @@ class MatrixValueTest extends DataValueTest {
 	}
 
 	public function validConstructorArgumentsProvider() {
-        $row1 = array( new DecimalValue( 1 ) );
-        $row2 = array( new DecimalValue( 1 ), new DecimalValue( 2 ) );
+		$row1 = array( new DecimalValue( 1 ) );
+		$row2 = array( new DecimalValue( 1 ), new DecimalValue( 2 ) );
 		$argLists = array();
 		$argLists[] = array( array( $row1 ) );
 		$argLists[] = array( array( $row1, $row1 ) );
 		$argLists[] = array( array( $row2, $row2 ) );
 		$argLists[] = array( array( $row1, $row1, $row1 ) );
-        $argLists[] = array( array( array( 1 ) ) );
-        $argLists[] = array( array( array( 1, 2, 3 ) ) );
-        $argLists[] = array( array( array( 1, 2, 3 ), array( 4, 5, 6 ) ) );
+		$argLists[] = array( array( array( 1 ) ) );
+		$argLists[] = array( array( array( 1, 2, 3 ) ) );
+		$argLists[] = array( array( array( 1, 2, 3 ), array( 4, 5, 6 ) ) );
 		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-        $row1 = array( new DecimalValue( 1 ) );
-        $row2 = array( new DecimalValue( 1 ), new DecimalValue( 2 ) );
+		$row1 = array( new DecimalValue( 1 ) );
+		$row2 = array( new DecimalValue( 1 ), new DecimalValue( 2 ) );
 		$argLists = array();
 		$argLists[] = array( array() );
 		$argLists[] = array( array( $row1, $row2 ) );
-        $argLists[] = array( array( array( 1, 2 ), array( 3 ) ) );
+		$argLists[] = array( array( array( 1, 2 ), array( 3 ) ) );
 		return $argLists;
 	}
 }

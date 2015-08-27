@@ -35,16 +35,16 @@ class MatrixFormatter extends ValueFormatterBase {
 			throw new InvalidArgumentException( 'Data value type mismatch. Expected a MatrixValue.' );
 		}
 
-        $raw_rows = array();
-        foreach( $value->getMatrix() as $row ) {
-            $raw_row = array();
-            foreach( $row as $element ) {
-                $raw_row[] = preg_replace( '/^\+/', '', $element->getValue() );
-            }
-            $raw_rows[] = '[' . implode( ',', $raw_row ) . ']';
-        }
+		$raw_rows = array();
+		foreach( $value->getMatrix() as $row ) {
+			$raw_row = array();
+			foreach( $row as $element ) {
+				$raw_row[] = preg_replace( '/^\+/', '', $element->getValue() );
+			}
+			$raw_rows[] = '[' . implode( ',', $raw_row ) . ']';
+		}
 
-        $formatted = '[' . implode( ',', $raw_rows ) . ']';
+		$formatted = '[' . implode( ',', $raw_rows ) . ']';
 
 		return $formatted;
 	}

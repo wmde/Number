@@ -43,8 +43,8 @@ class MatrixParserTest extends StringValueParserTest {
 			'[[42]]' => new MatrixValue( array( array( 42 ) ) ),
 			'[[1,3,5]]' => new MatrixValue( array( array( 1, 3, 5 ) ) ),
 			'[["+1",-3.0,"-5.001"]]' => new MatrixValue( array( array( 1, "-3", "-5.001" ) ) ),
-            '[[1,0,0], [0,-1,0], [0, 0, -1]]' =>
-                new MatrixValue( array( array( 1, 0, 0 ), array( 0, -1, 0 ), array( 0, 0, -1 ) ) ),
+			'[[1,0,0], [0,-1,0], [0, 0, -1]]' =>
+				new MatrixValue( array( array( 1, 0, 0 ), array( 0, -1, 0 ), array( 0, 0, -1 ) ) ),
 		);
 
 		$argLists = array();
@@ -64,17 +64,17 @@ class MatrixParserTest extends StringValueParserTest {
 
 		$invalid = array(
 			'[]',
-            '[[]]',
-            '[[+1]]', // invalid JSON
-            '[[[1]]]',
-            '[[--1]]',
-            '[[+-5]]',
-            '[["--1"]]',
-            '[["+-5"]]',
-            '[[[[42]]',
-            '[[1]][[2]]',
-            '[[1],[1,2]]',
-            '[[1,2,3],[4,5,6],[7,8]]',
+			'[[]]',
+			'[[+1]]', // invalid JSON
+			'[[[1]]]',
+			'[[--1]]',
+			'[[+-5]]',
+			'[["--1"]]',
+			'[["+-5"]]',
+			'[[[[42]]',
+			'[[1]][[2]]',
+			'[[1],[1,2]]',
+			'[[1,2,3],[4,5,6],[7,8]]',
 		);
 
 		foreach ( $invalid as $value ) {

@@ -23,50 +23,50 @@ class MatrixValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function __construct( $value ) {
-        if ( !is_array( $value ) ) {
+		if ( !is_array( $value ) ) {
 			throw new IllegalValueException( '$value must be an array' );
-        }
+		}
 
-        if ( count( $value ) == 0 ) {
+		if ( count( $value ) == 0 ) {
 			throw new IllegalValueException( '$value can not be an empty array' );
-        }
+		}
 
-        $value_now = array();
+		$value_now = array();
 
-        $columns = null;
-        foreach ( $value as $row ) {
-            if( !is_array( $row ) ) {
-		    	throw new IllegalValueException( '$value must be an array of arrays' );
-            }
-            if( $columns == null ) {
-                $columns = count( $row );
-            } else if( $columns != count( $row ) ) {
-			    throw new IllegalValueException( 'all rows of $value must be of the same length' );
-            }
+		$columns = null;
+		foreach ( $value as $row ) {
+			if( !is_array( $row ) ) {
+				throw new IllegalValueException( '$value must be an array of arrays' );
+			}
+			if( $columns == null ) {
+				$columns = count( $row );
+			} else if( $columns != count( $row ) ) {
+				throw new IllegalValueException( 'all rows of $value must be of the same length' );
+			}
 
-            /**
-             * Filtering the matrix, converting int|float|string into
-             * DecimalValue.
-             */
-            $row_now = array();
-            foreach ( $row as $element ) {
-                if( is_string( $element ) ) {
-                    // Adding sign if missing
-                    if( !preg_match( '/^[+-]/', $element ) ) {
-                        $element = "+" . $element;
-                    }
-                    $element = new DecimalValue( $element );
-                } else if (!($element instanceof DecimalValue)) {
-                    $element = new DecimalValue( $element );
-                }
-                $row_now[] = $element;
-            }
-            $value_now[] = $row_now;
-        }
+			/**
+			 * Filtering the matrix, converting int|float|string into
+			 * DecimalValue.
+			 */
+			$row_now = array();
+			foreach ( $row as $element ) {
+				if( is_string( $element ) ) {
+					// Adding sign if missing
+					if( !preg_match( '/^[+-]/', $element ) ) {
+						$element = "+" . $element;
+					}
+					$element = new DecimalValue( $element );
+				} else if (!($element instanceof DecimalValue)) {
+					$element = new DecimalValue( $element );
+				}
+				$row_now[] = $element;
+			}
+			$value_now[] = $row_now;
+		}
 
-        if( $columns == null || $columns == 0 ) {
-		    throw new IllegalValueException( 'matrix can not have empty rows' );
-        }
+		if( $columns == null || $columns == 0 ) {
+			throw new IllegalValueException( 'matrix can not have empty rows' );
+		}
 
 		$this->value = $value_now;
 	}

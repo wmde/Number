@@ -39,7 +39,7 @@ class MatrixFormatter extends ValueFormatterBase {
         foreach( $value->getMatrix() as $row ) {
             $raw_row = array();
             foreach( $row as $element ) {
-                $raw_row[] = $element->getValue();
+                $raw_row[] = preg_replace( '/^\+/', '', $element->getValue() );
             }
             $raw_rows[] = '[' . implode( ',', $raw_row ) . ']';
         }

@@ -41,9 +41,18 @@ class MatrixFormatterTest extends ValueFormatterTestBase {
      */
     public function validProvider() {
         $row1 = array( new DecimalValue( 1 ) );
-        return array(
-                '[[+1]]' => array( new MatrixValue( array( $row1 ) ), '[[+1]]' ),
-                '[[+1],[+1]]' => array( new MatrixValue( array( $row1, $row1 ) ), '[[+1],[+1]]' ),
+
+        $valid = array(
+            '[[1]]' => new MatrixValue( array( $row1 ) ),
+            '[[1],[1]]' => new MatrixValue( array( $row1, $row1 ) ),
         );
+
+		$argLists = array();
+
+		foreach ( $valid as $output => $input ) {
+			$argLists[] = array( $input, $output );
+		}
+
+		return $argLists;
     }
 }

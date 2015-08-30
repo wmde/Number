@@ -2,6 +2,7 @@
 namespace DataValues;
 
 use DataValues\DecimalValue;
+
 /**
  * Class representing a matrix.
  *
@@ -35,12 +36,12 @@ class MatrixValue extends DataValueObject {
 
 		$columns = null;
 		foreach ( $value as $row ) {
-			if( !is_array( $row ) ) {
+			if ( !is_array( $row ) ) {
 				throw new IllegalValueException( '$value must be a 2-dimensional array' );
 			}
-			if( $columns == null ) {
+			if ( $columns == null ) {
 				$columns = count( $row );
-			} else if( $columns != count( $row ) ) {
+			} else if ( $columns != count( $row ) ) {
 				throw new IllegalValueException( 'all rows of $value must be of the same length' );
 			}
 
@@ -50,13 +51,13 @@ class MatrixValue extends DataValueObject {
 			 */
 			$row_now = array();
 			foreach ( $row as $element ) {
-				if( is_string( $element ) ) {
+				if ( is_string( $element ) ) {
 					// Adding sign if missing
-					if( !preg_match( '/^[+-]/', $element ) ) {
+					if ( !preg_match( '/^[+-]/', $element ) ) {
 						$element = "+" . $element;
 					}
 					$element = new DecimalValue( $element );
-				} else if (!($element instanceof DecimalValue)) {
+				} else if ( !( $element instanceof DecimalValue ) ) {
 					$element = new DecimalValue( $element );
 				}
 				$row_now[] = $element;
@@ -64,7 +65,7 @@ class MatrixValue extends DataValueObject {
 			$value_now[] = $row_now;
 		}
 
-		if( $columns == null || $columns == 0 ) {
+		if ( $columns == null || $columns == 0 ) {
 			throw new IllegalValueException( 'matrix can not have empty rows' );
 		}
 

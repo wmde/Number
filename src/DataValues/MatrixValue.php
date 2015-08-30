@@ -4,8 +4,6 @@ namespace DataValues;
 use DataValues\DecimalValue;
 
 /**
- * Class representing a matrix.
- *
  * @licence GNU GPL v2+
  * @author Andrius Merkys < andrius.merkys@gmail.com >
  */

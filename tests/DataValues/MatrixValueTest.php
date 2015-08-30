@@ -3,6 +3,7 @@ namespace DataValues\Tests;
 
 use DataValues\DecimalValue;
 use DataValues\MatrixValue;
+
 /**
  * @covers DataValues\MatrixValue
  *
@@ -13,6 +14,7 @@ use DataValues\MatrixValue;
  * @author Andrius Merkys < andrius.merkys@gmail.com >
  */
 class MatrixValueTest extends DataValueTest {
+
 	/**
 	 * @see DataValueTest::getClass
 	 *

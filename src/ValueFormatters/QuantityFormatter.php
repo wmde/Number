@@ -8,7 +8,7 @@ use DataValues\QuantityValue;
 use InvalidArgumentException;
 
 /**
- * Formatter for quantity values
+ * Plain text formatter for quantity values.
  *
  * @since 0.1
  *
@@ -58,18 +58,18 @@ class QuantityFormatter extends ValueFormatterBase {
 	private $decimalFormatter;
 
 	/**
-	 * @var QuantityUnitFormatter
+	 * @var ValueFormatter|null
 	 */
-	private $unitFormatter;
+	private $vocabularyUriFormatter;
 
 	/**
 	 * @param DecimalFormatter|null $decimalFormatter
-	 * @param QuantityUnitFormatter|null $unitFormatter
+	 * @param ValueFormatter|null $vocabularyUriFormatter
 	 * @param FormatterOptions|null $options
 	 */
 	public function __construct(
 		DecimalFormatter $decimalFormatter = null,
-		QuantityUnitFormatter $unitFormatter = null,
+		ValueFormatter $vocabularyUriFormatter = null,
 		FormatterOptions $options = null
 	) {
 		parent::__construct( $options );
@@ -79,7 +79,7 @@ class QuantityFormatter extends ValueFormatterBase {
 		$this->defaultOption( self::OPT_APPLY_UNIT, true );
 
 		$this->decimalFormatter = $decimalFormatter ?: new DecimalFormatter( $this->options );
-		$this->unitFormatter = $unitFormatter ?: new BasicQuantityUnitFormatter();
+		$this->vocabularyUriFormatter = $vocabularyUriFormatter;
 
 		// plain composition should be sufficient
 		$this->decimalMath = new DecimalMath();
@@ -104,11 +104,32 @@ class QuantityFormatter extends ValueFormatterBase {
 	}
 
 	/**
+	 * @since 0.6
+	 *
 	 * @param QuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	private function formatQuantityValue( QuantityValue $quantity ) {
+	protected function formatQuantityValue( QuantityValue $quantity ) {
+		$formatted = $this->formatNumber( $quantity );
+		$unit = $this->formatUnit( $quantity->getUnit() );
+
+		if ( $unit !== null ) {
+			// TODO: localizable pattern for placement (before/after, separator)
+			$formatted .= ' ' . $unit;
+		}
+
+		return $formatted;
+	}
+
+	/**
+	 * @since 0.6
+	 *
+	 * @param QuantityValue $quantity
+	 *
+	 * @return string Text
+	 */
+	protected function formatNumber( QuantityValue $quantity ) {
 		$roundingExponent = $this->getRoundingExponent( $quantity );
 
 		$amount = $quantity->getAmount();
@@ -119,11 +140,6 @@ class QuantityFormatter extends ValueFormatterBase {
 		if ( $margin !== null ) {
 			// TODO: use localizable pattern for constructing the output.
 			$formatted .= '±' . $margin;
-		}
-
-		$unit = $quantity->getUnit();
-		if ( $this->options->getOption( self::OPT_APPLY_UNIT ) && $unit !== '1' && $unit !== '' ) {
-			$formatted = $this->unitFormatter->applyUnit( $unit, $formatted );
 		}
 
 		return $formatted;
@@ -166,6 +182,25 @@ class QuantityFormatter extends ValueFormatterBase {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @since 0.6
+	 *
+	 * @param string $unit URI
+	 *
+	 * @return string|null Text
+	 */
+	protected function formatUnit( $unit ) {
+		if ( $this->vocabularyUriFormatter === null
+			|| !$this->options->getOption( self::OPT_APPLY_UNIT )
+			|| $unit === ''
+			|| $unit === '1'
+		) {
+			return null;
+		}
+
+		return $this->vocabularyUriFormatter->format( $unit );
 	}
 
 }

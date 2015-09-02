@@ -6,6 +6,7 @@ namespace ValueFormatters;
  * Interface defining a service for formatting a quantity's unit.
  *
  * @since 0.5
+ * @deprecated since 0.6
  *
  * @licence GNU GPL v2+
  * @author Daniel Kinzler

@@ -3,7 +3,6 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
-use ValueFormatters\BasicQuantityUnitFormatter;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
@@ -35,8 +34,15 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
 		$decimalFormatter = new DecimalFormatter( $options );
-		$unitFormatter = new BasicQuantityUnitFormatter();
-		return new QuantityFormatter( $decimalFormatter, $unitFormatter, $options );
+
+		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
+		$vocabularyUriFormatter->expects( $this->any() )
+			->method( 'format' )
+			->will( $this->returnCallback( function( $unit ) {
+				return $unit === '1' ? null : $unit;
+			} ) );
+
+		return new QuantityFormatter( $decimalFormatter, $vocabularyUriFormatter, $options );
 	}
 
 	/**
@@ -74,14 +80,14 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'+0/nm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $noMargin ),
 			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withMargin ),
 
-			'+0.0/nm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0°', $noMargin ),
-			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0±0.1°', $withMargin ),
-			'+0.0/xr' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.00±0.10°', $exactRounding ),
+			'+0.0/nm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0 °', $noMargin ),
+			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0±0.1 °', $withMargin ),
+			'+0.0/xr' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.00±0.10 °', $exactRounding ),
 
-			'-1205/nm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200m', $noMargin ),
-			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100m', $withMargin ),
-			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100m', $noRounding ),
-			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00±100.00m', $exactRounding ),
+			'-1205/nm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200 m', $noMargin ),
+			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100 m', $withMargin ),
+			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $noRounding ),
+			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00±100.00 m', $exactRounding ),
 			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100', $noUnit ),
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),

@@ -50,6 +50,19 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.6.0 (2015-09-04)
+
+#### Breaking changes
+* `QuantityFormatter` constructor parameters changed in an incompatible way
+
+#### Additions
+* Added `QuantityHtmlFormatter`
+
+#### Other changes
+* Deprecated `QuantityUnitFormatter` interface
+* Deprecated `BasicQuantityUnitFormatter`
+* `QuantityParser` now always trims the unit it gets via option
+
 ### 0.5.0 (2015-06-11)
 
 #### Breaking changes

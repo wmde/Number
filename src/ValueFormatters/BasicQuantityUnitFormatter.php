@@ -6,6 +6,7 @@ namespace ValueFormatters;
  * A basic QuantityUnitFormatter that just appends non-default units to the number string.
  *
  * @since 0.5
+ * @deprecated since 0.6
  *
  * @licence GNU GPL v2+
  * @author Daniel Kinzler

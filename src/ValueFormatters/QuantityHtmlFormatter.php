@@ -15,22 +15,33 @@ use DataValues\QuantityValue;
 class QuantityHtmlFormatter extends QuantityFormatter {
 
 	/**
-	 * @see QuantityFormatter::formatQuantityValue
+	 * @see QuantityFormatter::formatNumber
 	 *
 	 * @param QuantityValue $quantity
 	 *
 	 * @return string HTML
 	 */
-	protected function formatQuantityValue( QuantityValue $quantity ) {
-		$html = htmlspecialchars( $this->formatNumber( $quantity ) );
-		$unit = $this->formatUnit( $quantity->getUnit() );
+	protected function formatNumber( QuantityValue $quantity ) {
+		$formatted = parent::formatNumber( $quantity );
 
-		if ( $unit !== null ) {
-			// TODO: localizable pattern for placement (before/after, separator)
-			$html .= ' <span class="wb-unit">' . htmlspecialchars( $unit ) . '</span>';
+		return htmlspecialchars( $formatted );
+	}
+
+	/**
+	 * @see QuantityFormatter::formatUnit
+	 *
+	 * @param string $unit URI
+	 *
+	 * @return string|null HTML
+	 */
+	protected function formatUnit( $unit ) {
+		$formatted = parent::formatUnit( $unit );
+
+		if ( $formatted === null ) {
+			return null;
 		}
 
-		return $html;
+		return '<span class="wb-unit">' . htmlspecialchars( $formatted ) . '</span>';
 	}
 
 }

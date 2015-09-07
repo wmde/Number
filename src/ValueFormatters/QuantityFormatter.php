@@ -63,16 +63,26 @@ class QuantityFormatter extends ValueFormatterBase {
 	private $vocabularyUriFormatter;
 
 	/**
+	 * @var string
+	 */
+	private $quantityWithUnitFormat;
+
+	/**
 	 * @since 0.6
 	 *
 	 * @param FormatterOptions|null $options
 	 * @param DecimalFormatter|null $decimalFormatter
 	 * @param ValueFormatter|null $vocabularyUriFormatter
+	 * @param string|null $quantityWithUnitFormat Format string with two placeholders, $1 for the
+	 * number and $2 for the unit. Warning, this must be under the control of the application, not
+	 * under the control of the user, because it allows HTML injections in subclasses that return
+	 * HTML.
 	 */
 	public function __construct(
 		FormatterOptions $options = null,
 		DecimalFormatter $decimalFormatter = null,
-		ValueFormatter $vocabularyUriFormatter = null
+		ValueFormatter $vocabularyUriFormatter = null,
+		$quantityWithUnitFormat = null
 	) {
 		parent::__construct( $options );
 
@@ -82,9 +92,19 @@ class QuantityFormatter extends ValueFormatterBase {
 
 		$this->decimalFormatter = $decimalFormatter ?: new DecimalFormatter( $this->options );
 		$this->vocabularyUriFormatter = $vocabularyUriFormatter;
+		$this->quantityWithUnitFormat = $quantityWithUnitFormat ?: '$1 $2';
 
 		// plain composition should be sufficient
 		$this->decimalMath = new DecimalMath();
+	}
+
+	/**
+	 * @since 0.6
+	 *
+	 * @return string
+	 */
+	final protected function getQuantityWithUnitFormat() {
+		return $this->quantityWithUnitFormat;
 	}
 
 	/**
@@ -117,8 +137,13 @@ class QuantityFormatter extends ValueFormatterBase {
 		$unit = $this->formatUnit( $quantity->getUnit() );
 
 		if ( $unit !== null ) {
-			// TODO: localizable pattern for placement (before/after, separator)
-			$formatted .= ' ' . $unit;
+			$formatted = strtr(
+				$this->getQuantityWithUnitFormat(),
+				array(
+					'$1' => $formatted,
+					'$2' => $unit
+				)
+			);
 		}
 
 		return $formatted;

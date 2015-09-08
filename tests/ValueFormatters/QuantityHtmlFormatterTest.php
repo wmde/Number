@@ -30,18 +30,18 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 * @return QuantityHtmlFormatter
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
-		return $this->getQuantityHtmlFormatter( null, $options );
+		return $this->getQuantityHtmlFormatter( $options );
 	}
 
 	/**
-	 * @param DecimalFormatter|null $decimalFormatter
 	 * @param FormatterOptions|null $options
+	 * @param DecimalFormatter|null $decimalFormatter
 	 *
 	 * @return QuantityHtmlFormatter
 	 */
 	private function getQuantityHtmlFormatter(
-		DecimalFormatter $decimalFormatter = null,
-		FormatterOptions $options = null
+		FormatterOptions $options = null,
+		DecimalFormatter $decimalFormatter = null
 	) {
 		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
 		$vocabularyUriFormatter->expects( $this->any() )
@@ -50,7 +50,11 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 				return $unit === '1' ? null : $unit;
 			} ) );
 
-		return new QuantityHtmlFormatter( $decimalFormatter, $vocabularyUriFormatter, $options );
+		return new QuantityHtmlFormatter(
+			$options,
+			$decimalFormatter,
+			$vocabularyUriFormatter
+		);
 	}
 
 	/**
@@ -86,7 +90,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 			->method( 'format' )
 			->will( $this->returnValue( '<b>+2</b>' ) );
 
-		$formatter = $this->getQuantityHtmlFormatter( $decimalFormatter, $options );
+		$formatter = $this->getQuantityHtmlFormatter( $options, $decimalFormatter );
 		$formatted = $formatter->format( QuantityValue::newFromNumber( '+2', $unit ) );
 		$this->assertSame( $expected, $formatted );
 	}

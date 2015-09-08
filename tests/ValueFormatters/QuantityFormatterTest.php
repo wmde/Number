@@ -33,8 +33,6 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 * @return QuantityFormatter
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
-		$decimalFormatter = new DecimalFormatter( $options );
-
 		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
@@ -42,7 +40,11 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 				return $unit === '1' ? null : $unit;
 			} ) );
 
-		return new QuantityFormatter( $decimalFormatter, $vocabularyUriFormatter, $options );
+		return new QuantityFormatter(
+			$options,
+			new DecimalFormatter( $options ),
+			$vocabularyUriFormatter
+		);
 	}
 
 	/**

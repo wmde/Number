@@ -63,14 +63,16 @@ class QuantityFormatter extends ValueFormatterBase {
 	private $vocabularyUriFormatter;
 
 	/**
+	 * @since 0.6
+	 *
+	 * @param FormatterOptions|null $options
 	 * @param DecimalFormatter|null $decimalFormatter
 	 * @param ValueFormatter|null $vocabularyUriFormatter
-	 * @param FormatterOptions|null $options
 	 */
 	public function __construct(
+		FormatterOptions $options = null,
 		DecimalFormatter $decimalFormatter = null,
-		ValueFormatter $vocabularyUriFormatter = null,
-		FormatterOptions $options = null
+		ValueFormatter $vocabularyUriFormatter = null
 	) {
 		parent::__construct( $options );
 

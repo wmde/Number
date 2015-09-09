@@ -165,16 +165,16 @@ class QuantityParser extends StringValueParser {
 			throw new ParseException( 'Malformed quantity', $value, self::FORMAT_NAME );
 		}
 
-		for ( $i = 1; $i <= 4; $i++ ) {
-			if ( !isset( $groups[$i] ) ) {
-				$groups[$i] = null;
-			} elseif ( $groups[$i] === '' ) {
-				$groups[$i] = null;
-			}
-		}
+		// Remove $0.
+		array_shift( $groups );
 
-		array_shift( $groups ); // remove $groups[0]
-		return $groups;
+		array_walk( $groups, function( &$element ) {
+			if ( $element === '' ) {
+				$element = null;
+			}
+		} );
+
+		return array_pad( $groups, 4, null );
 	}
 
 	/**

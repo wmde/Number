@@ -36,12 +36,14 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	/**
 	 * @param FormatterOptions|null $options
 	 * @param DecimalFormatter|null $decimalFormatter
+	 * @param string|null $quantityWithUnitFormat
 	 *
 	 * @return QuantityHtmlFormatter
 	 */
 	private function getQuantityHtmlFormatter(
 		FormatterOptions $options = null,
-		DecimalFormatter $decimalFormatter = null
+		DecimalFormatter $decimalFormatter = null,
+		$quantityWithUnitFormat = null
 	) {
 		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
 		$vocabularyUriFormatter->expects( $this->any() )
@@ -53,7 +55,8 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		return new QuantityHtmlFormatter(
 			$options,
 			$decimalFormatter,
-			$vocabularyUriFormatter
+			$vocabularyUriFormatter,
+			$quantityWithUnitFormat
 		);
 	}
 
@@ -75,6 +78,13 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 				'2 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
 			),
 		);
+	}
+
+	public function testFormatWithFormatString() {
+		$formatter = $this->getQuantityHtmlFormatter( null, null, '$2&thinsp;$1' );
+		$value = QuantityValue::newFromNumber( '+5', 'USD' );
+		$formatted = $formatter->format( $value );
+		$this->assertSame( '<span class="wb-unit">USD</span>&thinsp;5', $formatted );
 	}
 
 	/**

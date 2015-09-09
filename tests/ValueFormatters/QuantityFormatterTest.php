@@ -33,6 +33,19 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 * @return QuantityFormatter
 	 */
 	protected function getInstance( FormatterOptions $options = null ) {
+		return $this->getQuantityFormatter( $options );
+	}
+
+	/**
+	 * @param FormatterOptions|null $options
+	 * @param string|null $quantityWithUnitFormat
+	 *
+	 * @return QuantityFormatter
+	 */
+	private function getQuantityFormatter(
+		FormatterOptions $options = null,
+		$quantityWithUnitFormat = null
+	) {
 		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
@@ -43,7 +56,8 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 		return new QuantityFormatter(
 			$options,
 			new DecimalFormatter( $options ),
-			$vocabularyUriFormatter
+			$vocabularyUriFormatter,
+			$quantityWithUnitFormat
 		);
 	}
 
@@ -101,6 +115,13 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 			'+3.125/fs' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '+3.13', $forceSign ),
 		);
+	}
+
+	public function testFormatWithFormatString() {
+		$formatter = $this->getQuantityFormatter( null, '<$2>$1' );
+		$value = QuantityValue::newFromNumber( '+5', 'USD' );
+		$formatted = $formatter->format( $value );
+		$this->assertSame( '<USD>5', $formatted );
 	}
 
 }

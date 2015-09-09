@@ -40,13 +40,9 @@ class BasicNumberUnlocalizer implements NumberUnlocalizer {
 	/**
 	 * @see NumberUnlocalizer::getUnitRegex
 	 *
-	 * This implementation returns an expression that will match any sequence
-	 * of latin characters in addition to a variety of characters commonly
-	 * used in unit identifiers, such as µ (mu).
+	 * @param string $delimiter Unused.
 	 *
-	 * @param string $delimiter The regex delimiter, used for escaping.
-	 *
-	 * @return string regular expression
+	 * @return string An empty string.
 	 */
 	public function getUnitRegex( $delimiter = '/' ) {
 		// TODO: Discuss and specify what QuantityParser should accept.

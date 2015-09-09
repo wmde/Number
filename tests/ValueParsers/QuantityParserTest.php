@@ -59,11 +59,11 @@ class QuantityParserTest extends StringValueParserTest {
 
 			'1.4e-2' => QuantityValue::newFromNumber( '+0.014', '1', '+0.015', '+0.013' ),
 			'1.4e3' => QuantityValue::newFromNumber( '+1400', '1', '+1500', '+1300' ),
-			'1.4e3!m' => QuantityValue::newFromNumber( '+1400', 'm', '+1400', '+1400' ),
-			'1.4e3m2' => QuantityValue::newFromNumber( '+1400', 'm2', '+1500', '+1300' ),
-			'1.4ev' => QuantityValue::newFromNumber( '+1.4', 'ev', '+1.5', '+1.3' ),
-			'1.4e' => QuantityValue::newFromNumber( '+1.4', 'e', '+1.5', '+1.3' ),
-			'12e3e4' => QuantityValue::newFromNumber( '+12000', 'e4', '+13000', '+11000' ),
+			'1.4e3!' => QuantityValue::newFromNumber( '+1400', '1', '+1400', '+1400' ),
+			'1.5e3' => QuantityValue::newFromNumber( '+1500', '1', '+1600', '+1400' ),
+			'1.4' => QuantityValue::newFromNumber( '+1.4', '1', '+1.5', '+1.3' ),
+			'1.5' => QuantityValue::newFromNumber( '+1.5', '1', '+1.6', '+1.4' ),
+			'12e3' => QuantityValue::newFromNumber( '+12000', '1', '+13000', '+11000' ),
 			// FIXME: Add support for 12x10^3, see DecimalParser.
 			'0.004e3' => QuantityValue::newFromNumber( '+4', '1', '+5', '+3' ),
 			'0.004e-3' => QuantityValue::newFromNumber( '+0.000004', '1', '+0.000005', '+0.000003' ),
@@ -95,12 +95,12 @@ class QuantityParserTest extends StringValueParserTest {
 			'5.3 ±-0.2' => QuantityValue::newFromNumber( '+5.3', '1', '+5.5', '+5.1' ),
 
 			// units
-			'5.3+-0.2cm' => QuantityValue::newFromNumber( '+5.3', 'cm', '+5.5', '+5.1' ),
-			'10.003! km' => QuantityValue::newFromNumber( '+10.003', 'km', '+10.003', '+10.003' ),
-			'-200~ %  ' => QuantityValue::newFromNumber( -200, '%', -199, -201 ),
-			'100003 m³' => QuantityValue::newFromNumber( 100003, 'm³', 100004, 100002 ),
-			'3.±-0.2µ' => QuantityValue::newFromNumber( '+3', 'µ', '+3.2', '+2.8' ),
-			'+00.20 Å' => QuantityValue::newFromNumber( '+0.20', 'Å', '+0.21', '+0.19' ),
+			'5.4+-0.2' => QuantityValue::newFromNumber( '+5.4', '1', '+5.6', '+5.2' ),
+			'10.004!' => QuantityValue::newFromNumber( '+10.004', '1', '+10.004', '+10.004' ),
+			'-300~' => QuantityValue::newFromNumber( -300, '1', -299, -301 ),
+			'100003' => QuantityValue::newFromNumber( 100003, '1', 100004, 100002 ),
+			'3.±-0.2' => QuantityValue::newFromNumber( '+3', '1', '+3.2', '+2.8' ),
+			'+00.20' => QuantityValue::newFromNumber( '+0.20', '1', '+0.21', '+0.19' ),
 		);
 
 		$argLists = array();
@@ -219,10 +219,10 @@ class QuantityParserTest extends StringValueParserTest {
 
 	public function unitOptionProvider() {
 		return array(
-			array( '17 kittens', null, 'kittens' ),
+			array( '17', null, '1' ),
 			array( '17', 'kittens', 'kittens' ),
-			array( '17 kittens', 'kittens', 'kittens' ),
-			array( '17m', 'm', 'm' ),
+			array( '17', 'kittens', 'kittens' ),
+			array( '17', 'm', 'm' ),
 			array( ' 17 ', ' http://concept.uri ', 'http://concept.uri' ),
 		);
 	}

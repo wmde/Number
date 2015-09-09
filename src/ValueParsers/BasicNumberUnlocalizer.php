@@ -49,9 +49,8 @@ class BasicNumberUnlocalizer implements NumberUnlocalizer {
 	 * @return string regular expression
 	 */
 	public function getUnitRegex( $delimiter = '/' ) {
-		return '[a-zA-ZµåÅöÖ' . preg_quote( '°%', $delimiter ) . ']+'
-			. '(?:[' . preg_quote( '-.^/', $delimiter ) . ']?'
-			. '[a-zA-Z\dåÅöÖ' . preg_quote( '°%²³', $delimiter ) . ']+)*';
+		// TODO: Discuss and specify what QuantityParser should accept.
+		return '';
 	}
 
 }

@@ -128,25 +128,7 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function provideGetUnitRegexMatch() {
 		return array(
-			array( 'm' ),
-			array( 'mm' ),
-			array( '%' ),
-
-			array( 'µ' ),
-			array( 'Å' ),
-			array( '°' ),
-
-			array( 'm²' ),
-			array( 'm³' ),
-
-			array( 'm2' ),
-			array( 'm3' ),
-
-			array( 'm^2' ),
-			array( 'm^3' ),
-
-			array( 'km/h' ),
-			array( 'foo-bar/frob^2' ),
+			array( '' ),
 		);
 	}
 
@@ -162,7 +144,6 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function provideGetUnitRegexMismatch() {
 		return array(
-			array( '' ),
 			array( ' ' ),
 
 			array( '^' ),

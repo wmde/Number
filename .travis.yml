@@ -13,3 +13,7 @@ before_script:
 
 script:
   - phpunit
+
+cache:
+  directories:
+    - $HOME/.composer/cache

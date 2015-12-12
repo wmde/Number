@@ -27,7 +27,7 @@ version 1.0 of this package:
 
     {
         "require": {
-            "data-values/number": "1.0.*"
+            "data-values/number": "0.6.*"
         }
     }
 

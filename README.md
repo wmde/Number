@@ -50,6 +50,12 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.7.0 (alpha)
+
+#### Breaking changes
+* Removed deprecated `QuantityUnitFormatter` interface.
+* Removed deprecated `BasicQuantityUnitFormatter`.
+
 ### 0.6.0 (2015-09-09)
 
 #### Breaking changes

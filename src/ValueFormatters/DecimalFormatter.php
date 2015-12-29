@@ -42,8 +42,6 @@ class DecimalFormatter extends ValueFormatterBase {
 	/**
 	 * @see ValueFormatter::format
 	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $dataValue
 	 *
 	 * @throws InvalidArgumentException

@@ -110,8 +110,6 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @see ValueFormatter::format
 	 *
-	 * @since 0.1
-	 *
 	 * @param QuantityValue $value
 	 *
 	 * @throws InvalidArgumentException

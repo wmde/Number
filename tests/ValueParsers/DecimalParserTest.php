@@ -80,7 +80,7 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	/**
-	 * @see ValueParserTestBase::invalidInputProvider
+	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
 		$argLists = parent::invalidInputProvider();

@@ -42,7 +42,7 @@ class QuantityParser extends StringValueParser {
 	 * @since 0.1
 	 *
 	 * @param ParserOptions|null $options
-	 * @param NumberUnlocalizer $unlocalizer
+	 * @param NumberUnlocalizer|null $unlocalizer
 	 */
 	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );

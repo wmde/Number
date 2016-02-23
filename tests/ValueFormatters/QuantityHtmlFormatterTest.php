@@ -65,6 +65,10 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 */
 	public function validProvider() {
 		return array(
+			'Unknown uncertainty' => array(
+				QuantityValue::newFromNumber( '+2', '1', null, null ),
+				'2'
+			),
 			'Unit 1' => array(
 				QuantityValue::newFromNumber( '+2', '1', '+3', '+1' ),
 				'2±1'

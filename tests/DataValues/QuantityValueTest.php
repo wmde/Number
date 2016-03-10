@@ -31,6 +31,7 @@ class QuantityValueTest extends DataValueTest {
 		$argLists[] = array( new DecimalValue( '+42' ), '1', new DecimalValue( '+42' ), new DecimalValue( '+42' ) );
 		$argLists[] = array( new DecimalValue( '+0.01' ), '1', new DecimalValue( '+0.02' ), new DecimalValue( '+0.0001' ) );
 		$argLists[] = array( new DecimalValue( '-0.5' ), '1', new DecimalValue( '+0.02' ), new DecimalValue( '-0.7' ) );
+		$argLists[] = array( new DecimalValue( '-17' ), 'foo', null, null );
 
 		return $argLists;
 	}
@@ -43,6 +44,9 @@ class QuantityValueTest extends DataValueTest {
 
 		$argLists[] = array( new DecimalValue( '+0' ), '1', new DecimalValue( '-0.001' ), new DecimalValue( '-1' ) );
 		$argLists[] = array( new DecimalValue( '+0' ), '1', new DecimalValue( '+1' ), new DecimalValue( '+0.001' ) );
+
+		$argLists[] = array( new DecimalValue( '+0' ), '1', null, new DecimalValue( '-1' ) );
+		$argLists[] = array( new DecimalValue( '+0' ), '1', new DecimalValue( '+1' ) );
 
 		return $argLists;
 	}
@@ -89,18 +93,26 @@ class QuantityValueTest extends DataValueTest {
 		$quantity = QuantityValue::newFromNumber( $amount, $unit, $upperBound, $lowerBound );
 
 		$this->assertEquals( $expected->getAmount()->getValue(), $quantity->getAmount()->getValue() );
-		$this->assertEquals( $expected->getUpperBound()->getValue(), $quantity->getUpperBound()->getValue() );
-		$this->assertEquals( $expected->getLowerBound()->getValue(), $quantity->getLowerBound()->getValue() );
+
+		if ( $expected->hasKnownBounds() ) {
+			$this->assertNotNull( $quantity->getUpperBound(), 'upper bound' );
+			$this->assertNotNull( $quantity->getLowerBound(), 'lower bound' );
+			$this->assertEquals( $expected->getUpperBound()->getValue(), $quantity->getUpperBound()->getValue(), 'upper bound' );
+			$this->assertEquals( $expected->getLowerBound()->getValue(), $quantity->getLowerBound()->getValue(), 'lower bound' );
+		} else {
+			$this->assertNull( $quantity->getUpperBound(), 'upper bound' );
+			$this->assertNull( $quantity->getLowerBound(), 'lower bound' );
+		}
 	}
 
 	public function newFromNumberProvider() {
 		return array(
 			array(
-				42, '1', null, null,
+				42, '1', 42, 42,
 				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( '+42' ), new DecimalValue( '+42' ) )
 			),
 			array(
-				-0.05, '1', null, null,
+				-0.05, '1', -0.05, -0.05,
 				new QuantityValue( new DecimalValue( '-0.05' ), '1', new DecimalValue( '-0.05' ), new DecimalValue( '-0.05' ) )
 			),
 			array(
@@ -108,12 +120,16 @@ class QuantityValueTest extends DataValueTest {
 				new QuantityValue( new DecimalValue( '+0' ), 'm', new DecimalValue( '+0.5' ), new DecimalValue( '-0.5' ) )
 			),
 			array(
-				'+23', '1', null, null,
+				'+23', '1', '+23', '+23',
 				new QuantityValue( new DecimalValue( '+23' ), '1', new DecimalValue( '+23' ), new DecimalValue( '+23' ) )
 			),
 			array(
 				'+42', '1', '+43', '+41',
 				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( '+43' ), new DecimalValue( '+41' ) )
+			),
+			array(
+				'+42', '1', null, null,
+				new QuantityValue( new DecimalValue( '+42' ), '1' )
 			),
 			array(
 				'-0.05', 'm', '-0.04', '-0.06',
@@ -123,6 +139,20 @@ class QuantityValueTest extends DataValueTest {
 				new DecimalValue( '+42' ), '1', new DecimalValue( 43 ), new DecimalValue( 41.0 ),
 				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( 43 ), new DecimalValue( 41.0 ) )
 			),
+		);
+	}
+
+	/**
+	 * @dataProvider hasKnownBoundsProvider
+	 */
+	public function testHasKnownBounds( QuantityValue $quantity, $hasKnownBounds ) {
+		$this->assertSame( $hasKnownBounds, $quantity->hasKnownBounds() );
+	}
+
+	public function hasKnownBoundsProvider() {
+		return array(
+			'no bounds' => array( QuantityValue::newFromNumber( 5 ), false ),
+			'bounds' => array( QuantityValue::newFromNumber( 5, '1', 6, 4 ), true ),
 		);
 	}
 
@@ -146,6 +176,7 @@ class QuantityValueTest extends DataValueTest {
 	public function getUncertaintyProvider() {
 		return array(
 			array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), 0 ),
+			array( QuantityValue::newFromNumber( '+0', '1' ), false ),
 
 			array( QuantityValue::newFromNumber( '+0', '1', '+1', '-1' ), 2 ),
 			array( QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ), 0.02 ),
@@ -164,7 +195,8 @@ class QuantityValueTest extends DataValueTest {
 	public function testGetUncertaintyMargin( QuantityValue $quantity, $expected ) {
 		$actual = $quantity->getUncertaintyMargin();
 
-		$this->assertEquals( $expected, $actual->getValue() );
+		$value = $actual === null ? null : $actual->getValue();
+		$this->assertEquals( $expected, $value );
 	}
 
 	public function getUncertaintyMarginProvider() {
@@ -173,6 +205,7 @@ class QuantityValueTest extends DataValueTest {
 			array( QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ), '+0.01' ),
 
 			array( QuantityValue::newFromNumber( '-1', '1', '-1', '-1' ), '+0' ),
+			array( QuantityValue::newFromNumber( '-1', '1' ), null ),
 
 			array( QuantityValue::newFromNumber( '+0', '1', '+0.2', '-0.6' ), '+0.6' ),
 			array( QuantityValue::newFromNumber( '+7.5', '1', '+7.5', '+5.5' ), '+2' ),
@@ -194,6 +227,8 @@ class QuantityValueTest extends DataValueTest {
 			0 => array( QuantityValue::newFromNumber( '+0' ), 0 ),
 			1 => array( QuantityValue::newFromNumber( '-123' ), 0 ),
 			2 => array( QuantityValue::newFromNumber( '-1.23' ), -2 ),
+			3 => array( QuantityValue::newFromNumber( '-123', '1', '-123', '-123' ), 0 ),
+			4 => array( QuantityValue::newFromNumber( '-1.23', '1', '-1.23', '-1.23' ), -2 ),
 
 			10 => array( QuantityValue::newFromNumber( '-100', '1', '-99', '-101' ), 0 ),
 			11 => array( QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ), -2 ),
@@ -223,6 +258,8 @@ class QuantityValueTest extends DataValueTest {
 			0 => array( QuantityValue::newFromNumber( '+0' ), 1 ),
 			1 => array( QuantityValue::newFromNumber( '-123' ), 3 ),
 			2 => array( QuantityValue::newFromNumber( '-1.23' ), 4 ),
+			3 => array( QuantityValue::newFromNumber( '-123', '1', '-123', '-123' ), 3 ),
+			4 => array( QuantityValue::newFromNumber( '-1.23', '1', '-1.23', '-1.23' ), 4 ),
 
 			10 => array( QuantityValue::newFromNumber( '-100', '1', '-99', '-101' ), 3 ),
 			11 => array( QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ), 4 ),
@@ -251,8 +288,16 @@ class QuantityValueTest extends DataValueTest {
 
 		$this->assertEquals( 'x', $actual->getUnit() );
 		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
-		$this->assertEquals( $expected->getUpperBound()->getValue(), $actual->getUpperBound()->getValue(), 'upper bound' );
-		$this->assertEquals( $expected->getLowerBound()->getValue(), $actual->getLowerBound()->getValue(), 'lower bound' );
+
+		if ( $expected->hasKnownBounds() ) {
+			$this->assertNotNull( $actual->getUpperBound(), 'upper bound' );
+			$this->assertNotNull( $actual->getLowerBound(), 'lower bound' );
+			$this->assertEquals( $expected->getUpperBound()->getValue(), $actual->getUpperBound()->getValue(), 'upper bound' );
+			$this->assertEquals( $expected->getLowerBound()->getValue(), $actual->getLowerBound()->getValue(), 'lower bound' );
+		} else {
+			$this->assertNull( $actual->getUpperBound(), 'upper bound' );
+			$this->assertNull( $actual->getLowerBound(), 'lower bound' );
+		}
 	}
 
 	public function transformProvider() {
@@ -275,6 +320,7 @@ class QuantityValueTest extends DataValueTest {
 			 2 => array( QuantityValue::newFromNumber(  '+0',   '1', '+1',   '-1' ),   $square,   QuantityValue::newFromNumber(    '+0',    '?',    '+1',    '-1' ) ),
 			 3 => array( QuantityValue::newFromNumber( '+10',   '1', '+11',  '+9' ),   $square,   QuantityValue::newFromNumber( '+1000',    '?', '+1300',  '+700' ) ), // note how rounding applies to bounds
 			 4 => array( QuantityValue::newFromNumber(  '+0.5', '1', '+0.6', '+0.4' ), $scale,    QuantityValue::newFromNumber(    '+0.25', '?',    '+0.3',  '+0.2' ), 0.5 ),
+			 5 => array( QuantityValue::newFromNumber(  '+0.5', '1' ), $scale,    QuantityValue::newFromNumber( '+0.25', '?' ), 0.5 ),
 
 			// note: absolutely exact values require conversion with infinite precision!
 			10 => array( QuantityValue::newFromNumber( '+100', '1', '+100',   '+100' ),    $scale, QuantityValue::newFromNumber( '+12825.0', '?', '+12825.0', '+12825.0' ), 128.25 ),

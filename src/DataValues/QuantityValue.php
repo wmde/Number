@@ -34,14 +34,14 @@ class QuantityValue extends DataValueObject {
 	/**
 	 * The quantity's upper bound
 	 *
-	 * @var DecimalValue
+	 * @var DecimalValue|null
 	 */
 	private $upperBound;
 
 	/**
 	 * The quantity's lower bound
 	 *
-	 * @var DecimalValue
+	 * @var DecimalValue|null
 	 */
 	private $lowerBound;
 
@@ -52,17 +52,26 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @param DecimalValue $amount
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
-	 * @param DecimalValue $upperBound The upper bound of the quantity, inclusive.
-	 * @param DecimalValue $lowerBound The lower bound of the quantity, inclusive.
+	 * @param DecimalValue|null $upperBound The upper bound of the quantity, inclusive.
+	 * @param DecimalValue|null $lowerBound The lower bound of the quantity, inclusive.
 	 *
 	 * @throws IllegalValueException
 	 */
-	public function __construct( DecimalValue $amount, $unit, DecimalValue $upperBound, DecimalValue $lowerBound ) {
-		if ( $lowerBound->compare( $amount ) > 0 ) {
+	public function __construct(
+		DecimalValue $amount,
+		$unit,
+		DecimalValue $upperBound = null,
+		DecimalValue $lowerBound = null
+	) {
+		if ( ( $lowerBound && !$upperBound ) || ( !$lowerBound && $upperBound ) ) {
+			throw new IllegalValueException( 'Either both or no bounds should be defined.' );
+		}
+
+		if ( $lowerBound && $lowerBound->compare( $amount ) > 0 ) {
 			throw new IllegalValueException( '$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue() );
 		}
 
-		if ( $upperBound->compare( $amount ) < 0 ) {
+		if ( $upperBound && $upperBound->compare( $amount ) < 0 ) {
 			throw new IllegalValueException( '$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue() );
 		}
 
@@ -103,8 +112,13 @@ class QuantityValue extends DataValueObject {
 	 */
 	public static function newFromNumber( $amount, $unit = '1', $upperBound = null, $lowerBound = null ) {
 		$amount = self::asDecimalValue( 'amount', $amount );
-		$upperBound = self::asDecimalValue( 'upperBound', $upperBound, $amount );
-		$lowerBound = self::asDecimalValue( 'lowerBound', $lowerBound, $amount );
+		$upperBound = ( $upperBound === null || $upperBound === '' )
+			? null
+			: self::asDecimalValue( 'upperBound', $upperBound );
+
+		$lowerBound = ( $lowerBound === null || $lowerBound === '' )
+			? null
+			: self::asDecimalValue( 'lowerBound', $lowerBound );
 
 		return new self( $amount, $unit, $upperBound, $lowerBound );
 	}
@@ -133,23 +147,14 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @param string $name The variable name to use in exception messages
 	 * @param string|int|float|DecimalValue|null $number
-	 * @param DecimalValue|null $default
 	 *
 	 * @throws IllegalValueException
 	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
-	private static function asDecimalValue( $name, $number, DecimalValue $default = null ) {
+	private static function asDecimalValue( $name, $number ) {
 		if ( !is_string( $name ) ) {
 			throw new InvalidArgumentException( '$name must be a string' );
-		}
-
-		if ( $number === null ) {
-			if ( $default === null ) {
-				throw new InvalidArgumentException( '$' . $name . ' must not be null' );
-			}
-
-			$number = $default;
 		}
 
 		if ( $number instanceof DecimalValue ) {
@@ -171,12 +176,20 @@ class QuantityValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array(
+		$fields = array(
 			$this->amount,
-			$this->unit,
-			$this->upperBound,
-			$this->lowerBound,
-		) );
+			$this->unit
+		);
+
+		if ( $this->upperBound ) {
+			$fields[] = $this->upperBound;
+		}
+
+		if ( $this->lowerBound ) {
+			$fields[] = $this->lowerBound;
+		}
+
+		return serialize( $fields );
 	}
 
 	/**
@@ -187,7 +200,13 @@ class QuantityValue extends DataValueObject {
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
-		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
+		$fields = unserialize( $data );
+		$amount = $fields[0];
+		$unit = $fields[1];
+
+		$upperBound = isset( $fields[2] ) ? $fields[2] : null;
+		$lowerBound = isset( $fields[3] ) ? $fields[3] : null;
+
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
 	}
 
@@ -200,6 +219,17 @@ class QuantityValue extends DataValueObject {
 	 */
 	public static function getType() {
 		return 'quantity';
+	}
+
+	/**
+	 * Whether this Quantity has a known upper and lower bound.
+	 * If this returns true, getUpperBound() and getLowerBound() will return a DecimalValue.
+	 * If this returns false, getUpperBound() and getLowerBound() will return null.
+	 *
+	 * @return bool
+	 */
+	public function hasKnownBounds() {
+		return $this->upperBound !== null && $this->lowerBound !== null;
 	}
 
 	/**
@@ -237,22 +267,22 @@ class QuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * Returns this quantity's upper bound.
+	 * Returns this quantity's upper bound, or null if the bounds are not known.
 	 *
 	 * @since 0.1
 	 *
-	 * @return DecimalValue
+	 * @return DecimalValue|null
 	 */
 	public function getUpperBound() {
 		return $this->upperBound;
 	}
 
 	/**
-	 * Returns this quantity's lower bound.
+	 * Returns this quantity's lower bound, or null if the bounds are not known.
 	 *
 	 * @since 0.1
 	 *
-	 * @return DecimalValue
+	 * @return DecimalValue|null
 	 */
 	public function getLowerBound() {
 		return $this->lowerBound;
@@ -268,9 +298,14 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return float
+	 * @return float|bool The uncertainty magnitude, or false if the bounds for this Quantity
+	 * are not known.
 	 */
 	public function getUncertainty() {
+		if ( !$this->hasKnownBounds() ) {
+			return false;
+		}
+
 		return $this->getUpperBound()->getValueFloat() - $this->getLowerBound()->getValueFloat();
 	}
 
@@ -283,9 +318,14 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return DecimalValue
+	 * @return DecimalValue|null The size of the uncertainty margin, or null if the bounds
+	 * for this Quantity are not known.
 	 */
 	public function getUncertaintyMargin() {
+		if ( !$this->hasKnownBounds() ) {
+			return null;
+		}
+
 		$math = new DecimalMath();
 
 		$lowerMargin = $math->sum( $this->getAmount(), $this->getLowerBound()->computeComplement() );
@@ -309,21 +349,28 @@ class QuantityValue extends DataValueObject {
 	 * Note that this calculation assumes a symmetric uncertainty interval,
 	 * and can be misleading.
 	 *
+	 * A quantity without known bounds is treated as absolutely precise in this context.
+	 *
 	 * @since 0.1
 	 *
-	 * @return int
+	 * @return int The order of uncertainty
 	 */
 	public function getOrderOfUncertainty() {
-		// the desired precision is given by the distance between the amount and
-		// whatever is closer, the upper or lower bound.
-		//TODO: use DecimalMath to avoid floating point errors!
-		$amount = $this->getAmount()->getValueFloat();
-		$upperBound = $this->getUpperBound()->getValueFloat();
-		$lowerBound = $this->getLowerBound()->getValueFloat();
-		$precision = min( $amount - $lowerBound, $upperBound - $amount );
+		if ( !$this->hasKnownBounds() ) {
+			$precision = 0.0;
+		} else {
+			// the desired precision is given by the distance between the amount and
+			// whatever is closer, the upper or lower bound.
+			//TODO: use DecimalMath to avoid floating point errors!
+			$amount = $this->getAmount()->getValueFloat();
+			$upperBound = $this->getUpperBound()->getValueFloat();
+			$lowerBound = $this->getLowerBound()->getValueFloat();
+			$precision = min( $amount - $lowerBound, $upperBound - $amount );
+		}
 
 		if ( $precision === 0.0 ) {
-			// If there is no uncertainty, the order of uncertainty is a bit more than what we have digits for.
+			// If there is no uncertainty, the order of uncertainty is a bit more than
+			// what we have digits for.
 			return -strlen( $this->amount->getFractionalPart() );
 		}
 
@@ -426,10 +473,10 @@ class QuantityValue extends DataValueObject {
 		$amount = call_user_func_array( $transformation, $args );
 
 		$args[0] = $this->getUpperBound();
-		$upperBound = call_user_func_array( $transformation, $args );
+		$upperBound = $args[0] === null ? null : call_user_func_array( $transformation, $args );
 
 		$args[0] = $this->getLowerBound();
-		$lowerBound = call_user_func_array( $transformation, $args );
+		$lowerBound = $args[0] === null ? null : call_user_func_array( $transformation, $args );
 
 		// use a preliminary QuantityValue to determine the significant number of digits
 		$transformed = new self( $amount, $newUnit, $upperBound, $lowerBound );
@@ -439,19 +486,30 @@ class QuantityValue extends DataValueObject {
 		$math = new DecimalMath();
 
 		$amount = $math->roundToExponent( $amount, $roundingExponent );
-		$upperBound = $math->roundToExponent( $upperBound, $roundingExponent );
-		$lowerBound = $math->roundToExponent( $lowerBound, $roundingExponent );
+
+		if ( $upperBound && $lowerBound ) {
+			// the constructor makes sure that either both bounds are set, or none.
+			$upperBound = $math->roundToExponent( $upperBound, $roundingExponent );
+			$lowerBound = $math->roundToExponent( $lowerBound, $roundingExponent );
+		}
 
 		return new self( $amount, $newUnit, $upperBound, $lowerBound );
 	}
 
 	public function __toString() {
 		$unit = $this->getUnit();
-		return $this->amount->getValue()
-			. '[' . $this->lowerBound->getValue()
-			. '..' . $this->upperBound->getValue()
-			. ']'
-			. ( $unit === '1' ? '' : $unit );
+
+		$s = $this->amount->getValue();
+
+		if ( $this->hasKnownBounds() ) {
+			$s .= '[' . $this->lowerBound->getValue() . '..' . $this->upperBound->getValue() . ']';
+		}
+
+		if ( $this->unit !== '1' ) {
+			$s .=  $this->unit;
+		}
+
+		return $s;
 	}
 
 	/**
@@ -462,12 +520,21 @@ class QuantityValue extends DataValueObject {
 	 * @return array
 	 */
 	public function getArrayValue() {
-		return array(
+		$fields = array(
 			'amount' => $this->amount->getArrayValue(),
 			'unit' => $this->unit,
-			'upperBound' => $this->upperBound->getArrayValue(),
-			'lowerBound' => $this->lowerBound->getArrayValue(),
 		);
+
+
+		if ( $this->upperBound ) {
+			$fields['upperBound'] = $this->upperBound->getArrayValue();
+		}
+
+		if ( $this->lowerBound ) {
+			$fields['lowerBound'] = $this->lowerBound->getArrayValue();
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -482,13 +549,21 @@ class QuantityValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
-		self::requireArrayFields( $data, array( 'amount', 'unit', 'upperBound', 'lowerBound' ) );
+		self::requireArrayFields( $data, array( 'amount', 'unit' ) );
+
+		$upper = isset( $data['upperBound'] )
+			? DecimalValue::newFromArray( $data['upperBound'] )
+			: null;
+
+		$lower = isset( $data['lowerBound'] )
+			? DecimalValue::newFromArray( $data['lowerBound'] )
+			: null;
 
 		return new static(
 			DecimalValue::newFromArray( $data['amount'] ),
 			$data['unit'],
-			DecimalValue::newFromArray( $data['upperBound'] ),
-			DecimalValue::newFromArray( $data['lowerBound'] )
+			$upper,
+			$lower
 		);
 	}
 

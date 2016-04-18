@@ -98,7 +98,7 @@ class QuantityValue extends DataValueObject {
 	 * @param string|int|float|DecimalValue|null $upperBound
 	 * @param string|int|float|DecimalValue|null $lowerBound
 	 *
-	 * @return QuantityValue
+	 * @return self
 	 * @throws IllegalValueException
 	 */
 	public static function newFromNumber( $amount, $unit = '1', $upperBound = null, $lowerBound = null ) {
@@ -119,7 +119,7 @@ class QuantityValue extends DataValueObject {
 	 * @param string|int|float|DecimalValue|null $upperBound
 	 * @param string|int|float|DecimalValue|null $lowerBound
 	 *
-	 * @return QuantityValue
+	 * @return self
 	 */
 	public static function newFromDecimal( $amount, $unit = '1', $upperBound = null, $lowerBound = null ) {
 		return self::newFromNumber( $amount, $unit, $upperBound, $lowerBound );
@@ -219,7 +219,7 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return QuantityValue
+	 * @return self
 	 */
 	public function getValue() {
 		return $this;
@@ -395,7 +395,7 @@ class QuantityValue extends DataValueObject {
 	 * @param mixed ... Any extra parameters will be passed to the $transformation function.
 	 *
 	 * @throws InvalidArgumentException
-	 * @return QuantityValue
+	 * @return self
 	 */
 	public function transform( $newUnit, $transformation ) {
 		if ( !is_callable( $transformation ) ) {
@@ -478,7 +478,7 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @param mixed $data
 	 *
-	 * @return QuantityValue
+	 * @return static
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {

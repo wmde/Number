@@ -128,12 +128,12 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @param DecimalValue $that
+	 * @param self $that
 	 *
 	 * @throws LogicException
 	 * @return int +1 if $this > $that, 0 if $this == $that, -1 if $this < $that
 	 */
-	public function compare( DecimalValue $that ) {
+	public function compare( self $that ) {
 		if ( $this === $that ) {
 			return 0;
 		}
@@ -266,7 +266,7 @@ class DecimalValue extends DataValueObject {
 	 * Note that if isZero() returns true, this method returns this
 	 * DecimalValue itself (because zero is it's own complement).
 	 *
-	 * @return DecimalValue
+	 * @return self
 	 */
 	public function computeComplement() {
 		if ( $this->isZero() ) {
@@ -277,7 +277,7 @@ class DecimalValue extends DataValueObject {
 		$invertedSign = ( $sign === '+' ? '-' : '+' );
 
 		$inverseDigits = $invertedSign . substr( $this->value, 1 );
-		return new DecimalValue( $inverseDigits );
+		return new self( $inverseDigits );
 	}
 
 	/**
@@ -288,7 +288,7 @@ class DecimalValue extends DataValueObject {
 	 * Note that if getSign() returns "+", this method returns this
 	 * DecimalValue itself (because a positive value is its own absolute value).
 	 *
-	 * @return DecimalValue
+	 * @return self
 	 */
 	public function computeAbsolute() {
 		if ( $this->getSign() === '+' ) {
@@ -361,7 +361,7 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @param string|int|float $data
 	 *
-	 * @return DecimalValue
+	 * @return static
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {

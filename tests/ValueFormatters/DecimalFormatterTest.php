@@ -12,13 +12,13 @@ use ValueFormatters\FormatterOptions;
  * @group ValueFormatters
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 class DecimalFormatterTest extends ValueFormatterTestBase {
 
 	/**
-	 * @deprecated since 0.2, just use getInstance.
+	 * @deprecated since DataValues Interfaces 0.2, just use getInstance.
 	 */
 	protected function getFormatterClass() {
 		throw new \LogicException( 'Should not be called, use getInstance' );

@@ -47,38 +47,30 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @param string|int|float $value If given as a string, the value must match
 	 *                         QUANTITY_VALUE_PATTERN.
+	 *
+	 * @throws IllegalValueException
 	 */
 	public function __construct( $value ) {
 		if ( is_int( $value ) || is_float( $value ) ) {
 			$value = $this->convertToDecimal( $value );
-		}
-
-		$this->assertNumberString( $value );
-
-		// make "negative" zero positive
-		$value = preg_replace( '/^-(0+(\.0+)?)$/', '+\1', $value );
-
-		$this->value = $value;
-	}
-
-	/**
-	 * Checks that the given value is a number string.
-	 *
-	 * @param string $number The value to check
-	 *
-	 * @throws IllegalValueException
-	 */
-	private function assertNumberString( $number ) {
-		if ( !is_string( $number ) ) {
+		} elseif ( !is_string( $value ) ) {
 			throw new IllegalValueException( '$number must be a numeric string.' );
 		}
 
-		if ( strlen( $number ) > 127 ) {
+		$value = trim( $value );
+
+		if ( strlen( $value ) > 127 ) {
 			throw new IllegalValueException( 'Value must be at most 127 characters long.' );
 		}
-
-		if ( !preg_match( self::QUANTITY_VALUE_PATTERN, $number ) ) {
+		if ( !preg_match( self::QUANTITY_VALUE_PATTERN, $value ) ) {
 			throw new IllegalValueException( 'Value must match the pattern for decimal values.' );
+		}
+
+		$this->value = $value;
+
+		// make "negative" zero positive
+		if ( $this->isZero() ) {
+			$this->value = '+' . substr( $this->value, 1 );
 		}
 	}
 
@@ -93,10 +85,6 @@ class DecimalValue extends DataValueObject {
 	 * @throws InvalidArgumentException
 	 */
 	private function convertToDecimal( $number ) {
-		if ( !is_int( $number ) && !is_float( $number ) ) {
-			throw new InvalidArgumentException( '$number must be an int or float.' );
-		}
-
 		if ( $number === NAN || abs( $number ) === INF ) {
 			throw new InvalidArgumentException( '$number must not be NAN or INF.' );
 		}
@@ -104,22 +92,18 @@ class DecimalValue extends DataValueObject {
 		if ( is_int( $number ) || ( $number === floor( $number ) ) ) {
 			$decimal = strval( abs( (int)$number ) );
 		} else {
-			$decimal = trim( number_format( abs( $number ), 100, '.', '' ), 0 );
+			$decimal = trim( number_format( abs( $number ), 100, '.', '' ), '0' );
 
 			if ( $decimal[0] === '.' ) {
 				$decimal = '0' . $decimal;
 			}
 
-			$last = strlen($decimal)-1;
-
-			if ( $decimal[$last] === '.' ) {
-				$decimal = $decimal . '0';
+			if ( substr( $decimal, -1 ) === '.' ) {
+				$decimal .= '0';
 			}
 		}
 
 		$decimal = ( ( $number >= 0.0 ) ? '+' : '-' ) . $decimal;
-
-		$this->assertNumberString( $decimal );
 		return $decimal;
 	}
 
@@ -138,8 +122,8 @@ class DecimalValue extends DataValueObject {
 			return 0;
 		}
 
-		$a = $this->getValue();
-		$b = $that->getValue();
+		$a = $this->value;
+		$b = $that->value;
 
 		if ( $a === $b ) {
 			return 0;
@@ -343,7 +327,7 @@ class DecimalValue extends DataValueObject {
 	 * @return float
 	 */
 	public function getValueFloat() {
-		return floatval( $this->getValue() );
+		return floatval( $this->value );
 	}
 
 	/**

@@ -7,7 +7,7 @@ namespace ValueParsers;
  *
  * @since 0.3
  *
- * @license GPL 2+
+ * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 class BasicNumberUnlocalizer implements NumberUnlocalizer {

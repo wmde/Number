@@ -9,7 +9,7 @@ namespace ValueParsers;
  *
  * @since 0.2
  *
- * @license GPL 2+
+ * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 interface NumberUnlocalizer {

@@ -11,7 +11,7 @@ use DataValues\QuantityValue;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Daniel Kinzler
  */
 class QuantityValueTest extends DataValueTest {

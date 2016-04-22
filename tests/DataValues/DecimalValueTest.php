@@ -41,6 +41,7 @@ class DecimalValueTest extends DataValueTest {
 		$argLists[] = array( '+0' );
 		$argLists[] = array( '+0.0' );
 		$argLists[] = array( '+0.000' );
+		$argLists[] = array( '+1.0' . str_repeat( ' ', 124 ) );
 
 		return $argLists;
 	}
@@ -68,8 +69,23 @@ class DecimalValueTest extends DataValueTest {
 		$argLists[] = array( true );
 		$argLists[] = array( null );
 		$argLists[] = array( '0x20' );
+		$argLists[] = array( '+1.' . str_repeat( '0', 125 ) );
 
 		return $argLists;
+	}
+
+	/**
+	 * @see https://phabricator.wikimedia.org/T110728
+	 * @see http://www.regular-expressions.info/anchors.html#realend
+	 */
+	public function testTrailingNewlineRobustness() {
+		$value = new DecimalValue( "-0.0\n" );
+		$this->assertTrue( $value->isZero() );
+		$this->assertSame( 'C:23:"DataValues\DecimalValue":11:{s:4:"+0.0";}', serialize( $value ) );
+		$this->assertSame( '+0.0', $value->getValue(), 'getValue' );
+		$this->assertSame( '+0.0', $value->getArrayValue(), 'getArrayValue' );
+		$this->assertSame( '+0.0', $value->__toString(), '__toString' );
+		$this->assertSame( '0', $value->getFractionalPart(), 'getFractionalPart' );
 	}
 
 	/**

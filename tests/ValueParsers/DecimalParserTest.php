@@ -129,6 +129,8 @@ class DecimalParserTest extends StringValueParserTest {
 
 	public function splitDecimalExponentProvider() {
 		return array(
+			'trailing newline' => array( "1.2E3\n", '1.2', 3 ),
+			'whitespace' => array( ' 1.2E3 ', ' 1.2E3 ', 0 ),
 			'no exponent' => array( '1.2', '1.2', 0 ),
 			'exponent' => array( '1.2E3', '1.2', 3 ),
 			'negative exponent' => array( '+1.2e-2', '+1.2', -2 ),

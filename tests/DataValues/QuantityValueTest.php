@@ -127,6 +127,26 @@ class QuantityValueTest extends DataValueTest {
 	}
 
 	/**
+	 * @see https://phabricator.wikimedia.org/T110728
+	 * @see http://www.regular-expressions.info/anchors.html#realend
+	 */
+	public function testTrailingNewlineRobustness() {
+		$value = QuantityValue::newFromArray( array(
+			'amount' => "-0.0\n",
+			'unit' => "1\n",
+			'upperBound' => "-0.0\n",
+			'lowerBound' => "-0.0\n",
+		) );
+
+		$this->assertSame( array(
+			'amount' => '+0.0',
+			'unit' => "1\n",
+			'upperBound' => '+0.0',
+			'lowerBound' => '+0.0',
+		), $value->getArrayValue() );
+	}
+
+	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetSortKey( QuantityValue $quantity ) {

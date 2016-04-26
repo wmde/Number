@@ -79,7 +79,8 @@ class DecimalValueTest extends DataValueTest {
 	 * @see http://www.regular-expressions.info/anchors.html#realend
 	 */
 	public function testTrailingNewlineRobustness() {
-		$value = new DecimalValue( "-0.0\n" );
+		$value = DecimalValue::newFromArray( "-0.0\n" );
+
 		$this->assertTrue( $value->isZero() );
 		$this->assertSame( 'C:23:"DataValues\DecimalValue":11:{s:4:"+0.0";}', serialize( $value ) );
 		$this->assertSame( '+0.0', $value->getValue(), 'getValue' );

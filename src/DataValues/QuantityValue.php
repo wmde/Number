@@ -210,7 +210,7 @@ class QuantityValue extends DataValueObject {
 	 * @return float
 	 */
 	public function getSortKey() {
-		return $this->getAmount()->getValueFloat();
+		return $this->amount->getValueFloat();
 	}
 
 	/**
@@ -271,7 +271,7 @@ class QuantityValue extends DataValueObject {
 	 * @return float
 	 */
 	public function getUncertainty() {
-		return $this->getUpperBound()->getValueFloat() - $this->getLowerBound()->getValueFloat();
+		return $this->upperBound->getValueFloat() - $this->lowerBound->getValueFloat();
 	}
 
 	/**
@@ -288,8 +288,8 @@ class QuantityValue extends DataValueObject {
 	public function getUncertaintyMargin() {
 		$math = new DecimalMath();
 
-		$lowerMargin = $math->sum( $this->getAmount(), $this->getLowerBound()->computeComplement() );
-		$upperMargin = $math->sum( $this->getUpperBound(), $this->getAmount()->computeComplement() );
+		$lowerMargin = $math->sum( $this->amount, $this->lowerBound->computeComplement() );
+		$upperMargin = $math->sum( $this->upperBound, $this->amount->computeComplement() );
 
 		$margin = $math->max( $lowerMargin, $upperMargin );
 		return $margin;
@@ -317,9 +317,9 @@ class QuantityValue extends DataValueObject {
 		// the desired precision is given by the distance between the amount and
 		// whatever is closer, the upper or lower bound.
 		//TODO: use DecimalMath to avoid floating point errors!
-		$amount = $this->getAmount()->getValueFloat();
-		$upperBound = $this->getUpperBound()->getValueFloat();
-		$lowerBound = $this->getLowerBound()->getValueFloat();
+		$amount = $this->amount->getValueFloat();
+		$upperBound = $this->upperBound->getValueFloat();
+		$lowerBound = $this->lowerBound->getValueFloat();
 		$precision = min( $amount - $lowerBound, $upperBound - $amount );
 
 		if ( $precision === 0.0 ) {
@@ -410,7 +410,7 @@ class QuantityValue extends DataValueObject {
 			throw new InvalidArgumentException( '$newUnit must not be empty. Use "1" as the unit for unit-less quantities.' );
 		}
 
-		$oldUnit = $this->getUnit();
+		$oldUnit = $this->unit;
 
 		if ( $newUnit === null ) {
 			$newUnit = $oldUnit;
@@ -422,13 +422,13 @@ class QuantityValue extends DataValueObject {
 		$args = func_get_args();
 		array_shift( $args );
 
-		$args[0] = $this->getAmount();
+		$args[0] = $this->amount;
 		$amount = call_user_func_array( $transformation, $args );
 
-		$args[0] = $this->getUpperBound();
+		$args[0] = $this->upperBound;
 		$upperBound = call_user_func_array( $transformation, $args );
 
-		$args[0] = $this->getLowerBound();
+		$args[0] = $this->lowerBound;
 		$lowerBound = call_user_func_array( $transformation, $args );
 
 		// use a preliminary QuantityValue to determine the significant number of digits
@@ -446,12 +446,11 @@ class QuantityValue extends DataValueObject {
 	}
 
 	public function __toString() {
-		$unit = $this->getUnit();
 		return $this->amount->getValue()
 			. '[' . $this->lowerBound->getValue()
 			. '..' . $this->upperBound->getValue()
 			. ']'
-			. ( $unit === '1' ? '' : $unit );
+			. ( $this->unit === '1' ? '' : $this->unit );
 	}
 
 	/**

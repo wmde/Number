@@ -345,7 +345,7 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @param string|int|float $data
 	 *
-	 * @return static
+	 * @return self
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {

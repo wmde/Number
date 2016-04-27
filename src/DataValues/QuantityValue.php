@@ -477,7 +477,7 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @param mixed $data
 	 *
-	 * @return static
+	 * @return self
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {

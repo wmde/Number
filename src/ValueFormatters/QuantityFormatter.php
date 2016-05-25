@@ -58,7 +58,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	private $decimalFormatter;
 
 	/**
-	 * @var ValueFormatter|null
+	 * @var ValueFormatter
 	 */
 	private $vocabularyUriFormatter;
 
@@ -72,7 +72,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 *
 	 * @param FormatterOptions|null $options
 	 * @param DecimalFormatter|null $decimalFormatter
-	 * @param ValueFormatter|null $vocabularyUriFormatter
+	 * @param ValueFormatter $vocabularyUriFormatter
 	 * @param string|null $quantityWithUnitFormat Format string with two placeholders, $1 for the
 	 * number and $2 for the unit. Warning, this must be under the control of the application, not
 	 * under the control of the user, because it allows HTML injections in subclasses that return
@@ -81,7 +81,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	public function __construct(
 		FormatterOptions $options = null,
 		DecimalFormatter $decimalFormatter = null,
-		ValueFormatter $vocabularyUriFormatter = null,
+		ValueFormatter $vocabularyUriFormatter,
 		$quantityWithUnitFormat = null
 	) {
 		parent::__construct( $options );
@@ -217,8 +217,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * @return string|null Text
 	 */
 	protected function formatUnit( $unit ) {
-		if ( $this->vocabularyUriFormatter === null
-			|| !$this->options->getOption( self::OPT_APPLY_UNIT )
+		if ( !$this->options->getOption( self::OPT_APPLY_UNIT )
 			|| $unit === ''
 			|| $unit === '1'
 		) {

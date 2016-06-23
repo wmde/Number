@@ -191,13 +191,13 @@ class QuantityFormatter extends ValueFormatterBase {
 	}
 
 	/**
-	 * @param DecimalValue $margin
+	 * @param DecimalValue|null $margin
 	 * @param int $roundingExponent
 	 *
 	 * @return string|null Text
 	 */
-	private function formatMargin( DecimalValue $margin, $roundingExponent ) {
-		if ( $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN ) ) {
+	private function formatMargin( DecimalValue $margin = null, $roundingExponent ) {
+		if ( $margin !== null && $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN ) ) {
 			// TODO: never round to 0! See bug #56892
 			$roundedMargin = $this->decimalMath->roundToExponent( $margin, $roundingExponent );
 

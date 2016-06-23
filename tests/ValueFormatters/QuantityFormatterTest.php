@@ -93,6 +93,8 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 		) );
 
 		return array(
+			'Unknown uncertainty' => array( QuantityValue::newFromNumber( '+2', '1', null, null ), '2', $withMargin ),
+
 			'+0/nm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $noMargin ),
 			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withMargin ),
 

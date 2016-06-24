@@ -3,14 +3,18 @@
 namespace DataValues;
 
 use InvalidArgumentException;
+use LogicException;
 
 /**
  * Class representing a quantity with associated unit.
  * The amount is stored as a @see DecimalValue object.
  *
- * For quantities with a known uncertainty interval, see BoundedQuantityValue.
- *
+ * @see BoundedQuantityValue for quantities with a known uncertainty interval.
  * For simple numeric amounts use @see NumberValue.
+ *
+ * @note BoundedQuantityValue and plain QuantityValue both use the value type ID "quantity".
+ * The fact that we use subclassing to model the bounded vs the unbounded case should be
+ * considered an implementation detail.
  *
  * @since 0.1
  *
@@ -43,7 +47,12 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * @throws IllegalValueException
 	 */
-	public function __construct( DecimalValue $amount, $unit ) {
+	public function __construct( DecimalValue $amount, $unit, $unused = 'nothing' ) {
+		if ( $unused !== 'nothing' ) {
+			throw new LogicException( 'Constructor called with old signature. '
+				. 'Perhaps you want to construct a BoundedQuantityValue instead.' );
+		}
+
 		if ( !is_string( $unit ) ) {
 			throw new IllegalValueException( '$unit needs to be a string, not ' . gettype( $unit ) );
 		}
@@ -153,6 +162,7 @@ class QuantityValue extends DataValueObject {
 	 */
 	public function unserialize( $data ) {
 		list( $amount, $unit ) = unserialize( $data );
+		$amount = DecimalValue::newFromArray( $amount );
 		$this->__construct( $amount, $unit );
 	}
 

@@ -2,6 +2,7 @@
 
 namespace ValueFormatters\Test;
 
+use DataValues\BoundedQuantityValue;
 use DataValues\QuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
@@ -65,17 +66,25 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 */
 	public function validProvider() {
 		return array(
-			'Unit 1' => array(
-				QuantityValue::newFromNumber( '+2', '1', '+3', '+1' ),
+			'Unbounded, Unit 1' => array(
+				QuantityValue::newFromNumber( '+2', '1' ),
+				'2'
+			),
+			'Unbounded, String unit' => array(
+				QuantityValue::newFromNumber( '+2', 'Ultrameter' ),
+				'2 <span class="wb-unit">Ultrameter</span>'
+			),
+			'Bounded, Unit 1' => array(
+				BoundedQuantityValue::newFromNumber( '+2', '1', '+3', '+1' ),
 				'2±1'
 			),
-			'String unit' => array(
-				QuantityValue::newFromNumber( '+2', 'Ultrameter', '+3', '+1' ),
+			'Bounded, String unit' => array(
+				BoundedQuantityValue::newFromNumber( '+2', 'Ultrameter', '+3', '+1' ),
 				'2±1 <span class="wb-unit">Ultrameter</span>'
 			),
 			'HTML injection' => array(
-				QuantityValue::newFromNumber( '+2', '<b>injection</b>', '+2', '+2' ),
-				'2 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
+				BoundedQuantityValue::newFromNumber( '+2', '<b>injection</b>', '+2', '+2' ),
+				'2±0 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
 			),
 		);
 	}

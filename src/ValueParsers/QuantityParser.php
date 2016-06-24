@@ -2,6 +2,7 @@
 
 namespace ValueParsers;
 
+use DataValues\BoundedQuantityValue;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
@@ -119,10 +120,12 @@ class QuantityParser extends StringValueParser {
 			$marginValue = $this->decimalParser->parse( $margin );
 			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
 			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
+		} elseif ( $exponent !== 0 ) {
+			// Scientific notation. Uncertainty is given by the exponent.
+			$quantity = $this->newQuantityFromExponent( $amountValue, $unit, $exponent );
 		} else {
-			// derive uncertainty from given decimals
-			// NOTE: with scientific notation, the exponent applies to the uncertainty bounds, too
-			$quantity = $this->newUncertainQuantityFromDigits( $amountValue, $unit, $exponent );
+			// uncertainty is uncertain
+			$quantity = $this->newUnboundedQuantityFromDigits( $amountValue, $unit );
 		}
 
 		return $quantity;
@@ -188,10 +191,7 @@ class QuantityParser extends StringValueParser {
 	 * @return QuantityValue
 	 */
 	private function newExactQuantity( DecimalValue $amount, $unit = '1' ) {
-		$lowerBound = $amount;
-		$upperBound = $amount;
-
-		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new BoundedQuantityValue( $amount, $unit, $amount, $amount );
 	}
 
 	/**
@@ -216,17 +216,15 @@ class QuantityParser extends StringValueParser {
 		$lowerBound = $decimalMath->sum( $amount, $margin->computeComplement() );
 		$upperBound = $decimalMath->sum( $amount, $margin );
 
-		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new BoundedQuantityValue( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**
 	 * Returns a QuantityValue representing the given amount, automatically assuming
-	 * a level of uncertainty based on the digits given.
-	 *
-	 * The upper and lower bounds are determined automatically from the given
-	 * digits by increasing resp. decreasing the least significant digit.
-	 * E.g. "+0.01" would have upperBound "+0.02" and lowerBound "+0.01",
-	 * while "-100" would have upperBound "-99" and lowerBound "-101".
+	 * a level of uncertainty based on the given exponent, following the conventions
+	 * for scientific notation of decimal numbers: 12e3 is interpreted as 12000 with
+	 * two significant digits, represented as 12000 with a lower bound of 12000
+	 * and an upper bound of 12999.
 	 *
 	 * @param DecimalValue $amount The quantity
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
@@ -234,7 +232,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @return QuantityValue
 	 */
-	private function newUncertainQuantityFromDigits( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
+	private function newQuantityFromExponent( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
 		$math = new DecimalMath();
 
 		if ( $amount->getSign() === '+' ) {
@@ -249,7 +247,17 @@ class QuantityParser extends StringValueParser {
 		$lowerBound = $this->decimalParser->applyDecimalExponent( $lowerBound, $exponent );
 		$upperBound = $this->decimalParser->applyDecimalExponent( $upperBound, $exponent );
 
-		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new BoundedQuantityValue( $amount, $unit, $upperBound, $lowerBound );
+	}
+
+	/**
+	 * @param DecimalValue $amount
+	 * @param string $unit
+	 *
+	 * @return QuantityValue
+	 */
+	private function newUnboundedQuantityFromDigits( DecimalValue $amount, $unit = '1' ) {
+		return new QuantityValue( $amount, $unit );
 	}
 
 }

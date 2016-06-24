@@ -25,6 +25,10 @@
 		"data-values/interfaces": "~0.2.0|~0.1.5",
 		"data-values/common": "~0.3.0|~0.2.0"
 	},
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "0.7.2",
+		"phpunit/phpunit": "4.8.24"
+	},
 	"autoload": {
 		"files" : [
 			"Number.php"

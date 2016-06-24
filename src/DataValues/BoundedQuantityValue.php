@@ -8,8 +8,12 @@ use InvalidArgumentException;
  * Class representing a quantity with associated unit and uncertainty interval.
  * The amount is stored as a @see DecimalValue object.
  *
- * For quantities with no known uncertainty interval, see QuantityValue.
+ * @see QuantityValue For quantities with no known uncertainty interval.
  * For simple numeric amounts use @see NumberValue.
+ *
+ * @note BoundedQuantityValue and plain QuantityValue both use the value type ID "quantity".
+ * The fact that we use subclassing to model the bounded vs the unbounded case should be
+ * considered an implementation detail.
  *
  * @since 0.1
  *
@@ -81,10 +85,6 @@ class BoundedQuantityValue extends QuantityValue {
 	 * @throws IllegalValueException
 	 */
 	public static function newFromNumber( $number, $unit = '1', $upperBound = null, $lowerBound = null ) {
-		if ( $number instanceof QuantityValue ) {
-			$number = $number->getAmount();
-		}
-
 		$number = self::asDecimalValue( 'amount', $number );
 		$upperBound = self::asDecimalValue( 'upperBound', $upperBound, $number );
 		$lowerBound = self::asDecimalValue( 'lowerBound', $lowerBound, $number );
@@ -105,10 +105,6 @@ class BoundedQuantityValue extends QuantityValue {
 	 * @return self
 	 */
 	public static function newFromDecimal( $number, $unit = '1', $upperBound = null, $lowerBound = null ) {
-		if ( $number instanceof QuantityValue ) {
-			$number = $number->getAmount();
-		}
-
 		return self::newFromNumber( $number, $unit, $upperBound, $lowerBound );
 	}
 
@@ -121,18 +117,10 @@ class BoundedQuantityValue extends QuantityValue {
 	 */
 	public function unserialize( $data ) {
 		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
+		$amount = DecimalValue::newFromArray( $amount );
+		$upperBound = DecimalValue::newFromArray( $upperBound );
+		$lowerBound = DecimalValue::newFromArray( $lowerBound );
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
-	}
-
-	/**
-	 * @see DataValue::getType
-	 *
-	 * @since 0.1
-	 *
-	 * @return string
-	 */
-	public static function getType() {
-		return 'quantity'; // FIXME: should this have a different type id? wehat will that break?
 	}
 
 	/**
@@ -233,28 +221,6 @@ class BoundedQuantityValue extends QuantityValue {
 		$orderOfUncertainty = floor( log10( $precision + 0.0000000005 ) );
 
 		return (int)$orderOfUncertainty;
-	}
-
-	/**
-	 * Returns the number of significant figures in the amount-string,
-	 * counting the decimal point, but not counting the leading sign.
-	 *
-	 * Note that this calculation assumes a symmetric uncertainty interval, and can be misleading
-	 *
-	 * @since 0.1
-	 *
-	 * @return int
-	 */
-	public function getSignificantFigures() {
-		$math = new DecimalMath();
-
-		// $orderOfUncertainty is +/- 200 -> 2; +/- 0.02 -> -2
-		$orderOfUncertainty = $this->getOrderOfUncertainty();
-
-		// the number of digits (without the sign) is the same as the position (with the sign).
-		$significantDigits = $math->getPositionForExponent( $orderOfUncertainty, $this->amount );
-
-		return $significantDigits;
 	}
 
 	/**
@@ -368,6 +334,11 @@ class BoundedQuantityValue extends QuantityValue {
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
+		if ( !isset( $data['upperBound'] ) && isset( $data['lowerBound'] ) ) {
+			// No bounds given, so construct an unbounded QuantityValue.
+			return parent::newFromArray( $data );
+		}
+
 		self::requireArrayFields( $data, array( 'amount', 'unit', 'upperBound', 'lowerBound' ) );
 
 		return new static(

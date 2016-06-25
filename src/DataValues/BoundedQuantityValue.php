@@ -15,7 +15,7 @@ use InvalidArgumentException;
  * The fact that we use subclassing to model the bounded vs the unbounded case should be
  * considered an implementation detail.
  *
- * @since 0.1
+ * @since 0.7
  *
  * @license GPL-2.0+
  * @author Daniel Kinzler
@@ -37,10 +37,6 @@ class BoundedQuantityValue extends QuantityValue {
 	private $lowerBound;
 
 	/**
-	 * Constructs a new QuantityValue object, representing the given value.
-	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $amount
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
 	 * @param DecimalValue $upperBound The upper bound of the quantity, inclusive.
@@ -74,7 +70,7 @@ class BoundedQuantityValue extends QuantityValue {
 	 * @note: if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param string|int|float|DecimalValue|QuantityValue $number
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
@@ -111,7 +107,7 @@ class BoundedQuantityValue extends QuantityValue {
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param string $data
 	 */
@@ -126,7 +122,7 @@ class BoundedQuantityValue extends QuantityValue {
 	/**
 	 * Returns this quantity's upper bound.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return DecimalValue
 	 */
@@ -137,7 +133,7 @@ class BoundedQuantityValue extends QuantityValue {
 	/**
 	 * Returns this quantity's lower bound.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return DecimalValue
 	 */
@@ -153,7 +149,7 @@ class BoundedQuantityValue extends QuantityValue {
 	 * data point. For example, the uncertainty interval may be defined to be that part of a
 	 * normal distribution that is required to cover the 95th percentile.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return float
 	 */
@@ -168,7 +164,7 @@ class BoundedQuantityValue extends QuantityValue {
 	 *
 	 * The offset is calculated as max( amount - lowerBound, upperBound - amount ).
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return DecimalValue
 	 */
@@ -196,7 +192,7 @@ class BoundedQuantityValue extends QuantityValue {
 	 * Note that this calculation assumes a symmetric uncertainty interval,
 	 * and can be misleading.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return int
 	 */
@@ -309,7 +305,7 @@ class BoundedQuantityValue extends QuantityValue {
 	/**
 	 * @see DataValue::getArrayValue
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return array
 	 */
@@ -326,7 +322,7 @@ class BoundedQuantityValue extends QuantityValue {
 	 * Constructs a new instance of the DataValue from the provided data.
 	 * This can round-trip with @see getArrayValue
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param mixed $data
 	 *

@@ -38,10 +38,6 @@ class QuantityValue extends DataValueObject {
 	protected $unit;
 
 	/**
-	 * Constructs a new QuantityValue object, representing the given value.
-	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $amount
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
 	 *

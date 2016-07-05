@@ -2,11 +2,11 @@
 
 namespace ValueParsers;
 
-use DataValues\BoundedQuantityValue;
+use DataValues\QuantityValue;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
-use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -61,7 +61,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @param string $value
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 * @throws ParseException
 	 */
 	protected function stringParse( $value ) {
@@ -104,7 +104,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @throws ParseException if one of the decimals could not be parsed.
 	 * @throws IllegalValueException if the QuantityValue could not be constructed
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 */
 	private function newQuantityFromParts( $amount, $exactness, $margin, $unit ) {
 		list( $amount, $exponent ) = $this->decimalParser->splitDecimalExponent( $amount );
@@ -188,10 +188,10 @@ class QuantityParser extends StringValueParser {
 	 * @param DecimalValue $amount
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 */
 	private function newExactQuantity( DecimalValue $amount, $unit = '1' ) {
-		return new BoundedQuantityValue( $amount, $unit, $amount, $amount );
+		return new QuantityValue( $amount, $unit, $amount, $amount );
 	}
 
 	/**
@@ -207,7 +207,7 @@ class QuantityParser extends StringValueParser {
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 * @param DecimalValue $margin
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 */
 	private function newUncertainQuantityFromMargin( DecimalValue $amount, $unit = '1', DecimalValue $margin ) {
 		$decimalMath = new DecimalMath();
@@ -216,7 +216,7 @@ class QuantityParser extends StringValueParser {
 		$lowerBound = $decimalMath->sum( $amount, $margin->computeComplement() );
 		$upperBound = $decimalMath->sum( $amount, $margin );
 
-		return new BoundedQuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**
@@ -230,7 +230,7 @@ class QuantityParser extends StringValueParser {
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 * @param int $exponent Decimal exponent to apply
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 */
 	private function newQuantityFromExponent( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
 		$math = new DecimalMath();
@@ -247,17 +247,17 @@ class QuantityParser extends StringValueParser {
 		$lowerBound = $this->decimalParser->applyDecimalExponent( $lowerBound, $exponent );
 		$upperBound = $this->decimalParser->applyDecimalExponent( $upperBound, $exponent );
 
-		return new BoundedQuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**
 	 * @param DecimalValue $amount
 	 * @param string $unit
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 */
 	private function newUnboundedQuantityFromDigits( DecimalValue $amount, $unit = '1' ) {
-		return new QuantityValue( $amount, $unit );
+		return new UnboundedQuantityValue( $amount, $unit );
 	}
 
 }

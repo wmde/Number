@@ -2,10 +2,10 @@
 
 namespace ValueFormatters;
 
-use DataValues\BoundedQuantityValue;
+use DataValues\QuantityValue;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
-use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -34,13 +34,13 @@ class QuantityFormatter extends ValueFormatterBase {
 
 	/**
 	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
-	 * should be shown if we are displaying a BoundedQuantityValue.
+	 * should be shown if we are displaying a QuantityValue.
 	 */
 	const SHOW_UNCERTAINTY_MARGIN_IF_KNOWN = 'if known';
 
 	/**
 	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
-	 * should be shown if we are displaying a non-exact BoundedQuantityValue.
+	 * should be shown if we are displaying a non-exact QuantityValue.
 	 */
 	const SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO = 'if not zero';
 
@@ -132,13 +132,13 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @see ValueFormatter::format
 	 *
-	 * @param QuantityValue $value
+	 * @param UnboundedQuantityValue $value
 	 *
 	 * @throws InvalidArgumentException
 	 * @return string Text
 	 */
 	public function format( $value ) {
-		if ( !( $value instanceof QuantityValue ) ) {
+		if ( !( $value instanceof UnboundedQuantityValue ) ) {
 			throw new InvalidArgumentException( 'Data value type mismatch. Expected a QuantityValue.' );
 		}
 
@@ -148,11 +148,11 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @since 0.6
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	protected function formatQuantityValue( QuantityValue $quantity ) {
+	protected function formatQuantityValue( UnboundedQuantityValue $quantity ) {
 		$formatted = $this->formatNumber( $quantity );
 		$unit = $this->formatUnit( $quantity->getUnit() );
 
@@ -172,11 +172,11 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @since 0.6
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	protected function formatNumber( QuantityValue $quantity ) {
+	protected function formatNumber( UnboundedQuantityValue $quantity ) {
 		$roundingMode = $this->options->getOption( self::OPT_APPLY_ROUNDING );
 		$roundingExponent = $this->getRoundingExponent( $quantity, $roundingMode );
 
@@ -184,7 +184,7 @@ class QuantityFormatter extends ValueFormatterBase {
 		$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
 		$formatted = $this->decimalFormatter->format( $roundedAmount );
 
-		if ( $quantity instanceof BoundedQuantityValue ) {
+		if ( $quantity instanceof QuantityValue ) {
 			// TODO: strip trailing zeros from margin
 			$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
 			if ( $margin !== null ) {
@@ -199,19 +199,19 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * Returns the rounding exponent based on the given $quantity.
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue $quantity
 	 * @param bool|int $roundingMode The rounding exponent, or true for rounding to the order of
-	 *        uncertainty (significant digits) of a BoundedQuantityValue, or false to not apply
+	 *        uncertainty (significant digits) of a QuantityValue, or false to not apply
 	 *        rounding (that is, round to all digits).
 	 *
 	 * @return int
 	 */
-	private function getRoundingExponent( QuantityValue $quantity, $roundingMode ) {
+	private function getRoundingExponent( UnboundedQuantityValue $quantity, $roundingMode ) {
 		if ( is_int( $roundingMode ) ) {
 			// round to the given exponent
 			return $roundingMode;
-		} elseif ( $roundingMode && ( $quantity instanceof  BoundedQuantityValue ) ) {
-			// round to the order of uncertainty (BoundedQuantityValue only)
+		} elseif ( $roundingMode && ( $quantity instanceof  QuantityValue ) ) {
+			// round to the order of uncertainty (QuantityValue only)
 			return $quantity->getOrderOfUncertainty();
 		} else {
 			// to keep all digits, use the negative length of the fractional part

@@ -58,7 +58,9 @@ class DecimalValue extends DataValueObject {
 		}
 
 		$value = trim( $value );
-
+		if ( $value !== '' && $value[0] !== '-' && $value[0] !== '+' ) {
+			$value = '+' . $value;
+		}
 		if ( strlen( $value ) > 127 ) {
 			throw new IllegalValueException( 'Value must be at most 127 characters long.' );
 		}

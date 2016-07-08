@@ -97,23 +97,65 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withMargin ),
 
 			'+0.0/nm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0 °', $noMargin ),
-			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0±0.1 °', $withMargin ),
+			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0±0.1 °', $withMargin ),
 			'+0.0/xr' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.00±0.10 °', $exactRounding ),
 
 			'-1205/nm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200 m', $noMargin ),
-			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100 m', $withMargin ),
+			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $withMargin ),
 			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $noRounding ),
 			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00±100.00 m', $exactRounding ),
-			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200±100', $noUnit ),
+			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100', $noUnit ),
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),
-			'+3.025/wm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.004', $withMargin ),
+			'+3.025/wm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.0039', $withMargin ),
 			'+3.025/xr' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.03', $exactRounding ), // TODO: never round to 0! See bug #56892
 
 			'+3.125/nr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.125±0.125', $noRounding ),
 			'+3.125/xr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.13±0.13', $exactRounding ),
 
 			'+3.125/fs' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '+3.13', $forceSign ),
+
+			// Rounding with a fixed +/-1 margin
+			array( QuantityValue::newFromNumber( '+1.44', '1', '+2.44', '+0.44' ), '1', $noMargin ),
+			// FIXME: Rounding this up is just wrong.
+			array( QuantityValue::newFromNumber( '+1.45', '1', '+2.45', '+0.45' ), '2', $noMargin ),
+			// FIXME: Rounding this up is just wrong.
+			array( QuantityValue::newFromNumber( '+1.49', '1', '+2.49', '+0.49' ), '2', $noMargin ),
+			array( QuantityValue::newFromNumber( '+1.50', '1', '+2.50', '+0.50' ), '2', $noMargin ),
+			array( QuantityValue::newFromNumber( '+2.50', '1', '+3.50', '+1.50' ), '3', $noMargin ),
+
+			// Rounding with different margins
+			'1.55+/-0.09' => array( QuantityValue::newFromNumber( '+1.55', '1', '+1.64', '+1.46' ), '1.55', $noMargin ),
+			'1.55+/-0.1' => array( QuantityValue::newFromNumber( '+1.55', '1', '+1.65', '+1.45' ), '1.6', $noMargin ),
+			'1.55+/-0.49' => array( QuantityValue::newFromNumber( '+1.55', '1', '+2.04', '+1.06' ), '1.6', $noMargin ),
+			'1.55+/-0.5' => array( QuantityValue::newFromNumber( '+1.55', '1', '+2.05', '+1.05' ), '1.6', $noMargin ),
+			'1.55+/-0.99' => array( QuantityValue::newFromNumber( '+1.55', '1', '+2.54', '+0.56' ), '1.6', $noMargin ),
+			'1.55+/-1' => array( QuantityValue::newFromNumber( '+1.55', '1', '+2.55', '+0.55' ), '2', $noMargin ),
+			// FIXME: We should probably never round to zero as it is confusing.
+			'1.55+/-10' => array( QuantityValue::newFromNumber( '+1.55', '1', '+11.55', '-8.45' ), '0', $noMargin ),
+
+			// Do not mess with the value when the margin is rendered
+			array( QuantityValue::newFromNumber( '+1500', '1', '+2500', '+500' ), '1500±1000' ),
+			array( QuantityValue::newFromNumber( '+2', '1', '+2.005', '+1.995' ), '2±0.005' ),
+			array( QuantityValue::newFromNumber( '+1.5', '1', '+2.5', '+0.5' ), '1.5±1' ),
+			array( QuantityValue::newFromNumber( '+1.0005', '1', '+1.0015', '+0.9995' ), '1.0005±0.001' ),
+			array( QuantityValue::newFromNumber( '+0.0015', '1', '+0.0025', '+0.0005' ), '0.0015±0.001' ),
+
+			// Never mess with the margin
+			array( QuantityValue::newFromNumber( '+2', '1', '+3.5', '+0.5' ), '2±1.5' ),
+			array( QuantityValue::newFromNumber( '+2', '1', '+2.0015', '+1.9985' ), '2±0.0015' ),
+			array( QuantityValue::newFromNumber( '+0.0015', '1', '+0.003', '+0' ), '0.0015±0.0015' ),
+			array( QuantityValue::newFromNumber( '+2.0011', '1', '+2.0022', '+2' ), '2.0011±0.0011' ),
+			array( QuantityValue::newFromNumber( '+2.0099', '1', '+2.0198', '+2' ), '2.0099±0.0099' ),
+			array(
+				QuantityValue::newFromNumber(
+					'+1.00000000000000015',
+					'1',
+					'+1.00000000000000025',
+					'+1.00000000000000005'
+				),
+				'1.00000000000000015±0.0000000000000001'
+			),
 		);
 	}
 

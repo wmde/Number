@@ -181,12 +181,19 @@ class QuantityFormatter extends ValueFormatterBase {
 		$roundingExponent = $this->getRoundingExponent( $quantity, $roundingMode );
 
 		$amount = $quantity->getAmount();
-		$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
-		$formatted = $this->decimalFormatter->format( $roundedAmount );
 
+		if ( $roundingExponent === null ) {
+			$formatted = $this->formatMinimalDecimal( $amount );
+			$margin = $quantity->getUncertaintyMargin();
+			$margin = $margin->isZero() ? null : $this->formatMinimalDecimal( $margin );
+		} else {
+			$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
+			$formatted = $this->decimalFormatter->format( $roundedAmount );
 		if ( $quantity instanceof QuantityValue ) {
 			// TODO: strip trailing zeros from margin
 			$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
+		}
+
 			if ( $margin !== null ) {
 				// TODO: use localizable pattern for constructing the output.
 				$formatted .= '±' . $margin;
@@ -204,7 +211,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 *        uncertainty (significant digits) of a QuantityValue, or false to not apply
 	 *        rounding (that is, round to all digits).
 	 *
-	 * @return int
+	 * @return int|null
 	 */
 	private function getRoundingExponent( UnboundedQuantityValue $quantity, $roundingMode ) {
 		if ( is_int( $roundingMode ) ) {
@@ -212,11 +219,26 @@ class QuantityFormatter extends ValueFormatterBase {
 			return $roundingMode;
 		} elseif ( $roundingMode && ( $quantity instanceof  QuantityValue ) ) {
 			// round to the order of uncertainty (QuantityValue only)
-			return $quantity->getOrderOfUncertainty();
+			return $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN )
+				? null
+				// round to the order of uncertainty
+				: $quantity->getOrderOfUncertainty();
 		} else {
 			// to keep all digits, use the negative length of the fractional part
 			return -strlen( $quantity->getAmount()->getFractionalPart() );
 		}
+	}
+
+	/**
+	 * @param DecimalValue $decimal
+	 *
+	 * @return string
+	 */
+	private function formatMinimalDecimal( DecimalValue $decimal ) {
+		// TODO: This should be an option of DecimalFormatter.
+		return preg_replace( '/(\.\d+?)0+$/', '$1',
+			preg_replace( '/(?<=\d)\.0*$/', '', $this->decimalFormatter->format( $decimal ) )
+		);
 	}
 
 	/**

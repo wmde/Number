@@ -158,10 +158,17 @@ class QuantityFormatter extends ValueFormatterBase {
 		$roundingExponent = $this->getRoundingExponent( $quantity );
 
 		$amount = $quantity->getAmount();
-		$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
-		$formatted = $this->decimalFormatter->format( $roundedAmount );
 
-		$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
+		if ( $roundingExponent === null ) {
+			$formatted = $this->formatMinimalDecimal( $amount );
+			$margin = $quantity->getUncertaintyMargin();
+			$margin = $margin->isZero() ? null : $this->formatMinimalDecimal( $margin );
+		} else {
+			$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
+			$formatted = $this->decimalFormatter->format( $roundedAmount );
+			$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
+		}
+
 		if ( $margin !== null ) {
 			// TODO: use localizable pattern for constructing the output.
 			$formatted .= '±' . $margin;
@@ -176,18 +183,31 @@ class QuantityFormatter extends ValueFormatterBase {
 	 *
 	 * @param QuantityValue $quantity
 	 *
-	 * @return int
+	 * @return int|null
 	 */
 	private function getRoundingExponent( QuantityValue $quantity ) {
 		if ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === true ) {
-			// round to the order of uncertainty
-			return $quantity->getOrderOfUncertainty();
+			return $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN )
+				? null
+				// round to the order of uncertainty
+				: $quantity->getOrderOfUncertainty();
 		} elseif ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === false ) {
-			// to keep all digits, use the negative length of the fractional part
-			return -strlen( $quantity->getAmount()->getFractionalPart() );
+			return null;
 		} else {
 			return (int)$this->options->getOption( self::OPT_APPLY_ROUNDING );
 		}
+	}
+
+	/**
+	 * @param DecimalValue $decimal
+	 *
+	 * @return string
+	 */
+	private function formatMinimalDecimal( DecimalValue $decimal ) {
+		// TODO: This should be an option of DecimalFormatter.
+		return preg_replace( '/(\.\d+?)0+$/', '$1',
+			preg_replace( '/(?<=\d)\.0*$/', '', $this->decimalFormatter->format( $decimal ) )
+		);
 	}
 
 	/**

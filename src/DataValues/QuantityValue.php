@@ -15,7 +15,7 @@ use InvalidArgumentException;
  * The fact that we use subclassing to model the bounded vs the unbounded case should be
  * considered an implementation detail.
  *
- * @since 0.7
+ * @since 0.1
  *
  * @license GPL-2.0+
  * @author Daniel Kinzler
@@ -70,22 +70,22 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @note: if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
-	 * @since 0.7
+	 * @since 0.1
 	 *
-	 * @param string|int|float|DecimalValue|UnboundedQuantityValue $number
+	 * @param string|int|float|DecimalValue $amount
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
 	 * @param string|int|float|DecimalValue|null $upperBound
 	 * @param string|int|float|DecimalValue|null $lowerBound
 	 *
-	 * @return QuantityValue
+	 * @return self
 	 * @throws IllegalValueException
 	 */
-	public static function newFromNumber( $number, $unit = '1', $upperBound = null, $lowerBound = null ) {
-		$number = self::asDecimalValue( 'amount', $number );
-		$upperBound = self::asDecimalValue( 'upperBound', $upperBound, $number );
-		$lowerBound = self::asDecimalValue( 'lowerBound', $lowerBound, $number );
+	public static function newFromNumber( $amount, $unit = '1', $upperBound = null, $lowerBound = null ) {
+		$amount = self::asDecimalValue( 'amount', $amount );
+		$upperBound = self::asDecimalValue( 'upperBound', $upperBound, $amount );
+		$lowerBound = self::asDecimalValue( 'lowerBound', $lowerBound, $amount );
 
-		return new self( $number, $unit, $upperBound, $lowerBound );
+		return new self( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**
@@ -93,36 +93,49 @@ class QuantityValue extends UnboundedQuantityValue {
 	 *
 	 * @deprecated since 0.1, use newFromNumber instead
 	 *
-	 * @param string|int|float|DecimalValue|UnboundedQuantityValue $number
+	 * @param string|int|float|DecimalValue $amount
 	 * @param string $unit
 	 * @param string|int|float|DecimalValue|null $upperBound
 	 * @param string|int|float|DecimalValue|null $lowerBound
 	 *
-	 * @return QuantityValue
+	 * @return self
 	 */
-	public static function newFromDecimal( $number, $unit = '1', $upperBound = null, $lowerBound = null ) {
-		return self::newFromNumber( $number, $unit, $upperBound, $lowerBound );
+	public static function newFromDecimal( $amount, $unit = '1', $upperBound = null, $lowerBound = null ) {
+		return self::newFromNumber( $amount, $unit, $upperBound, $lowerBound );
+	}
+
+	/**
+	 * @see Serializable::serialize
+	 *
+	 * @since 0.1
+	 *
+	 * @return string
+	 */
+	public function serialize() {
+		return serialize( array(
+			$this->amount,
+			$this->unit,
+			$this->upperBound,
+			$this->lowerBound,
+		) );
 	}
 
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 0.7
+	 * @since 0.1
 	 *
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
 		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
-		$amount = DecimalValue::newFromArray( $amount );
-		$upperBound = DecimalValue::newFromArray( $upperBound );
-		$lowerBound = DecimalValue::newFromArray( $lowerBound );
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
 	}
 
 	/**
 	 * Returns this quantity's upper bound.
 	 *
-	 * @since 0.7
+	 * @since 0.1
 	 *
 	 * @return DecimalValue
 	 */
@@ -133,7 +146,7 @@ class QuantityValue extends UnboundedQuantityValue {
 	/**
 	 * Returns this quantity's lower bound.
 	 *
-	 * @since 0.7
+	 * @since 0.1
 	 *
 	 * @return DecimalValue
 	 */
@@ -149,7 +162,7 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * data point. For example, the uncertainty interval may be defined to be that part of a
 	 * normal distribution that is required to cover the 95th percentile.
 	 *
-	 * @since 0.7
+	 * @since 0.1
 	 *
 	 * @return float
 	 */
@@ -164,7 +177,9 @@ class QuantityValue extends UnboundedQuantityValue {
 	 *
 	 * The offset is calculated as max( amount - lowerBound, upperBound - amount ).
 	 *
-	 * @since 0.7
+	 * @todo Should be factored out into a separate QuantityMath class.
+	 *
+	 * @since 0.1
 	 *
 	 * @return DecimalValue
 	 */
@@ -192,7 +207,9 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * Note that this calculation assumes a symmetric uncertainty interval,
 	 * and can be misleading.
 	 *
-	 * @since 0.7
+	 * @todo Should be factored out into a separate QuantityMath class.
+	 *
+	 * @since 0.1
 	 *
 	 * @return int
 	 */
@@ -243,8 +260,11 @@ class QuantityValue extends UnboundedQuantityValue {
 	 *
 	 * @param mixed ... Any extra parameters will be passed to the $transformation function.
 	 *
+	 * @todo share more code with UnboundQuantityValue::transform.
+	 * @todo Should be factored out into a separate QuantityMath class.
+	 *
 	 * @throws InvalidArgumentException
-	 * @return QuantityValue
+	 * @return self
 	 */
 	public function transform( $newUnit, $transformation ) {
 		if ( !is_callable( $transformation ) ) {
@@ -305,7 +325,7 @@ class QuantityValue extends UnboundedQuantityValue {
 	/**
 	 * @see DataValue::getArrayValue
 	 *
-	 * @since 0.7
+	 * @since 0.1
 	 *
 	 * @return array
 	 */
@@ -322,15 +342,18 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * Constructs a new instance of the DataValue from the provided data.
 	 * This can round-trip with @see getArrayValue
 	 *
-	 * @since 0.7
+	 * @note: if the upperBound or lowerBound field is missing from $data,
+	 * this returns an UnboundedQuantityValue, not a QuantityValue!
+	 *
+	 * @since 0.1
 	 *
 	 * @param mixed $data
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
-		if ( !isset( $data['upperBound'] ) && isset( $data['lowerBound'] ) ) {
+		if ( !isset( $data['upperBound'] ) || !isset( $data['lowerBound'] ) ) {
 			// No bounds given, so construct an unbounded QuantityValue.
 			return parent::newFromArray( $data );
 		}

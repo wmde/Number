@@ -2,9 +2,9 @@
 
 namespace ValueFormatters;
 
-use DataValues\QuantityValue;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
+use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
@@ -36,13 +36,13 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
 	 * should be shown if we are displaying a QuantityValue.
 	 */
-	const SHOW_UNCERTAINTY_MARGIN_IF_KNOWN = 'if known';
+	const SHOW_UNCERTAINTY_MARGIN_IF_KNOWN = 'if-known';
 
 	/**
 	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
 	 * should be shown if we are displaying a non-exact QuantityValue.
 	 */
-	const SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO = 'if not zero';
+	const SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO = 'if-not-zero';
 
 	/**
 	 * Option key for determining what level of rounding to apply to the numbers
@@ -226,16 +226,25 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * @return string|null Text
 	 */
 	private function formatMargin( DecimalValue $margin, $roundingExponent ) {
-		$marginModel = $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN );
+		$marginMode = $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN );
 
-		if ( $marginModel === self::SHOW_UNCERTAINTY_MARGIN_NEVER ) {
+		// map legacy option values
+		if ( $marginMode === true ) {
+			// old default behavior
+			$marginMode = self::SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO;
+		} elseif ( $marginMode === false ) {
+			$marginMode = self::SHOW_UNCERTAINTY_MARGIN_NEVER;
+		}
+
+		if ( $marginMode === self::SHOW_UNCERTAINTY_MARGIN_NEVER ) {
+			return null;
 			return null;
 		}
 
 		// TODO: never round to 0! See bug #56892
 		$roundedMargin = $this->decimalMath->roundToExponent( $margin, $roundingExponent );
 
-		if ( $marginModel === self::SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO
+		if ( $marginMode === self::SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO
 			&& $roundedMargin->isZero()
 		) {
 			return null;

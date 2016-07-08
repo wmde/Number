@@ -2,8 +2,8 @@
 
 namespace DataValues\Tests;
 
-use DataValues\QuantityValue;
 use DataValues\DecimalValue;
+use DataValues\QuantityValue;
 
 /**
  * @covers DataValues\QuantityValue
@@ -261,17 +261,17 @@ class QuantityValueTest extends DataValueTest {
 		};
 
 		return array(
-			 0 => array( QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),   $identity, QuantityValue::newFromNumber( '+10', '?', '+11', '+9' ) ),
-			 1 => array( QuantityValue::newFromNumber( '-0.5', '1', '-0.4', '-0.6' ), $identity, QuantityValue::newFromNumber( '-0.5', '?', '-0.4', '-0.6' ) ),
-			 2 => array( QuantityValue::newFromNumber( '+0', '1', '+1', '-1' ),   $square,   QuantityValue::newFromNumber( '+0', '?', '+1', '-1' ) ),
-			 3 => array( QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),   $square,   QuantityValue::newFromNumber( '+1000', '?', '+1300', '+700' ) ), // note how rounding applies to bounds
-			 4 => array( QuantityValue::newFromNumber( '+0.5', '1', '+0.6', '+0.4' ), $scale,    QuantityValue::newFromNumber( '+0.25', '?', '+0.3', '+0.2' ), 0.5 ),
+			 0 => array( QuantityValue::newFromNumber( '+10',   '1', '+11',  '+9' ),   $identity, QuantityValue::newFromNumber(   '+10',    '?',   '+11',    '+9' ) ),
+			 1 => array( QuantityValue::newFromNumber(  '-0.5', '1', '-0.4', '-0.6' ), $identity, QuantityValue::newFromNumber(    '-0.5',  '?',    '-0.4',  '-0.6' ) ),
+			 2 => array( QuantityValue::newFromNumber(  '+0',   '1', '+1',   '-1' ),   $square,   QuantityValue::newFromNumber(    '+0',    '?',    '+1',    '-1' ) ),
+			 3 => array( QuantityValue::newFromNumber( '+10',   '1', '+11',  '+9' ),   $square,   QuantityValue::newFromNumber( '+1000',    '?', '+1300',  '+700' ) ), // note how rounding applies to bounds
+			 4 => array( QuantityValue::newFromNumber(  '+0.5', '1', '+0.6', '+0.4' ), $scale,    QuantityValue::newFromNumber(    '+0.25', '?',    '+0.3',  '+0.2' ), 0.5 ),
 
 			// note: absolutely exact values require conversion with infinite precision!
-			10 => array( QuantityValue::newFromNumber( '+100', '1', '+100', '+100' ),    $scale, QuantityValue::newFromNumber( '+12825.0', '?', '+12825.0', '+12825.0' ), 128.25 ),
+			10 => array( QuantityValue::newFromNumber( '+100', '1', '+100',   '+100' ),    $scale, QuantityValue::newFromNumber( '+12825.0', '?', '+12825.0', '+12825.0' ), 128.25 ),
 
-			11 => array( QuantityValue::newFromNumber( '+100', '1', '+110', '+90' ),    $scale, QuantityValue::newFromNumber( '+330', '?', '+370', '+300' ), 3.3333 ),
-			12 => array( QuantityValue::newFromNumber( '+100', '1', '+100.1', '+99.9' ),  $scale, QuantityValue::newFromNumber( '+333.3', '?', '+333.7', '+333.0' ), 3.3333 ),
+			11 => array( QuantityValue::newFromNumber( '+100', '1', '+110',    '+90' ),    $scale, QuantityValue::newFromNumber( '+330',    '?', '+370',    '+300' ), 3.3333 ),
+			12 => array( QuantityValue::newFromNumber( '+100', '1', '+100.1',  '+99.9' ),  $scale, QuantityValue::newFromNumber( '+333.3',  '?', '+333.7',  '+333.0' ), 3.3333 ),
 			13 => array( QuantityValue::newFromNumber( '+100', '1', '+100.01', '+99.99' ), $scale, QuantityValue::newFromNumber( '+333.33', '?', '+333.36', '+333.30' ), 3.3333 ),
 		);
 	}

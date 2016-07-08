@@ -16,7 +16,7 @@ use LogicException;
  * The fact that we use subclassing to model the bounded vs the unbounded case should be
  * considered an implementation detail.
  *
- * @since 0.1
+ * @since 0.7
  *
  * @license GPL-2.0+
  * @author Daniel Kinzler
@@ -65,12 +65,12 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @note: if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param string|int|float|DecimalValue $number
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
 	 *
-	 * @return UnboundedQuantityValue
+	 * @return self
 	 * @throws IllegalValueException
 	 */
 	public static function newFromNumber( $number, $unit = '1' ) {
@@ -80,29 +80,13 @@ class UnboundedQuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * @see newFromNumber
-	 *
-	 * @deprecated since 0.1, use newFromNumber instead
-	 *
-	 * @param string|int|float|DecimalValue $number
-	 * @param string $unit
-	 * @param string|int|float|DecimalValue|null $upperBound
-	 * @param string|int|float|DecimalValue|null $lowerBound
-	 *
-	 * @return UnboundedQuantityValue
-	 */
-	public static function newFromDecimal( $number, $unit = '1' ) {
-		return self::newFromNumber( $number, $unit );
-	}
-
-	/**
 	 * Converts $number to a DecimalValue if possible and necessary.
 	 *
 	 * @note: if the $number is given as a string, it must conform to the rules
 	 *        defined by @see DecimalValue.
 	 *
 	 * @param string $name The variable name to use in exception messages
-	 * @param string|int|float|DecimalValue|null $number
+	 * @param string|int|float|DecimalValue|UnboundedQuantityValue|null $number
 	 * @param DecimalValue|null $default
 	 *
 	 * @throws IllegalValueException
@@ -122,7 +106,9 @@ class UnboundedQuantityValue extends DataValueObject {
 			$number = $default;
 		}
 
-		if ( $number instanceof DecimalValue ) {
+		if ( $number instanceof UnboundedQuantityValue ) {
+			return $number->getAmount();
+		} elseif ( $number instanceof DecimalValue ) {
 			// nothing to do
 		} elseif ( is_int( $number ) || is_float( $number ) || is_string( $number ) ) {
 			$number = new DecimalValue( $number );
@@ -136,31 +122,33 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see Serializable::serialize
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array_values( $this->getArrayValue() ) );
+		return serialize( array(
+			$this->amount,
+			$this->unit
+		) );
 	}
 
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
 		list( $amount, $unit ) = unserialize( $data );
-		$amount = DecimalValue::newFromArray( $amount );
 		$this->__construct( $amount, $unit );
 	}
 
 	/**
 	 * @see DataValue::getType
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return string
 	 */
@@ -171,7 +159,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see DataValue::getSortKey
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return float
 	 */
@@ -181,12 +169,11 @@ class UnboundedQuantityValue extends DataValueObject {
 
 	/**
 	 * Returns the quantity object.
+	 * @see DataValue::getValue
 	 *
-*@see DataValue::getValue
+	 * @since 0.7
 	 *
-	 * @since 0.1
-	 *
-	 * @return UnboundedQuantityValue
+	 * @return self
 	 */
 	public function getValue() {
 		return $this;
@@ -195,7 +182,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * Returns the amount represented by this quantity.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return DecimalValue
 	 */
@@ -207,7 +194,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * Returns the unit held by this quantity.
 	 * Unit-less quantities should use "1" as their unit.
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return string
 	 */
@@ -238,6 +225,8 @@ class UnboundedQuantityValue extends DataValueObject {
 	 *        to the transformation callback.
 	 *
 	 * @param mixed ... Any extra parameters will be passed to the $transformation function.
+	 *
+	 * @todo Should be factored out into a separate QuantityMath class.
 	 *
 	 * @throws InvalidArgumentException
 	 * @return UnboundedQuantityValue
@@ -282,7 +271,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see DataValue::getArrayValue
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @return array
 	 */
@@ -297,7 +286,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * Constructs a new instance of the DataValue from the provided data.
 	 * This can round-trip with @see getArrayValue
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param mixed $data
 	 *
@@ -316,7 +305,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see Comparable::equals
 	 *
-	 * @since 0.1
+	 * @since 0.7
 	 *
 	 * @param mixed $target
 	 *

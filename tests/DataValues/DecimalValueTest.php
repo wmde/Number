@@ -42,6 +42,8 @@ class DecimalValueTest extends DataValueTest {
 		$argLists[] = array( '+0.0' );
 		$argLists[] = array( '+0.000' );
 		$argLists[] = array( '+1.0' . str_repeat( ' ', 124 ) );
+		$argLists[] = array( '4.2' );
+		$argLists[] = array( ' 4.2' );
 
 		return $argLists;
 	}
@@ -51,7 +53,6 @@ class DecimalValueTest extends DataValueTest {
 
 		$argLists[] = array( 'foo' );
 		$argLists[] = array( '' );
-		$argLists[] = array( '4.2' );
 		$argLists[] = array( '++4.2' );
 		$argLists[] = array( '--4.2' );
 		$argLists[] = array( '-+4.2' );

@@ -43,22 +43,6 @@ class DecimalMath {
 	}
 
 	/**
-	 * @param int|float|string $number
-	 *
-	 * @return DecimalValue
-	 */
-	private function makeDecimalValue( $number ) {
-
-		if ( is_string( $number ) && $number !== '' ) {
-			if ( $number[0] !== '-' && $number[0] !== '+' ) {
-				$number = '+' . $number;
-			}
-		}
-
-		return new DecimalValue( $number );
-	}
-
-	/**
 	 * Whether this is using the bcmath library.
 	 *
 	 * @return bool
@@ -83,7 +67,7 @@ class DecimalMath {
 			$product = $a->getValueFloat() * $b->getValueFloat();
 		}
 
-		return $this->makeDecimalValue( $product );
+		return new DecimalValue( $product );
 	}
 
 	/**
@@ -102,7 +86,7 @@ class DecimalMath {
 			$sum = $a->getValueFloat() + $b->getValueFloat();
 		}
 
-		return $this->makeDecimalValue( $sum );
+		return new DecimalValue( $sum );
 	}
 
 	/**
@@ -121,7 +105,7 @@ class DecimalMath {
 			$min = $comp > 0 ? $b : $a;
 		} else {
 			$min = min( $a->getValueFloat(), $b->getValueFloat() );
-			$min = $this->makeDecimalValue( $min );
+			$min = new DecimalValue( $min );
 		}
 
 		return $min;
@@ -143,7 +127,7 @@ class DecimalMath {
 			$max = $comp > 0 ? $a : $b;
 		} else {
 			$max = max( $a->getValueFloat(), $b->getValueFloat() );
-			$max = $this->makeDecimalValue( $max );
+			$max = new DecimalValue( $max );
 		}
 
 		return $max;

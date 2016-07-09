@@ -234,108 +234,58 @@ class DecimalMath {
 			return '+0';
 		}
 
-		// whether the last character is already part of the integer part of the decimal value
-		$inIntPart = ( strpos( $value, '.' ) === false );
-		$rounded = '';
+		$len = strlen( $value );
 
-		// Iterate over characters from right to left and build the result back to front.
-		for ( $i = strlen( $value ) -1; $i > 0 && $i > $significantDigits; $i-- ) {
-			list( $value, $i, $inIntPart, $next ) = $this->roundNextDigit( $value, $i, $inIntPart );
-			$rounded = $next . $rounded;
+		// keeping all digits means no rounding
+		if ( $significantDigits >= ( $len -1 ) ) {
+			return $value;
 		}
 
-		// just keep the remainder of the value as is (this includes the sign)
-		$rounded = substr( $value, 0, $i +1 ) . $rounded;
+		// whether the last character is already part of the integer part of the decimal value
+		$i = min( $significantDigits +1, $len ); // account for the sign
+		$ch = $i < $len ? $value[$i] : '0';
 
-		if ( strlen( $rounded ) < $significantDigits + 1 ) {
-			if ( $inIntPart ) {
-				$rounded .= '.';
+		if ( $ch === '.' ) {
+			// NOTE: we expect the input to be well formed, so it cannot end with a '.'
+			$i++;
+			$ch = $i < $len ? $value[$i] : '0';
+		}
+
+		// split in significant and insignificant part
+		$rounded = substr( $value, 0, $i );
+
+		if ( strpos( $rounded, '.' ) === false ) {
+			$suffix = substr( $value, $i );
+
+			// strip insignificant digits after the decimal point
+			$ppos = strpos( $suffix, '.' );
+			if ( $ppos !== false ) {
+				$suffix = substr( $suffix, 0, $ppos );
 			}
 
-			$rounded = str_pad( $rounded, $significantDigits+1, '0', STR_PAD_RIGHT );
+			// zero out insignificant digits
+			$suffix = strtr( $suffix, '123456789', '000000000' );
+		} else {
+			// decimal point is in $rounded, so $suffix is insignificant
+			$suffix = '';
+		}
+
+		if ( $ch >= '5' ) {
+			$rounded = $this->bumpDigits( $rounded );
+		}
+
+		$rounded .= $suffix;
+
+		if ( $significantDigits > strlen( $rounded ) -1 ) {
+			if ( strpos( $rounded, '.' ) !== false ) {
+				$rounded = str_pad( $rounded, $significantDigits+1, '0', STR_PAD_RIGHT );
+			}
 		}
 
 		// strip trailing decimal point
 		$rounded = rtrim( $rounded, '.' );
 
 		return $rounded;
-	}
-
-	/**
-	 * Extracts the next character to add to the result of a rounding run:
-	 * $value[$] will be examined and processed in order to determine the next
-	 * character to prepend to the result (returned in the $nextCharacter field).
-	 *
-	 * Updated values for the parameters are returned as well as the next
-	 * character.
-	 *
-	 * @param string $value
-	 * @param int $i
-	 * @param bool $inIntPart
-	 *
-	 * @return array ( $value, $i, $inIntPart, $nextCharacter )
-	 */
-	private function roundNextDigit( $value, $i, $inIntPart ) {
-		// next digit
-		$ch = $value[$i];
-
-		if ( $ch === '.' ) {
-			// just transition from the fractional to the integer part
-			$inIntPart = true;
-			$nextCharacter = '.';
-		} else {
-			if ( $inIntPart ) {
-				// in the integer part, zero out insignificant digits
-				$nextCharacter = '0';
-			} else {
-				// in the fractional part, strip insignificant digits
-				$nextCharacter = '';
-			}
-
-			if ( ord( $ch ) >= ord( '5' ) ) {
-				// when stripping a character >= 5, bump up the next digit to the left.
-				list( $value, $i, $inIntPart ) = $this->bumpDigitsForRounding( $value, $i, $inIntPart );
-			}
-		}
-
-		return array( $value, $i, $inIntPart, $nextCharacter );
-	}
-
-	/**
-	 * Bumps the last digit of a value that is being processed for rounding while taking
-	 * care of edge cases and updating the state of the rounding process.
-	 *
-	 * - $value is truncated to $i digits, so we can safely increment (bump) the last digit.
-	 * - if the last character of $value is '.', it's trimmed (and $inIntPart is set to true)
-	 *   to handle the transition from the fractional to the integer part of $value.
-	 * - the last digit of $value is bumped using bumpDigits() - this is where the magic happens.
-	 * - $i is set to strln( $value ) to make the index consistent in case a trailing decimal
-	 *   point got removed.
-	 *
-	 * Updated values for the parameters are returned.
-	 * Note: when returning, $i is always one greater than the greatest valid index in $value.
-	 *
-	 * @param string $value
-	 * @param int $i
-	 * @param bool $inIntPart
-	 *
-	 * @return array ( $value, $i, $inIntPart, $next )
-	 */
-	private function bumpDigitsForRounding( $value, $i, $inIntPart ) {
-		$remaining = substr( $value, 0, $i );
-
-		// If there's a '.' at the end, strip it and note that we are in the
-		// integer part of $value now.
-		if ( $remaining[ strlen( $remaining ) -1 ] === '.' ) {
-			$remaining = rtrim( $remaining, '.' );
-			$inIntPart = true;
-		}
-
-		// Rounding may add digits, adjust $i for that.
-		$value = $this->bumpDigits( $remaining );
-		$i = strlen( $value );
-
-		return array( $value, $i, $inIntPart );
 	}
 
 	/**

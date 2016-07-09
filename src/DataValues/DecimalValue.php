@@ -65,7 +65,7 @@ class DecimalValue extends DataValueObject {
 			throw new IllegalValueException( 'Value must be at most 127 characters long.' );
 		}
 		if ( !preg_match( self::QUANTITY_VALUE_PATTERN, $value ) ) {
-			throw new IllegalValueException( 'Value must match the pattern for decimal values.' );
+			throw new IllegalValueException( "\"$value\" is not a well formed decimal value" );
 		}
 
 		$this->value = $value;

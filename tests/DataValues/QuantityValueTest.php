@@ -2,8 +2,11 @@
 
 namespace DataValues\Tests;
 
+use DataValues\DataValue;
 use DataValues\DecimalValue;
+use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 
 /**
  * @covers DataValues\QuantityValue
@@ -124,6 +127,100 @@ class QuantityValueTest extends DataValueTest {
 				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( 43 ), new DecimalValue( 41.0 ) )
 			),
 		);
+	}
+
+	public function provideNewFromArray() {
+		return [
+			'complete' => [
+				[
+					'amount' => '+2',
+					'unit' => "1",
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				],
+				QuantityValue::newFromNumber( '+2', '1', '+2.5', '+1.5' )
+			],
+			'unbounded' => [
+				[
+					'amount' => '+2',
+					'unit' => "1",
+				],
+				UnboundedQuantityValue::newFromNumber( '+2', '1' )
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider provideNewFromArray
+	 */
+	public function testNewFromArray( $data, DataValue $expected ) {
+		$value = QuantityValue::newFromArray( $data );
+		$this->assertTrue( $expected->equals( $value ), $value . ' should equal ' . $expected );
+	}
+
+	public function provideNewFromArray_failure() {
+		return [
+			'no-amount' => [
+				[
+					'unit' => "1",
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				]
+			],
+			'no-unit' => [
+				[
+					'amount' => '+2',
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				]
+			],
+			'no-upperBound' => [
+				[
+					'amount' => '+2',
+					'unit' => "1",
+					'lowerBound' => '+1.5',
+				]
+			],
+			'no-lowerBound' => [
+				[
+					'amount' => '+2',
+					'unit' => "1",
+					'upperBound' => '+2.5',
+				]
+			],
+			'bad-amount' => [
+				[
+					'amount' => 'x',
+					'unit' => "1",
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				]
+			],
+			'bad-upperBound' => [
+				[
+					'amount' => '+2',
+					'unit' => "1",
+					'upperBound' => 'x',
+					'lowerBound' => '+1.5',
+				]
+			],
+			'bad-lowerBound' => [
+				[
+					'amount' => '+2',
+					'unit' => "1",
+					'upperBound' => '+2.5',
+					'lowerBound' => 'x',
+				]
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider provideNewFromArray_failure
+	 */
+	public function testNewFromArray_failure( $data ) {
+		$this->setExpectedException( IllegalValueException::class );
+		QuantityValue::newFromArray( $data );
 	}
 
 	/**

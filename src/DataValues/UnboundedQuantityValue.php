@@ -16,7 +16,7 @@ use LogicException;
  * The fact that we use subclassing to model the bounded vs the unbounded case should be
  * considered an implementation detail.
  *
- * @since 0.7
+ * @since 0.8
  *
  * @license GPL-2.0+
  * @author Daniel Kinzler
@@ -65,7 +65,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @note: if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @param string|int|float|DecimalValue $number
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
@@ -122,7 +122,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see Serializable::serialize
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return string
 	 */
@@ -136,7 +136,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see Serializable::unserialize
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @param string $data
 	 */
@@ -148,7 +148,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see DataValue::getType
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return string
 	 */
@@ -159,7 +159,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see DataValue::getSortKey
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return float
 	 */
@@ -171,7 +171,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * Returns the quantity object.
 	 * @see DataValue::getValue
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return self
 	 */
@@ -182,7 +182,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * Returns the amount represented by this quantity.
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return DecimalValue
 	 */
@@ -194,7 +194,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * Returns the unit held by this quantity.
 	 * Unit-less quantities should use "1" as their unit.
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return string
 	 */
@@ -271,7 +271,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see DataValue::getArrayValue
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @return array
 	 */
@@ -286,7 +286,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * Constructs a new instance of the DataValue from the provided data.
 	 * This can round-trip with @see getArrayValue
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @param mixed $data
 	 *
@@ -296,7 +296,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	public static function newFromArray( $data ) {
 		self::requireArrayFields( $data, array( 'amount', 'unit' ) );
 
-		return new static(
+		return new self(
 			DecimalValue::newFromArray( $data['amount'] ),
 			$data['unit']
 		);
@@ -305,7 +305,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * @see Comparable::equals
 	 *
-	 * @since 0.7
+	 * @since 0.8
 	 *
 	 * @param mixed $target
 	 *

@@ -353,14 +353,14 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
-		if ( !isset( $data['upperBound'] ) || !isset( $data['lowerBound'] ) ) {
+		if ( !isset( $data['upperBound'] ) && !isset( $data['lowerBound'] ) ) {
 			// No bounds given, so construct an unbounded QuantityValue.
 			return parent::newFromArray( $data );
 		}
 
 		self::requireArrayFields( $data, array( 'amount', 'unit', 'upperBound', 'lowerBound' ) );
 
-		return new static(
+		return new self(
 			DecimalValue::newFromArray( $data['amount'] ),
 			$data['unit'],
 			DecimalValue::newFromArray( $data['upperBound'] ),

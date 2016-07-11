@@ -2,7 +2,9 @@
 
 namespace DataValues\Tests;
 
+use DataValues\DataValue;
 use DataValues\DecimalValue;
+use DataValues\IllegalValueException;
 use DataValues\UnboundedQuantityValue;
 
 /**
@@ -161,6 +163,64 @@ class UnboundedQuantityValueTest extends DataValueTest {
 			10 => array( UnboundedQuantityValue::newFromNumber( '+100', '1' ), $scale, UnboundedQuantityValue::newFromNumber( '+12825.0', '?' ), 128.25 ),
 			13 => array( UnboundedQuantityValue::newFromNumber( '+100', '1' ), $scale, UnboundedQuantityValue::newFromNumber( '+333.33', '?' ), 3.3333 ),
 		);
+	}
+
+	public function provideNewFromArray() {
+		return [
+			'unbounded' => [
+				[
+					'amount' => '+2',
+					'unit' => '1',
+				],
+				UnboundedQuantityValue::newFromNumber( '+2', '1' )
+			],
+			'with-extra' => [
+				[
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				],
+				UnboundedQuantityValue::newFromNumber( '+2', '1' )
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider provideNewFromArray
+	 */
+	public function testNewFromArray( $data, DataValue $expected ) {
+		$value = UnboundedQuantityValue::newFromArray( $data );
+		$this->assertTrue( $expected->equals( $value ), $value . ' should equal ' . $expected );
+	}
+
+	public function provideNewFromArray_failure() {
+		return [
+			'no-amount' => [
+				[
+					'unit' => "1",
+				]
+			],
+			'no-unit' => [
+				[
+					'amount' => '+2',
+				]
+			],
+			'bad-amount' => [
+				[
+					'amount' => 'x',
+					'unit' => "1",
+				]
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider provideNewFromArray_failure
+	 */
+	public function testNewFromArray_failure( $data ) {
+		$this->setExpectedException( IllegalValueException::class );
+		UnboundedQuantityValue::newFromArray( $data );
 	}
 
 }

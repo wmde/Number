@@ -188,10 +188,7 @@ class QuantityParser extends StringValueParser {
 	 * @return QuantityValue
 	 */
 	private function newExactQuantity( DecimalValue $amount, $unit = '1' ) {
-		$lowerBound = $amount;
-		$upperBound = $amount;
-
-		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
+		return new QuantityValue( $amount, $unit, $amount, $amount );
 	}
 
 	/**

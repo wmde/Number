@@ -410,12 +410,6 @@ class QuantityValue extends DataValueObject {
 			throw new InvalidArgumentException( '$newUnit must not be empty. Use "1" as the unit for unit-less quantities.' );
 		}
 
-		$oldUnit = $this->unit;
-
-		if ( $newUnit === null ) {
-			$newUnit = $oldUnit;
-		}
-
 		// Apply transformation by calling the $transform callback.
 		// The first argument for the callback is the DataValue to transform. In addition,
 		// any extra arguments given for transform() are passed through.

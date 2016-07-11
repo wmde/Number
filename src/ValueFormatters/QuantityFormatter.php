@@ -27,24 +27,6 @@ class QuantityFormatter extends ValueFormatterBase {
 	const OPT_SHOW_UNCERTAINTY_MARGIN = 'showQuantityUncertaintyMargin';
 
 	/**
-	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
-	 * should not be shown.
-	 */
-	const SHOW_UNCERTAINTY_MARGIN_NEVER = 'never';
-
-	/**
-	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
-	 * should be shown if we are displaying a QuantityValue.
-	 */
-	const SHOW_UNCERTAINTY_MARGIN_IF_KNOWN = 'if-known';
-
-	/**
-	 * Value for the OPT_SHOW_UNCERTAINTY_MARGIN indicating that the uncertainty margin
-	 * should be shown if we are displaying a non-exact QuantityValue.
-	 */
-	const SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO = 'if-not-zero';
-
-	/**
 	 * Option key for determining what level of rounding to apply to the numbers
 	 * included in the output. The value of this option must be an integer or a boolean.
 	 *
@@ -105,10 +87,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	) {
 		parent::__construct( $options );
 
-		$this->defaultOption(
-			self::OPT_SHOW_UNCERTAINTY_MARGIN,
-			self::SHOW_UNCERTAINTY_MARGIN_IF_KNOWN
-		);
+		$this->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
 		$this->defaultOption( self::OPT_APPLY_ROUNDING, true );
 		$this->defaultOption( self::OPT_APPLY_UNIT, true );
 
@@ -177,67 +156,51 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * @return string Text
 	 */
 	protected function formatNumber( UnboundedQuantityValue $quantity ) {
-		$marginMode = $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN );
-
-		// map legacy option values
-		if ( $marginMode === true ) {
-			// old default behavior
-			$marginMode = self::SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO;
-		} elseif ( $marginMode === false ) {
-			$marginMode = self::SHOW_UNCERTAINTY_MARGIN_NEVER;
-		}
-
-		// if the mergin is shown, never apply rounding
-		if ( $marginMode == self::SHOW_UNCERTAINTY_MARGIN_NEVER ) {
-			$roundingMode = $this->options->getOption( self::OPT_APPLY_ROUNDING );
-			$roundingExponent = $this->getRoundingExponent( $quantity, $roundingMode );
-		} else {
-			$roundingExponent = null;
-		}
+		$roundingExponent = $this->getRoundingExponent( $quantity );
 
 		$amount = $quantity->getAmount();
-		$margin = $this->formatMargin( $quantity, $marginMode );
 
-		// round if desired
-		if ( $roundingExponent !== null ) {
-			$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
-			$formatted = $this->decimalFormatter->format( $roundedAmount );
-		} elseif ( $margin !== null ) {
-			// if we will show a margin, strip trailing decimals
-			$formatted = $this->formatMinimalDecimal( $amount );
+		if ( $quantity instanceof QuantityValue ) {
+			if ( $roundingExponent === null ) {
+				$formatted = $this->formatMinimalDecimal( $amount );
+				$margin = $quantity->getUncertaintyMargin();
+				$margin = $margin->isZero() ? null : $this->formatMinimalDecimal( $margin );
+			} else {
+				$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
+				$formatted = $this->decimalFormatter->format( $roundedAmount );
+				$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
+			}
+
+			if ( $margin !== null ) {
+				// TODO: use localizable pattern for constructing the output.
+				$formatted .= '±' . $margin;
+			}
 		} else {
-			// no rounding and no margin - format plain
 			$formatted = $this->decimalFormatter->format( $amount );
-		}
-
-		if ( $margin !== null ) {
-			// TODO: use localizable pattern for constructing the output.
-			$formatted .= '±' . $margin;
 		}
 
 		return $formatted;
 	}
 
 	/**
-	 * Returns the rounding exponent based on the given $quantity.
+	 * Returns the rounding exponent based on the given $quantity
+	 * and the @see QuantityFormatter::OPT_APPLY_ROUNDING option.
 	 *
-	 * @param UnboundedQuantityValue $quantity
-	 * @param bool|int $roundingMode The rounding exponent, or true for rounding to the order of
-	 *        uncertainty (significant digits) of a QuantityValue, or false to not apply
-	 *        rounding (that is, round to all digits).
+	 * @param QuantityValue $quantity
 	 *
 	 * @return int|null
 	 */
-	private function getRoundingExponent( UnboundedQuantityValue $quantity, $roundingMode ) {
-		if ( is_int( $roundingMode ) ) {
-			// round to the given exponent
-			return $roundingMode;
-		} elseif ( $roundingMode && ( $quantity instanceof  QuantityValue ) ) {
-			// round to the order of uncertainty (QuantityValue only)
-			return $quantity->getOrderOfUncertainty();
-		} else {
-			// keep all digits
+	private function getRoundingExponent( UnboundedQuantityValue $quantity ) {
+		if ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === true ) {
+			return $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN )
+					|| !( $quantity instanceof QuantityValue )
+				? null
+				// round to the order of uncertainty
+				: $quantity->getOrderOfUncertainty();
+		} elseif ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === false ) {
 			return null;
+		} else {
+			return (int)$this->options->getOption( self::OPT_APPLY_ROUNDING );
 		}
 	}
 
@@ -254,30 +217,22 @@ class QuantityFormatter extends ValueFormatterBase {
 	}
 
 	/**
-	 * @param UnboundedQuantityValue $quantity
-	 * @param string $marginMode
+	 * @param DecimalValue $margin
+	 * @param int $roundingExponent
 	 *
 	 * @return string|null Text
 	 */
-	private function formatMargin( UnboundedQuantityValue $quantity, $marginMode ) {
-		if ( !( $quantity instanceof QuantityValue ) ) {
-			return null;
+	private function formatMargin( DecimalValue $margin, $roundingExponent ) {
+		if ( $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN ) ) {
+			// TODO: never round to 0! See bug #56892
+			$roundedMargin = $this->decimalMath->roundToExponent( $margin, $roundingExponent );
+
+			if ( !$roundedMargin->isZero() ) {
+				return $this->decimalFormatter->format( $roundedMargin );
+			}
 		}
 
-		$margin = $quantity->getUncertaintyMargin();
-
-		if ( $marginMode === self::SHOW_UNCERTAINTY_MARGIN_NEVER ) {
-			return null;
-		}
-
-		if ( $marginMode === self::SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO
-			&& $margin->isZero()
-		) {
-			return null;
-		}
-
-		// TODO: never round to 0! See bug #56892
-		return $this->formatMinimalDecimal( $margin );
+		return null;
 	}
 
 	/**

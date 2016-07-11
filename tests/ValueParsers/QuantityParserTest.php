@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\QuantityValue;
-use DataValues\UnboundedQuantityValue;
 use ValueParsers\ParserOptions;
 use ValueParsers\QuantityParser;
 use ValueParsers\ValueParser;
@@ -66,30 +65,29 @@ class QuantityParserTest extends StringValueParserTest {
 	public function validInputProvider() {
 		$amounts = array(
 			// amounts in various styles and forms
-			'0' => UnboundedQuantityValue::newFromNumber( 0, '1' ),
-			'-0' => UnboundedQuantityValue::newFromNumber( 0, '1' ),
-			'-00.00' => UnboundedQuantityValue::newFromNumber( '+0.00', '1' ),
-			'+00.00' => UnboundedQuantityValue::newFromNumber( '+0.00', '1' ),
-			'0001' => UnboundedQuantityValue::newFromNumber( 1, '1' ),
-			'+01' => UnboundedQuantityValue::newFromNumber( 1, '1' ),
-			'-1' => UnboundedQuantityValue::newFromNumber( -1, '1' ),
-			'+42' => UnboundedQuantityValue::newFromNumber( 42, '1' ),
-			' -  42' => UnboundedQuantityValue::newFromNumber( -42, '1' ),
-			'9001' => UnboundedQuantityValue::newFromNumber( 9001, '1' ),
-			'.5' => UnboundedQuantityValue::newFromNumber( '+0.5', '1' ),
-			'-.125' => UnboundedQuantityValue::newFromNumber( '-0.125', '1' ),
-			'3.' => UnboundedQuantityValue::newFromNumber( 3, '1' ),
-			' 3 ' => UnboundedQuantityValue::newFromNumber( 3, '1' ),
-			'2.125' => UnboundedQuantityValue::newFromNumber( '+2.125', '1' ),
-			'2.1250' => UnboundedQuantityValue::newFromNumber( '+2.1250', '1' ),
+			'0' => QuantityValue::newFromNumber( 0, '1', 1, -1 ),
+			'-0' => QuantityValue::newFromNumber( 0, '1', 1, -1 ),
+			'-00.00' => QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ),
+			'+00.00' => QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ),
+			'0001' => QuantityValue::newFromNumber( 1, '1', 2, 0 ),
+			'+01' => QuantityValue::newFromNumber( 1, '1', 2, 0 ),
+			'-1' => QuantityValue::newFromNumber( -1, '1', 0, -2 ),
+			'+42' => QuantityValue::newFromNumber( 42, '1', 43, 41 ),
+			' -  42' => QuantityValue::newFromNumber( -42, '1', -41, -43 ),
+			'9001' => QuantityValue::newFromNumber( 9001, '1', 9002, 9000 ),
+			'.5' => QuantityValue::newFromNumber( '+0.5', '1', '+0.6', '+0.4' ),
+			'-.125' => QuantityValue::newFromNumber( '-0.125', '1', '-0.124', '-0.126' ),
+			'3.' => QuantityValue::newFromNumber( 3, '1', 4, 2 ),
+			' 3 ' => QuantityValue::newFromNumber( 3, '1', 4, 2 ),
+			'2.125' => QuantityValue::newFromNumber( '+2.125', '1', '+2.126', '+2.124' ),
+			'2.1250' => QuantityValue::newFromNumber( '+2.1250', '1', '+2.1251', '+2.1249' ),
 
 			'1.4e-2' => QuantityValue::newFromNumber( '+0.014', '1', '+0.015', '+0.013' ),
-			'-1.4e-2' => QuantityValue::newFromNumber( '-0.014', '1', '-0.013', '-0.015' ),
 			'1.4e3' => QuantityValue::newFromNumber( '+1400', '1', '+1500', '+1300' ),
 			'1.4e3!m' => QuantityValue::newFromNumber( '+1400', 'm', '+1400', '+1400' ),
 			'1.4e3m2' => QuantityValue::newFromNumber( '+1400', 'm2', '+1500', '+1300' ),
-			'1.4ev' => UnboundedQuantityValue::newFromNumber( '+1.4', 'ev' ),
-			'1.4e' => UnboundedQuantityValue::newFromNumber( '+1.4', 'e' ),
+			'1.4ev' => QuantityValue::newFromNumber( '+1.4', 'ev', '+1.5', '+1.3' ),
+			'1.4e' => QuantityValue::newFromNumber( '+1.4', 'e', '+1.5', '+1.3' ),
 			'12e3e4' => QuantityValue::newFromNumber( '+12000', 'e4', '+13000', '+11000' ),
 			// FIXME: Add support for 12x10^3, see DecimalParser.
 			'0.004e3' => QuantityValue::newFromNumber( '+4', '1', '+5', '+3' ),
@@ -101,9 +99,9 @@ class QuantityParserTest extends StringValueParserTest {
 			'0!' => QuantityValue::newFromNumber( 0, '1', 0, 0 ),
 			'10.003!' => QuantityValue::newFromNumber( '+10.003', '1', '+10.003', '+10.003' ),
 			'-200!' => QuantityValue::newFromNumber( -200, '1', -200, -200 ),
-			'0~' => UnboundedQuantityValue::newFromNumber( 0, '1' ),
-			'10.003~' => UnboundedQuantityValue::newFromNumber( '+10.003', '1' ),
-			'-200~' => UnboundedQuantityValue::newFromNumber( -200, '1' ),
+			'0~' => QuantityValue::newFromNumber( 0, '1', 1, -1 ),
+			'10.003~' => QuantityValue::newFromNumber( '+10.003', '1', '+10.004', '+10.002' ),
+			'-200~' => QuantityValue::newFromNumber( -200, '1', -199, -201 ),
 
 			// uncertainty
 			'5.3 +/- 0.2' => QuantityValue::newFromNumber( '+5.3', '1', '+5.5', '+5.1' ),
@@ -124,17 +122,17 @@ class QuantityParserTest extends StringValueParserTest {
 			// units
 			'5.3+-0.2cm' => QuantityValue::newFromNumber( '+5.3', 'cm', '+5.5', '+5.1' ),
 			'10.003! km' => QuantityValue::newFromNumber( '+10.003', 'km', '+10.003', '+10.003' ),
-			'-200~ %  ' => UnboundedQuantityValue::newFromNumber( -200, '%' ),
-			'100003 m³' => UnboundedQuantityValue::newFromNumber( 100003, 'm³' ),
+			'-200~ %  ' => QuantityValue::newFromNumber( -200, '%', -199, -201 ),
+			'100003 m³' => QuantityValue::newFromNumber( 100003, 'm³', 100004, 100002 ),
 			'3.±-0.2µ' => QuantityValue::newFromNumber( '+3', 'µ', '+3.2', '+2.8' ),
-			'+00.20 Å' => UnboundedQuantityValue::newFromNumber( '+0.20', 'Å' ),
+			'+00.20 Å' => QuantityValue::newFromNumber( '+0.20', 'Å', '+0.21', '+0.19' ),
 		);
 
 		$argLists = array();
 
 		foreach ( $amounts as $amount => $expected ) {
 			//NOTE: PHP may "helpfully" have converted $amount to an integer. Yay.
-			$argLists[$amount] = array( strval( $amount ), $expected );
+			$argLists[] = array( strval( $amount ), $expected );
 		}
 
 		return $argLists;

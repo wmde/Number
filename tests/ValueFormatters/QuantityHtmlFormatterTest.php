@@ -84,7 +84,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 			),
 			'HTML injection' => array(
 				QuantityValue::newFromNumber( '+2', '<b>injection</b>', '+2', '+2' ),
-				'2±0 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
+				'2 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
 			),
 		);
 	}

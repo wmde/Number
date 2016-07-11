@@ -2,11 +2,10 @@
 
 namespace ValueParsers;
 
-use DataValues\QuantityValue;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
-use DataValues\UnboundedQuantityValue;
+use DataValues\QuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -61,7 +60,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @param string $value
 	 *
-	 * @return UnboundedQuantityValue
+	 * @return QuantityValue
 	 * @throws ParseException
 	 */
 	protected function stringParse( $value ) {
@@ -104,7 +103,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @throws ParseException if one of the decimals could not be parsed.
 	 * @throws IllegalValueException if the QuantityValue could not be constructed
-	 * @return UnboundedQuantityValue
+	 * @return QuantityValue
 	 */
 	private function newQuantityFromParts( $amount, $exactness, $margin, $unit ) {
 		list( $amount, $exponent ) = $this->decimalParser->splitDecimalExponent( $amount );
@@ -120,12 +119,10 @@ class QuantityParser extends StringValueParser {
 			$marginValue = $this->decimalParser->parse( $margin );
 			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
 			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
-		} elseif ( $exponent !== 0 ) {
-			// Scientific notation. Uncertainty is given by the exponent.
-			$quantity = $this->newQuantityFromExponent( $amountValue, $unit, $exponent );
 		} else {
-			// uncertainty is uncertain
-			$quantity = $this->newUnboundedQuantityFromDigits( $amountValue, $unit );
+			// derive uncertainty from given decimals
+			// NOTE: with scientific notation, the exponent applies to the uncertainty bounds, too
+			$quantity = $this->newUncertainQuantityFromDigits( $amountValue, $unit, $exponent );
 		}
 
 		return $quantity;
@@ -188,7 +185,7 @@ class QuantityParser extends StringValueParser {
 	 * @param DecimalValue $amount
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 *
-	 * @return UnboundedQuantityValue
+	 * @return QuantityValue
 	 */
 	private function newExactQuantity( DecimalValue $amount, $unit = '1' ) {
 		return new QuantityValue( $amount, $unit, $amount, $amount );
@@ -207,7 +204,7 @@ class QuantityParser extends StringValueParser {
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 * @param DecimalValue $margin
 	 *
-	 * @return UnboundedQuantityValue
+	 * @return QuantityValue
 	 */
 	private function newUncertainQuantityFromMargin( DecimalValue $amount, $unit = '1', DecimalValue $margin ) {
 		$decimalMath = new DecimalMath();
@@ -221,18 +218,20 @@ class QuantityParser extends StringValueParser {
 
 	/**
 	 * Returns a QuantityValue representing the given amount, automatically assuming
-	 * a level of uncertainty based on the given exponent, following the conventions
-	 * for scientific notation of decimal numbers: 12e3 is interpreted as 12000 with
-	 * two significant digits, represented as 12000 with a lower bound of 12000
-	 * and an upper bound of 12999.
+	 * a level of uncertainty based on the digits given.
+	 *
+	 * The upper and lower bounds are determined automatically from the given
+	 * digits by increasing resp. decreasing the least significant digit.
+	 * E.g. "+0.01" would have upperBound "+0.02" and lowerBound "+0.01",
+	 * while "-100" would have upperBound "-99" and lowerBound "-101".
 	 *
 	 * @param DecimalValue $amount The quantity
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
 	 * @param int $exponent Decimal exponent to apply
 	 *
-	 * @return UnboundedQuantityValue
+	 * @return QuantityValue
 	 */
-	private function newQuantityFromExponent( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
+	private function newUncertainQuantityFromDigits( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
 		$math = new DecimalMath();
 
 		if ( $amount->getSign() === '+' ) {
@@ -248,16 +247,6 @@ class QuantityParser extends StringValueParser {
 		$upperBound = $this->decimalParser->applyDecimalExponent( $upperBound, $exponent );
 
 		return new QuantityValue( $amount, $unit, $upperBound, $lowerBound );
-	}
-
-	/**
-	 * @param DecimalValue $amount
-	 * @param string $unit
-	 *
-	 * @return UnboundedQuantityValue
-	 */
-	private function newUnboundedQuantityFromDigits( DecimalValue $amount, $unit = '1' ) {
-		return new UnboundedQuantityValue( $amount, $unit );
 	}
 
 }

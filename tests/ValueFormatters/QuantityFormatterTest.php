@@ -67,35 +67,25 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 	 */
 	public function validProvider() {
 		$noMargin = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN
-				=> QuantityFormatter::SHOW_UNCERTAINTY_MARGIN_NEVER
+			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => false
 		) );
 
 		$withMargin = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN
-				=> QuantityFormatter::SHOW_UNCERTAINTY_MARGIN_IF_KNOWN
-		) );
-
-		$withNonZeroMargin = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN
-			=> QuantityFormatter::SHOW_UNCERTAINTY_MARGIN_IF_NOT_ZERO
+			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true
 		) );
 
 		$noRounding = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN
-				=> QuantityFormatter::SHOW_UNCERTAINTY_MARGIN_IF_KNOWN,
+			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true,
 			QuantityFormatter::OPT_APPLY_ROUNDING => false
 		) );
 
 		$exactRounding = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN
-				=> QuantityFormatter::SHOW_UNCERTAINTY_MARGIN_NEVER,
+			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => false,
 			QuantityFormatter::OPT_APPLY_ROUNDING => -2
 		) );
 
 		$forceSign = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN
-				=> QuantityFormatter::SHOW_UNCERTAINTY_MARGIN_NEVER,
+			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => false,
 			DecimalFormatter::OPT_FORCE_SIGN => true,
 		) );
 
@@ -105,8 +95,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 		return array(
 			'+0/nm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $noMargin ),
-			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0±0', $withMargin ),
-			'+0/zm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withNonZeroMargin ),
+			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withMargin ),
 
 			'+0.0/nm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0 °', $noMargin ),
 			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0±0.1 °', $withMargin ),
@@ -120,7 +109,6 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),
 			'+3.025/wm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.0039', $withMargin ),
-			'+3.025/zm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.0039', $withNonZeroMargin ),
 			'+3.025/xr' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.03', $exactRounding ), // NOTE: rounding is ignored
 
 			'+3.125/nr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.125±0.125', $noRounding ),
@@ -130,12 +118,10 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 			'UB: +0.0/nm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $noMargin ),
 			'UB: +0.0/wm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $withMargin ),
-			'UB: +0.0/zm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $withNonZeroMargin ),
-			'UB: +0.0/xr' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.00 °', $exactRounding ),
+			'UB: +0.0/xr' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $exactRounding ),
 			'UB: +5.021/nm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $noMargin ),
 			'UB: +5.021/wm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $withMargin ),
-			'UB: +5.021/zm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $withNonZeroMargin ),
-			'UB: +5.021/xr' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.02 °', $exactRounding ),
+			'UB: +5.021/xr' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $exactRounding ),
 			'UB: +3.125/fs' => array( UnboundedQuantityValue::newFromNumber( '+3.125', '1' ), '+3.125', $forceSign ),
 
 			// Rounding with a fixed +/-1 margin

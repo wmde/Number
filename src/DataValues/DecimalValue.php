@@ -46,7 +46,7 @@ class DecimalValue extends DataValueObject {
 	 * Constructs a new DecimalValue object, representing the given value.
 	 *
 	 * @param string|int|float $value If given as a string, the value must match
-	 *                         QUANTITY_VALUE_PATTERN.
+	 *  QUANTITY_VALUE_PATTERN. The leading plus sign is optional.
 	 *
 	 * @throws IllegalValueException
 	 */
@@ -91,8 +91,8 @@ class DecimalValue extends DataValueObject {
 			throw new InvalidArgumentException( '$number must not be NAN or INF.' );
 		}
 
-		if ( is_int( $number ) || ( $number === floor( $number ) ) ) {
-			$decimal = strval( abs( (int)$number ) );
+		if ( is_int( $number ) || $number === (float)(int)$number ) {
+			$decimal = strval( (int)abs( $number ) );
 		} else {
 			$decimal = trim( number_format( abs( $number ), 100, '.', '' ), '0' );
 
@@ -101,7 +101,7 @@ class DecimalValue extends DataValueObject {
 			}
 
 			if ( substr( $decimal, -1 ) === '.' ) {
-				$decimal .= '0';
+				$decimal = substr( $decimal, 0, -1 );
 			}
 		}
 

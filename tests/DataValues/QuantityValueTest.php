@@ -230,35 +230,6 @@ class QuantityValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider getSignificantFiguresProvider
-	 */
-	public function testGetSignificantFigures( QuantityValue $quantity, $expected ) {
-		$actual = $quantity->getSignificantFigures();
-
-		$this->assertEquals( $expected, $actual );
-	}
-
-	public function getSignificantFiguresProvider() {
-		return array(
-			0 => array( QuantityValue::newFromNumber( '+0' ), 1 ),
-			1 => array( QuantityValue::newFromNumber( '-123' ), 3 ),
-			2 => array( QuantityValue::newFromNumber( '-1.23' ), 4 ),
-
-			10 => array( QuantityValue::newFromNumber( '-100', '1', '-99', '-101' ), 3 ),
-			11 => array( QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ), 4 ),
-			12 => array( QuantityValue::newFromNumber( '-117.3', '1', '-117.2', '-117.4' ), 5 ),
-
-			20 => array( QuantityValue::newFromNumber( '+100', '1', '+100.01', '+99.97' ), 6 ),
-			21 => array( QuantityValue::newFromNumber( '-0.002', '1', '-0.001', '-0.004' ), 5 ),
-			22 => array( QuantityValue::newFromNumber( '-0.002', '1', '+0.001', '-0.06' ), 5 ),
-			23 => array( QuantityValue::newFromNumber( '-21', '1', '+1.1', '-120' ), 1 ),
-			24 => array( QuantityValue::newFromNumber( '-2', '1', '+1.1', '-120' ), 1 ),
-			25 => array( QuantityValue::newFromNumber( '+1000', '1', '+1100', '+900.03' ), 3 ),
-			26 => array( QuantityValue::newFromNumber( '+1000', '1', '+1100', '+900' ), 2 ),
-		);
-	}
-
-	/**
 	 * @dataProvider transformProvider
 	 */
 	public function testTransform( QuantityValue $quantity, $transformation, QuantityValue $expected ) {

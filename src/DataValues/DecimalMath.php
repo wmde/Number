@@ -98,7 +98,6 @@ class DecimalMath {
 	 * @return DecimalValue
 	 */
 	public function min( DecimalValue $a, DecimalValue $b ) {
-
 		if ( $this->useBC ) {
 			$scale = max( strlen( $a->getFractionalPart() ), strlen( $b->getFractionalPart() ) );
 			$comp = bccomp( $a->getValue(), $b->getValue(), $scale );
@@ -120,7 +119,6 @@ class DecimalMath {
 	 * @return DecimalValue
 	 */
 	public function max( DecimalValue $a, DecimalValue $b ) {
-
 		if ( $this->useBC ) {
 			$scale = max( strlen( $a->getFractionalPart() ), strlen( $b->getFractionalPart() ) );
 			$comp = bccomp( $a->getValue(), $b->getValue(), $scale );
@@ -227,8 +225,8 @@ class DecimalMath {
 	 * @return string
 	 */
 	private function roundDigits( $value, $significantDigits ) {
-		if ( !is_int( $significantDigits ) ) {
-			throw new InvalidArgumentException( '$significantDigits must be an integer' );
+		if ( !is_int( $significantDigits ) || $significantDigits < 0 ) {
+			throw new InvalidArgumentException( '$significantDigits must be a non-negative integer' );
 		}
 
 		// keeping no digits results in zero.
@@ -236,20 +234,13 @@ class DecimalMath {
 			return '+0';
 		}
 
-		if ( $significantDigits < 0 ) {
-			throw new InvalidArgumentException( '$significantDigits must be larger than zero.' );
-		}
-
 		// whether the last character is already part of the integer part of the decimal value
 		$inIntPart = ( strpos( $value, '.' ) === false );
-
 		$rounded = '';
 
 		// Iterate over characters from right to left and build the result back to front.
 		for ( $i = strlen( $value ) -1; $i > 0 && $i > $significantDigits; $i-- ) {
-
 			list( $value, $i, $inIntPart, $next ) = $this->roundNextDigit( $value, $i, $inIntPart );
-
 			$rounded = $next . $rounded;
 		}
 
@@ -468,7 +459,6 @@ class DecimalMath {
 
 		// preserve prefix
 		$slumped = substr( $value, 0, $i ) . $slumped;
-
 		$slumped = $this->stripLeadingZeros( $slumped );
 
 		if ( $slumped === '-0' ) {

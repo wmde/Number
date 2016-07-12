@@ -5,6 +5,7 @@ namespace ValueFormatters;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -110,13 +111,13 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @see ValueFormatter::format
 	 *
-	 * @param QuantityValue $value
+	 * @param UnboundedQuantityValue $value
 	 *
 	 * @throws InvalidArgumentException
 	 * @return string Text
 	 */
 	public function format( $value ) {
-		if ( !( $value instanceof QuantityValue ) ) {
+		if ( !( $value instanceof UnboundedQuantityValue ) ) {
 			throw new InvalidArgumentException( 'Data value type mismatch. Expected a QuantityValue.' );
 		}
 
@@ -126,11 +127,11 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @since 0.6
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	protected function formatQuantityValue( QuantityValue $quantity ) {
+	protected function formatQuantityValue( UnboundedQuantityValue $quantity ) {
 		$formatted = $this->formatNumber( $quantity );
 		$unit = $this->formatUnit( $quantity->getUnit() );
 
@@ -150,28 +151,32 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @since 0.6
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	protected function formatNumber( QuantityValue $quantity ) {
+	protected function formatNumber( UnboundedQuantityValue $quantity ) {
 		$roundingExponent = $this->getRoundingExponent( $quantity );
 
 		$amount = $quantity->getAmount();
 
-		if ( $roundingExponent === null ) {
-			$formatted = $this->formatMinimalDecimal( $amount );
-			$margin = $quantity->getUncertaintyMargin();
-			$margin = $margin->isZero() ? null : $this->formatMinimalDecimal( $margin );
-		} else {
-			$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
-			$formatted = $this->decimalFormatter->format( $roundedAmount );
-			$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
-		}
+		if ( $quantity instanceof QuantityValue ) {
+			if ( $roundingExponent === null ) {
+				$formatted = $this->formatMinimalDecimal( $amount );
+				$margin = $quantity->getUncertaintyMargin();
+				$margin = $margin->isZero() ? null : $this->formatMinimalDecimal( $margin );
+			} else {
+				$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
+				$formatted = $this->decimalFormatter->format( $roundedAmount );
+				$margin = $this->formatMargin( $quantity->getUncertaintyMargin(), $roundingExponent );
+			}
 
-		if ( $margin !== null ) {
-			// TODO: use localizable pattern for constructing the output.
-			$formatted .= '±' . $margin;
+			if ( $margin !== null ) {
+				// TODO: use localizable pattern for constructing the output.
+				$formatted .= '±' . $margin;
+			}
+		} else {
+			$formatted = $this->decimalFormatter->format( $amount );
 		}
 
 		return $formatted;
@@ -185,9 +190,10 @@ class QuantityFormatter extends ValueFormatterBase {
 	 *
 	 * @return int|null
 	 */
-	private function getRoundingExponent( QuantityValue $quantity ) {
+	private function getRoundingExponent( UnboundedQuantityValue $quantity ) {
 		if ( $this->options->getOption( self::OPT_APPLY_ROUNDING ) === true ) {
 			return $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN )
+					|| !( $quantity instanceof QuantityValue )
 				? null
 				// round to the order of uncertainty
 				: $quantity->getOrderOfUncertainty();

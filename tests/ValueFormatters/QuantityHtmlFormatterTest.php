@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityHtmlFormatter;
@@ -65,11 +66,19 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 */
 	public function validProvider() {
 		return array(
-			'Unit 1' => array(
+			'Unbounded, Unit 1' => array(
+				UnboundedQuantityValue::newFromNumber( '+2', '1' ),
+				'2'
+			),
+			'Unbounded, String unit' => array(
+				UnboundedQuantityValue::newFromNumber( '+2', 'Ultrameter' ),
+				'2 <span class="wb-unit">Ultrameter</span>'
+			),
+			'Bounded, Unit 1' => array(
 				QuantityValue::newFromNumber( '+2', '1', '+3', '+1' ),
 				'2±1'
 			),
-			'String unit' => array(
+			'Bounded, String unit' => array(
 				QuantityValue::newFromNumber( '+2', 'Ultrameter', '+3', '+1' ),
 				'2±1 <span class="wb-unit">Ultrameter</span>'
 			),
@@ -82,7 +91,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 
 	public function testFormatWithFormatString() {
 		$formatter = $this->getQuantityHtmlFormatter( null, null, '$2&thinsp;$1' );
-		$value = QuantityValue::newFromNumber( '+5', 'USD' );
+		$value = UnboundedQuantityValue::newFromNumber( '+5', 'USD' );
 		$formatted = $formatter->format( $value );
 		$this->assertSame( '<span class="wb-unit">USD</span>&thinsp;5', $formatted );
 	}
@@ -101,7 +110,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 			->will( $this->returnValue( '<b>+2</b>' ) );
 
 		$formatter = $this->getQuantityHtmlFormatter( $options, $decimalFormatter );
-		$formatted = $formatter->format( QuantityValue::newFromNumber( '+2', $unit ) );
+		$formatted = $formatter->format( UnboundedQuantityValue::newFromNumber( '+2', $unit ) );
 		$this->assertSame( $expected, $formatted );
 	}
 

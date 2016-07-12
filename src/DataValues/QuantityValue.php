@@ -8,28 +8,19 @@ use InvalidArgumentException;
  * Class representing a quantity with associated unit and uncertainty interval.
  * The amount is stored as a @see DecimalValue object.
  *
+ * @see UnboundedQuantityValue For quantities with no known uncertainty interval.
  * For simple numeric amounts use @see NumberValue.
+ *
+ * @note UnboundedQuantityValue and QuantityValue both use the value type ID "quantity".
+ * The fact that we use subclassing to model the bounded vs the unbounded case should be
+ * considered an implementation detail.
  *
  * @since 0.1
  *
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class QuantityValue extends DataValueObject {
-
-	/**
-	 * The quantity's amount
-	 *
-	 * @var DecimalValue
-	 */
-	private $amount;
-
-	/**
-	 * The quantity's unit identifier (use "1" for unitless quantities).
-	 *
-	 * @var string
-	 */
-	private $unit;
+class QuantityValue extends UnboundedQuantityValue {
 
 	/**
 	 * The quantity's upper bound
@@ -46,10 +37,6 @@ class QuantityValue extends DataValueObject {
 	private $lowerBound;
 
 	/**
-	 * Constructs a new QuantityValue object, representing the given value.
-	 *
-	 * @since 0.1
-	 *
 	 * @param DecimalValue $amount
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
 	 * @param DecimalValue $upperBound The upper bound of the quantity, inclusive.
@@ -58,6 +45,8 @@ class QuantityValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function __construct( DecimalValue $amount, $unit, DecimalValue $upperBound, DecimalValue $lowerBound ) {
+		parent::__construct( $amount, $unit );
+
 		if ( $lowerBound->compare( $amount ) > 0 ) {
 			throw new IllegalValueException( '$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue() );
 		}
@@ -66,16 +55,6 @@ class QuantityValue extends DataValueObject {
 			throw new IllegalValueException( '$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue() );
 		}
 
-		if ( !is_string( $unit ) ) {
-			throw new IllegalValueException( '$unit needs to be a string, not ' . gettype( $unit ) );
-		}
-
-		if ( $unit === '' ) {
-			throw new IllegalValueException( '$unit can not be an empty string (use "1" for unit-less quantities)' );
-		}
-
-		$this->amount = $amount;
-		$this->unit = $unit;
 		$this->upperBound = $upperBound;
 		$this->lowerBound = $lowerBound;
 	}
@@ -126,44 +105,6 @@ class QuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * Converts $number to a DecimalValue if possible and necessary.
-	 *
-	 * @note: if the $number is given as a string, it must conform to the rules
-	 *        defined by @see DecimalValue.
-	 *
-	 * @param string $name The variable name to use in exception messages
-	 * @param string|int|float|DecimalValue|null $number
-	 * @param DecimalValue|null $default
-	 *
-	 * @throws IllegalValueException
-	 * @throws InvalidArgumentException
-	 * @return DecimalValue
-	 */
-	private static function asDecimalValue( $name, $number, DecimalValue $default = null ) {
-		if ( !is_string( $name ) ) {
-			throw new InvalidArgumentException( '$name must be a string' );
-		}
-
-		if ( $number === null ) {
-			if ( $default === null ) {
-				throw new InvalidArgumentException( '$' . $name . ' must not be null' );
-			}
-
-			$number = $default;
-		}
-
-		if ( $number instanceof DecimalValue ) {
-			// nothing to do
-		} elseif ( is_int( $number ) || is_float( $number ) || is_string( $number ) ) {
-			$number = new DecimalValue( $number );
-		} else {
-			throw new IllegalValueException( '$' . $name . '  must be a string, int, or float' );
-		}
-
-		return $number;
-	}
-
-	/**
 	 * @see Serializable::serialize
 	 *
 	 * @since 0.1
@@ -189,51 +130,6 @@ class QuantityValue extends DataValueObject {
 	public function unserialize( $data ) {
 		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
-	}
-
-	/**
-	 * @see DataValue::getType
-	 *
-	 * @since 0.1
-	 *
-	 * @return string
-	 */
-	public static function getType() {
-		return 'quantity';
-	}
-
-	/**
-	 * @see DataValue::getSortKey
-	 *
-	 * @since 0.1
-	 *
-	 * @return float
-	 */
-	public function getSortKey() {
-		return $this->amount->getValueFloat();
-	}
-
-	/**
-	 * Returns the quantity object.
-	 * @see DataValue::getValue
-	 *
-	 * @since 0.1
-	 *
-	 * @return self
-	 */
-	public function getValue() {
-		return $this;
-	}
-
-	/**
-	 * Returns the amount represented by this quantity.
-	 *
-	 * @since 0.1
-	 *
-	 * @return DecimalValue
-	 */
-	public function getAmount() {
-		return $this->amount;
 	}
 
 	/**
@@ -281,6 +177,8 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * The offset is calculated as max( amount - lowerBound, upperBound - amount ).
 	 *
+	 * @todo Should be factored out into a separate QuantityMath class.
+	 *
 	 * @since 0.1
 	 *
 	 * @return DecimalValue
@@ -308,6 +206,8 @@ class QuantityValue extends DataValueObject {
 	 *
 	 * Note that this calculation assumes a symmetric uncertainty interval,
 	 * and can be misleading.
+	 *
+	 * @todo Should be factored out into a separate QuantityMath class.
 	 *
 	 * @since 0.1
 	 *
@@ -371,6 +271,9 @@ class QuantityValue extends DataValueObject {
 	 *        to the transformation callback.
 	 *
 	 * @param mixed ... Any extra parameters will be passed to the $transformation function.
+	 *
+	 * @todo share more code with UnboundQuantityValue::transform.
+	 * @todo Should be factored out into a separate QuantityMath class.
 	 *
 	 * @throws InvalidArgumentException
 	 * @return self
@@ -445,40 +348,30 @@ class QuantityValue extends DataValueObject {
 	 * Constructs a new instance of the DataValue from the provided data.
 	 * This can round-trip with @see getArrayValue
 	 *
+	 * @note: if the upperBound or lowerBound field is missing from $data,
+	 * this returns an UnboundedQuantityValue, not a QuantityValue!
+	 *
 	 * @since 0.1
 	 *
 	 * @param mixed $data
 	 *
-	 * @return self
+	 * @return UnboundedQuantityValue
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
+		if ( !isset( $data['upperBound'] ) && !isset( $data['lowerBound'] ) ) {
+			// No bounds given, so construct an unbounded QuantityValue.
+			return parent::newFromArray( $data );
+		}
+
 		self::requireArrayFields( $data, array( 'amount', 'unit', 'upperBound', 'lowerBound' ) );
 
-		return new static(
+		return new self(
 			DecimalValue::newFromArray( $data['amount'] ),
 			$data['unit'],
 			DecimalValue::newFromArray( $data['upperBound'] ),
 			DecimalValue::newFromArray( $data['lowerBound'] )
 		);
-	}
-
-	/**
-	 * @see Comparable::equals
-	 *
-	 * @since 0.1
-	 *
-	 * @param mixed $target
-	 *
-	 * @return bool
-	 */
-	public function equals( $target ) {
-		if ( $this === $target ) {
-			return true;
-		}
-
-		return $target instanceof self
-			&& $this->toArray() === $target->toArray();
 	}
 
 }

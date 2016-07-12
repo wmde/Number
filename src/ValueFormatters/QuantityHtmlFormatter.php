@@ -2,7 +2,7 @@
 
 namespace ValueFormatters;
 
-use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 
 /**
  * HTML formatter for quantity values.
@@ -17,11 +17,11 @@ class QuantityHtmlFormatter extends QuantityFormatter {
 	/**
 	 * @see QuantityFormatter::formatNumber
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue $quantity
 	 *
 	 * @return string HTML
 	 */
-	protected function formatNumber( QuantityValue $quantity ) {
+	protected function formatNumber( UnboundedQuantityValue $quantity ) {
 		$formatted = parent::formatNumber( $quantity );
 
 		return htmlspecialchars( $formatted );

@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
@@ -79,7 +80,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 		) );
 
 		$exactRounding = new FormatterOptions( array(
-			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => true,
+			QuantityFormatter::OPT_SHOW_UNCERTAINTY_MARGIN => false,
 			QuantityFormatter::OPT_APPLY_ROUNDING => -2
 		) );
 
@@ -98,22 +99,30 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 			'+0.0/nm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0 °', $noMargin ),
 			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0±0.1 °', $withMargin ),
-			'+0.0/xr' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.00±0.10 °', $exactRounding ),
+			'+0.0/xr' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.00 °', $exactRounding ), // TODO: don't add an extra trailing 0!
 
 			'-1205/nm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200 m', $noMargin ),
 			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $withMargin ),
 			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $noRounding ),
-			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00±100.00 m', $exactRounding ),
+			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205.00 m', $exactRounding ),
 			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100', $noUnit ),
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),
 			'+3.025/wm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.0039', $withMargin ),
-			'+3.025/xr' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.03', $exactRounding ), // TODO: never round to 0! See bug #56892
+			'+3.025/xr' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.03', $exactRounding ), // NOTE: rounding is ignored
 
 			'+3.125/nr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.125±0.125', $noRounding ),
-			'+3.125/xr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.13±0.13', $exactRounding ),
+			'+3.125/xr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.13', $exactRounding ),
 
 			'+3.125/fs' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '+3.13', $forceSign ),
+
+			'UB: +0.0/nm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $noMargin ),
+			'UB: +0.0/wm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $withMargin ),
+			'UB: +0.0/xr' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $exactRounding ),
+			'UB: +5.021/nm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $noMargin ),
+			'UB: +5.021/wm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $withMargin ),
+			'UB: +5.021/xr' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $exactRounding ),
+			'UB: +3.125/fs' => array( UnboundedQuantityValue::newFromNumber( '+3.125', '1' ), '+3.125', $forceSign ),
 
 			// Rounding with a fixed +/-1 margin
 			array( QuantityValue::newFromNumber( '+1.44', '1', '+2.44', '+0.44' ), '1', $noMargin ),
@@ -161,7 +170,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 	public function testFormatWithFormatString() {
 		$formatter = $this->getQuantityFormatter( null, '<$2>$1' );
-		$value = QuantityValue::newFromNumber( '+5', 'USD' );
+		$value = UnboundedQuantityValue::newFromNumber( '+5', 'USD' );
 		$formatted = $formatter->format( $value );
 		$this->assertSame( '<USD>5', $formatted );
 	}

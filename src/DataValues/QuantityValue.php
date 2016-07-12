@@ -66,12 +66,8 @@ class QuantityValue extends DataValueObject {
 			throw new IllegalValueException( '$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue() );
 		}
 
-		if ( !is_string( $unit ) ) {
-			throw new IllegalValueException( '$unit needs to be a string, not ' . gettype( $unit ) );
-		}
-
-		if ( $unit === '' ) {
-			throw new IllegalValueException( '$unit can not be an empty string (use "1" for unit-less quantities)' );
+		if ( !is_string( $unit ) || $unit === '' ) {
+			throw new IllegalValueException( '$unit must be a non-empty string. Use "1" for unit-less quantities.' );
 		}
 
 		$this->amount = $amount;
@@ -380,12 +376,8 @@ class QuantityValue extends DataValueObject {
 			throw new InvalidArgumentException( '$transformation must be callable.' );
 		}
 
-		if ( !is_string( $newUnit ) ) {
-			throw new InvalidArgumentException( '$newUnit must be a string. Use "1" as the unit for unit-less quantities.' );
-		}
-
-		if ( $newUnit === '' ) {
-			throw new InvalidArgumentException( '$newUnit must not be empty. Use "1" as the unit for unit-less quantities.' );
+		if ( !is_string( $newUnit ) || $newUnit === '' ) {
+			throw new InvalidArgumentException( '$newUnit must be a non-empty string. Use "1" for unit-less quantities.' );
 		}
 
 		// Apply transformation by calling the $transform callback.

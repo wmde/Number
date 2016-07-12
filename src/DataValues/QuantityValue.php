@@ -106,22 +106,6 @@ class QuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * @see newFromNumber
-	 *
-	 * @deprecated since 0.1, use newFromNumber instead
-	 *
-	 * @param string|int|float|DecimalValue $amount
-	 * @param string $unit
-	 * @param string|int|float|DecimalValue|null $upperBound
-	 * @param string|int|float|DecimalValue|null $lowerBound
-	 *
-	 * @return self
-	 */
-	public static function newFromDecimal( $amount, $unit = '1', $upperBound = null, $lowerBound = null ) {
-		return self::newFromNumber( $amount, $unit, $upperBound, $lowerBound );
-	}
-
-	/**
 	 * Converts $number to a DecimalValue if possible and necessary.
 	 *
 	 * @note: if the $number is given as a string, it must conform to the rules

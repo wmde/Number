@@ -147,6 +147,8 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			array( QuantityValue::newFromNumber( '+0.0015', '1', '+0.003', '+0' ), '0.0015±0.0015' ),
 			array( QuantityValue::newFromNumber( '+2.0011', '1', '+2.0022', '+2' ), '2.0011±0.0011' ),
 			array( QuantityValue::newFromNumber( '+2.0099', '1', '+2.0198', '+2' ), '2.0099±0.0099' ),
+
+			// IEEE edge cases
 			array(
 				QuantityValue::newFromNumber(
 					'+1.00000000000000015',
@@ -155,6 +157,24 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 					'+1.00000000000000005'
 				),
 				'1.00000000000000015±0.0000000000000001'
+			),
+			'0.2 / 3 * 3' => array(
+				QuantityValue::newFromNumber(
+					'+0.2000000000000000111',
+					'1',
+					'+0.2000000000000000111',
+					'+0.2000000000000000111'
+				),
+				'0.2000000000000000111'
+			),
+			'8 - 6.4' => array(
+				QuantityValue::newFromNumber(
+					'+1.59999999999999964473',
+					'1',
+					'+1.59999999999999964473',
+					'+1.59999999999999964473'
+				),
+				'1.59999999999999964473'
 			),
 		);
 	}

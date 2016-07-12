@@ -337,28 +337,6 @@ class QuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * Returns the number of significant figures in the amount-string,
-	 * counting the decimal point, but not counting the leading sign.
-	 *
-	 * Note that this calculation assumes a symmetric uncertainty interval, and can be misleading
-	 *
-	 * @since 0.1
-	 *
-	 * @return int
-	 */
-	public function getSignificantFigures() {
-		$math = new DecimalMath();
-
-		// $orderOfUncertainty is +/- 200 -> 2; +/- 0.02 -> -2
-		$orderOfUncertainty = $this->getOrderOfUncertainty();
-
-		// the number of digits (without the sign) is the same as the position (with the sign).
-		$significantDigits = $math->getPositionForExponent( $orderOfUncertainty, $this->amount );
-
-		return $significantDigits;
-	}
-
-	/**
 	 * Returns the unit held by this quantity.
 	 * Unit-less quantities should use "1" as their unit.
 	 *

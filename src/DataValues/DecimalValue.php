@@ -170,7 +170,7 @@ class DecimalValue extends DataValueObject {
 
 		// the fractional part is left-aligned, so just check alphanumeric ordering
 		$cmp = strcmp( $aFract, $bFract );
-		return  ( $cmp > 0 ? $sense : ( $cmp < 0 ? -$sense : 0 ) );
+		return $cmp === 0 ? 0 : ( $cmp < 0 ? -$sense : $sense );
 	}
 
 	/**

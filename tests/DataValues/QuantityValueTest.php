@@ -127,6 +127,99 @@ class QuantityValueTest extends DataValueTest {
 	}
 
 	/**
+	 * @dataProvider validArraySerializationProvider
+	 */
+	public function testNewFromArray( $data, QuantityValue $expected ) {
+		$value = QuantityValue::newFromArray( $data );
+		$this->assertTrue( $expected->equals( $value ), $value . ' should equal ' . $expected );
+	}
+
+	public function validArraySerializationProvider() {
+		return array(
+			'complete' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				),
+				QuantityValue::newFromNumber( '+2', '1', '+2.5', '+1.5' )
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider invalidArraySerializationProvider
+	 */
+	public function testNewFromArray_failure( $data ) {
+		$this->setExpectedException( 'DataValues\IllegalValueException' );
+		QuantityValue::newFromArray( $data );
+	}
+
+	public function invalidArraySerializationProvider() {
+		return array(
+			'no-amount' => array(
+				array(
+					'unit' => '1',
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'no-unit' => array(
+				array(
+					'amount' => '+2',
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'no-upperBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'no-lowerBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+				)
+			),
+			'unbounded' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+				)
+			),
+			'bad-amount' => array(
+				array(
+					'amount' => 'x',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'bad-upperBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => 'x',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'bad-lowerBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+					'lowerBound' => 'x',
+				)
+			),
+		);
+	}
+
+	/**
 	 * @see https://phabricator.wikimedia.org/T110728
 	 * @see http://www.regular-expressions.info/anchors.html#realend
 	 */

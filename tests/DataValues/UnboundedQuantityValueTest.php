@@ -2,9 +2,7 @@
 
 namespace DataValues\Tests;
 
-use DataValues\DataValue;
 use DataValues\DecimalValue;
-use DataValues\IllegalValueException;
 use DataValues\UnboundedQuantityValue;
 
 /**
@@ -112,7 +110,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	/**
 	 * @dataProvider validArraySerializationProvider
 	 */
-	public function testNewFromArray( $data, DataValue $expected ) {
+	public function testNewFromArray( $data, UnboundedQuantityValue $expected ) {
 		$value = UnboundedQuantityValue::newFromArray( $data );
 		$this->assertTrue( $expected->equals( $value ), $value . ' should equal ' . $expected );
 	}

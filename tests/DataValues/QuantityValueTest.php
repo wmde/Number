@@ -186,6 +186,12 @@ class QuantityValueTest extends DataValueTest {
 					'upperBound' => '+2.5',
 				)
 			),
+			'unbounded' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+				)
+			),
 			'bad-amount' => array(
 				array(
 					'amount' => 'x',

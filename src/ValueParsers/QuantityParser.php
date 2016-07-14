@@ -119,10 +119,13 @@ class QuantityParser extends StringValueParser {
 			$marginValue = $this->decimalParser->parse( $margin );
 			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
 			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
-		} else {
+		} elseif ( $exactness === '~' ) {
 			// derive uncertainty from given decimals
 			// NOTE: with scientific notation, the exponent applies to the uncertainty bounds, too
 			$quantity = $this->newUncertainQuantityFromDigits( $amountValue, $unit, $exponent );
+		} else {
+			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
+			return new QuantityValue( $amountValue, $unit, null, null );
 		}
 
 		return $quantity;

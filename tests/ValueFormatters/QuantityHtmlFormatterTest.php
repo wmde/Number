@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityHtmlFormatter;
@@ -65,6 +66,14 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 */
 	public function validProvider() {
 		return array(
+			'Unbounded, Unit 1' => array(
+				UnboundedQuantityValue::newFromNumber( '+2', '1' ),
+				'2'
+			),
+			'Unbounded, String unit' => array(
+				UnboundedQuantityValue::newFromNumber( '+2', 'Ultrameter' ),
+				'2 <span class="wb-unit">Ultrameter</span>'
+			),
 			'Unit 1' => array(
 				QuantityValue::newFromNumber( '+2', '1', '+3', '+1' ),
 				'2±1'

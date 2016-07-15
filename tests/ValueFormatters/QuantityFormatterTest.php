@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
@@ -103,6 +104,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'-1205/nm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200 m', $noMargin ),
 			'-1205/wm' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $withMargin ),
 			'-1205/nr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $noRounding ),
+			'-1205/xr' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205 m', $exactRounding ),
 			'-1205/nu' => array( QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100', $noUnit ),
 
 			'+3.025/nm' => array( QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ),
@@ -113,6 +115,23 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'+3.125/xr' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.13', $exactRounding ),
 
 			'+3.125/fs' => array( QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '+3.13', $forceSign ),
+
+			// Unbounded quantities with different options
+			'UB: +0.0/nm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $noMargin ),
+			'UB: +0.0/wm' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $withMargin ),
+			'UB: +0.0/xr' => array( UnboundedQuantityValue::newFromNumber( '+0.0', '°' ), '0.0 °', $exactRounding ),
+			'UB: +5.021/nm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $noMargin ),
+			'UB: +5.021/wm' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.021 °', $withMargin ),
+			'UB: +5.021/xr' => array( UnboundedQuantityValue::newFromNumber( '+5.021', '°' ), '5.02 °', $exactRounding ),
+			'UB: +3.125/fs' => array( UnboundedQuantityValue::newFromNumber( '+3.125', '1' ), '+3.125', $forceSign ),
+
+			// Unbounded quantities with enforced, exact rounding
+			array( UnboundedQuantityValue::newFromNumber( '+0.00155', '1' ), '0.00', $exactRounding ),
+			array( UnboundedQuantityValue::newFromNumber( '+0.0155', '1' ), '0.02', $exactRounding ),
+			array( UnboundedQuantityValue::newFromNumber( '+0.155', '1' ), '0.16', $exactRounding ),
+			array( UnboundedQuantityValue::newFromNumber( '+1.55', '1' ), '1.55', $exactRounding ),
+			array( UnboundedQuantityValue::newFromNumber( '+15.5', '1' ), '15.5', $exactRounding ),
+			array( UnboundedQuantityValue::newFromNumber( '+155', '1' ), '155', $exactRounding ),
 
 			// Rounding with a fixed +/-1 margin
 			array( QuantityValue::newFromNumber( '+1.44', '1', '+2.44', '+0.44' ), '1', $noMargin ),

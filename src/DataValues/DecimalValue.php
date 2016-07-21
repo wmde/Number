@@ -327,8 +327,9 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @return DecimalValue
 	 */
-	public function trim() {
-		$trimmed = preg_replace( '/(\.[\d]+?)0+$/', '\1', $this->value );
+	public function getTrimmed() {
+		$trimmed = preg_replace( '/(\.\d+?)0+$/', '$1', $this->value );
+		$trimmed = preg_replace( '/(?<=\d)\.0*$/', '', $trimmed );
 
 		if ( $trimmed !== $this->value ) {
 			return new DecimalValue( $trimmed );

@@ -321,21 +321,21 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider trimProvider
+	 * @dataProvider provideGetTrim
 	 */
-	public function testTrim( DecimalValue $value, DecimalValue $expected ) {
-		$actual = $value->trim();
+	public function testGetTrim( DecimalValue $value, DecimalValue $expected ) {
+		$actual = $value->getTrimmed();
 		$this->assertSame( $expected->getValue(), $actual->getValue() );
 	}
 
-	public function trimProvider() {
+	public function provideGetTrim() {
 		return array(
 			array( new DecimalValue(  '+8' ),     new DecimalValue(  '+8' ) ),
 			array( new DecimalValue(  '+80' ),    new DecimalValue(  '+80' ) ),
 			array( new DecimalValue(  '+800' ),   new DecimalValue(  '+800' ) ),
 			array( new DecimalValue(  '+0' ),     new DecimalValue(  '+0' ) ),
-			array( new DecimalValue(  '+0.0' ),   new DecimalValue(  '+0.0' ) ),
-			array( new DecimalValue(  '+0.00' ),  new DecimalValue(  '+0.0' ) ),
+			array( new DecimalValue(  '+0.0' ),   new DecimalValue(  '+0' ) ),
+			array( new DecimalValue(  '+10.00' ), new DecimalValue(  '+10' ) ),
 			array( new DecimalValue(  '-0.1' ),   new DecimalValue(  '-0.1' ) ),
 			array( new DecimalValue(  '-0.10' ),  new DecimalValue(  '-0.1' ) ),
 			array( new DecimalValue(  '-0.010' ), new DecimalValue(  '-0.01' ) ),

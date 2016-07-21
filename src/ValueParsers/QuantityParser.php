@@ -250,8 +250,8 @@ class QuantityParser extends StringValueParser {
 		$margin = $math->product( $hilo, new DecimalValue( '0.25' ) );
 
 		// bounds = amount +/- margin
-		$upperBound = $math->sum( $amount, $margin )->trim();
-		$lowerBound = $math->sum( $amount, $margin->computeComplement() )->trim();
+		$upperBound = $math->sum( $amount, $margin )->getTrimmed();
+		$lowerBound = $math->sum( $amount, $margin->computeComplement() )->getTrimmed();
 
 		// apply exponent
 		$amount = $this->decimalParser->applyDecimalExponent( $amount, $exponent );

@@ -321,6 +321,23 @@ class DecimalValue extends DataValueObject {
 	}
 
 	/**
+	 * Returns a DecimalValue with the same digits as this one, but with any trailing zeros
+	 * after the decimal point removed. If there are no trailing zeros after the decimal
+	 * point, this method will return $this.
+	 *
+	 * @return DecimalValue
+	 */
+	public function trim() {
+		$trimmed = preg_replace( '/(\.[\d]+?)0+$/', '\1', $this->value );
+
+		if ( $trimmed !== $this->value ) {
+			return new DecimalValue( $trimmed );
+		} else {
+			return $this;
+		}
+	}
+
+	/**
 	 * Returns the value held by this object, as a float.
 	 * Equivalent to floatval( $this->getvalue() ).
 	 *

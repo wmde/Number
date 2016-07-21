@@ -224,9 +224,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 */
 	private function formatMinimalDecimal( DecimalValue $decimal ) {
 		// TODO: This should be an option of DecimalFormatter.
-		return preg_replace( '/(\.\d+?)0+$/', '$1',
-			preg_replace( '/(?<=\d)\.0*$/', '', $this->decimalFormatter->format( $decimal ) )
-		);
+		return $this->decimalFormatter->format( $decimal->getTrimmed() );
 	}
 
 	/**

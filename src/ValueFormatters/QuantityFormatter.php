@@ -5,6 +5,7 @@ namespace ValueFormatters;
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -110,14 +111,14 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @see ValueFormatter::format
 	 *
-	 * @param QuantityValue $value
+	 * @param UnboundedQuantityValue|QuantityValue $value
 	 *
 	 * @throws InvalidArgumentException
 	 * @return string Text
 	 */
 	public function format( $value ) {
-		if ( !( $value instanceof QuantityValue ) ) {
-			throw new InvalidArgumentException( 'Data value type mismatch. Expected a QuantityValue.' );
+		if ( !( $value instanceof UnboundedQuantityValue ) ) {
+			throw new InvalidArgumentException( 'Data value type mismatch. Expected a UnboundedQuantityValue.' );
 		}
 
 		return $this->formatQuantityValue( $value );
@@ -126,12 +127,14 @@ class QuantityFormatter extends ValueFormatterBase {
 	/**
 	 * @since 0.6
 	 *
-	 * @param QuantityValue $quantity
+	 * @param UnboundedQuantityValue|QuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	protected function formatQuantityValue( QuantityValue $quantity ) {
-		$formatted = $this->formatNumber( $quantity );
+	protected function formatQuantityValue( UnboundedQuantityValue $quantity ) {
+		$formatted = $quantity instanceof QuantityValue
+			? $this->formatNumber( $quantity )
+			: $this->formatUnboundedQuantityValue( $quantity );
 		$unit = $this->formatUnit( $quantity->getUnit() );
 
 		if ( $unit !== null ) {
@@ -145,6 +148,22 @@ class QuantityFormatter extends ValueFormatterBase {
 		}
 
 		return $formatted;
+	}
+
+	/**
+	 * @param UnboundedQuantityValue $quantity
+	 *
+	 * @return string
+	 */
+	protected function formatUnboundedQuantityValue( UnboundedQuantityValue $quantity ) {
+		$amount = $quantity->getAmount();
+		$roundingExponent = $this->options->getOption( self::OPT_APPLY_ROUNDING );
+
+		if ( !is_bool( $roundingExponent ) ) {
+			$amount = $this->decimalMath->roundToExponent( $amount, (int)$roundingExponent );
+		}
+
+		return $this->decimalFormatter->format( $amount );
 	}
 
 	/**

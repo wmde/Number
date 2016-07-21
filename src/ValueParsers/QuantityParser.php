@@ -6,6 +6,7 @@ use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 use InvalidArgumentException;
 
 /**
@@ -60,7 +61,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @param string $value
 	 *
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue|QuantityValue
 	 * @throws ParseException
 	 */
 	protected function stringParse( $value ) {
@@ -103,7 +104,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @throws ParseException if one of the decimals could not be parsed.
 	 * @throws IllegalValueException if the QuantityValue could not be constructed
-	 * @return QuantityValue
+	 * @return UnboundedQuantityValue|QuantityValue
 	 */
 	private function newQuantityFromParts( $amount, $exactness, $margin, $unit ) {
 		list( $amount, $exponent ) = $this->decimalParser->splitDecimalExponent( $amount );
@@ -119,10 +120,13 @@ class QuantityParser extends StringValueParser {
 			$marginValue = $this->decimalParser->parse( $margin );
 			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
 			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
-		} else {
+		} elseif ( $exactness === '~' ) {
 			// derive uncertainty from given decimals
 			// NOTE: with scientific notation, the exponent applies to the uncertainty bounds, too
 			$quantity = $this->newUncertainQuantityFromDigits( $amountValue, $unit, $exponent );
+		} else {
+			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
+			return new UnboundedQuantityValue( $amountValue, $unit );
 		}
 
 		return $quantity;

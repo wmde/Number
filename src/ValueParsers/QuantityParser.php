@@ -241,19 +241,19 @@ class QuantityParser extends StringValueParser {
 	private function newUncertainQuantityFromDigits( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
 		$math = new DecimalMath();
 
-		// add/subtract one from least significant digit
-		$hi = $math->bump( $amount );
-		$lo = $math->slump( $amount );
+		// Add/subtract one from least significant digit
+		$high = $math->bump( $amount );
+		$low = $math->slump( $amount );
 
-		// compute margin = abs( hi - lo ) / 4.
-		$hilo = $math->sum( $hi, $lo->computeComplement() )->computeAbsolute();
-		$margin = $math->product( $hilo, new DecimalValue( '0.25' ) );
+		// Compute margin = abs( high - low ) / 4.
+		$highLow = $math->sum( $high, $low->computeComplement() )->computeAbsolute();
+		$margin = $math->product( $highLow, new DecimalValue( '0.25' ) );
 
-		// bounds = amount +/- margin
+		// Bounds = amount +/- margin
 		$upperBound = $math->sum( $amount, $margin )->getTrimmed();
 		$lowerBound = $math->sum( $amount, $margin->computeComplement() )->getTrimmed();
 
-		// apply exponent
+		// Apply exponent
 		$amount = $this->decimalParser->applyDecimalExponent( $amount, $exponent );
 		$lowerBound = $this->decimalParser->applyDecimalExponent( $lowerBound, $exponent );
 		$upperBound = $this->decimalParser->applyDecimalExponent( $upperBound, $exponent );

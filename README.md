@@ -64,6 +64,8 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
   interval.
 * Fixed rounding algorithm in `DecimalMath` (rounded 1.45 to 2 instead of 1).
 * `DecimalValue` constructor optionally accepts strings with no leading plus sign.
+* Removed `QuantityValue::getSignificantFigures`.
+* Removed `QuantityValue::newFromDecimal` (deprecated since 0.1).
 
 ### 0.7.0 (2016-04-25)
 

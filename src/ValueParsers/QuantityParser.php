@@ -225,9 +225,12 @@ class QuantityParser extends StringValueParser {
 	 * a level of uncertainty based on the digits given.
 	 *
 	 * The upper and lower bounds are determined automatically from the given
-	 * digits by increasing resp. decreasing the least significant digit.
-	 * E.g. "+0.01" would have upperBound "+0.02" and lowerBound "+0.01",
-	 * while "-100" would have upperBound "-99" and lowerBound "-101".
+	 * digits by adding/subtracting half the order of magnitude of the least
+	 * significant digit. Trailing zeros before the decimal point are considered
+	 * significant.
+	 *
+	 * E.g. "+0.01" would have upperBound "+0.015" and lowerBound "+0.005",
+	 * while "-100" would have upperBound "-99.5" and lowerBound "-100.5".
 	 *
 	 * @param DecimalValue $amount The quantity
 	 * @param string $unit The quantity's unit (use "1" for unit-less quantities)
@@ -238,14 +241,19 @@ class QuantityParser extends StringValueParser {
 	private function newUncertainQuantityFromDigits( DecimalValue $amount, $unit = '1', $exponent = 0 ) {
 		$math = new DecimalMath();
 
-		if ( $amount->getSign() === '+' ) {
-			$upperBound = $math->bump( $amount );
-			$lowerBound = $math->slump( $amount );
-		} else {
-			$upperBound = $math->slump( $amount );
-			$lowerBound = $math->bump( $amount );
-		}
+		// Add/subtract one from least significant digit
+		$high = $math->bump( $amount );
+		$low = $math->slump( $amount );
 
+		// Compute margin = abs( high - low ) / 4.
+		$highLow = $math->sum( $high, $low->computeComplement() )->computeAbsolute();
+		$margin = $math->product( $highLow, new DecimalValue( '0.25' ) );
+
+		// Bounds = amount +/- margin
+		$upperBound = $math->sum( $amount, $margin )->getTrimmed();
+		$lowerBound = $math->sum( $amount, $margin->computeComplement() )->getTrimmed();
+
+		// Apply exponent
 		$amount = $this->decimalParser->applyDecimalExponent( $amount, $exponent );
 		$lowerBound = $this->decimalParser->applyDecimalExponent( $lowerBound, $exponent );
 		$upperBound = $this->decimalParser->applyDecimalExponent( $upperBound, $exponent );

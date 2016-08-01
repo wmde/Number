@@ -101,9 +101,9 @@ class QuantityParserTest extends StringValueParserTest {
 			'0!' => QuantityValue::newFromNumber( 0, '1', 0, 0 ),
 			'10.003!' => QuantityValue::newFromNumber( '+10.003', '1', '+10.003', '+10.003' ),
 			'-200!' => QuantityValue::newFromNumber( -200, '1', -200, -200 ),
-			'0~' => QuantityValue::newFromNumber( 0, '1', 1, -1 ),
-			'10.003~' => QuantityValue::newFromNumber( '+10.003', '1', '+10.004', '+10.002' ),
-			'-200~' => QuantityValue::newFromNumber( -200, '1', -199, -201 ),
+			'0~' => QuantityValue::newFromNumber( 0, '1', 0.5, -0.5 ),
+			'10.003~' => QuantityValue::newFromNumber( '+10.003', '1', '+10.0035', '+10.0025' ),
+			'-200~' => QuantityValue::newFromNumber( -200, '1', -199.5, -200.5 ),
 
 			// uncertainty
 			'5.3 +/- 0.2' => QuantityValue::newFromNumber( '+5.3', '1', '+5.5', '+5.1' ),
@@ -124,7 +124,7 @@ class QuantityParserTest extends StringValueParserTest {
 			// units
 			'5.3+-0.2cm' => QuantityValue::newFromNumber( '+5.3', 'cm', '+5.5', '+5.1' ),
 			'10.003! km' => QuantityValue::newFromNumber( '+10.003', 'km', '+10.003', '+10.003' ),
-			'-200~ %  ' => QuantityValue::newFromNumber( -200, '%', -199, -201 ),
+			'-200~ %  ' => QuantityValue::newFromNumber( -200, '%', -199.5, -200.5 ),
 			'100003 m³' => UnboundedQuantityValue::newFromNumber( 100003, 'm³' ),
 			'3.±-0.2µ' => QuantityValue::newFromNumber( '+3', 'µ', '+3.2', '+2.8' ),
 			'+00.20 Å' => UnboundedQuantityValue::newFromNumber( '+0.20', 'Å' ),

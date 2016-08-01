@@ -23,11 +23,11 @@ The recommended way to use this library is via [Composer](http://getcomposer.org
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `data-values/number` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-version 0.7 of this package:
+version 0.8 of this package:
 
     {
         "require": {
-            "data-values/number": "0.7.*"
+            "data-values/number": "0.8.*"
         }
     }
 
@@ -49,6 +49,21 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 (https://wikimedia.de) employee for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 0.8.0 (2016-08-01)
+
+* Added `DecimalValue::getTrimmed`.
+* Added `UnboundedQuantityValue`.
+    * `QuantityValue` extends `UnboundedQuantityValue`.
+    * `QuantityParser` returns `UnboundedQuantityValue`s instead of always guessing an uncertainty
+      interval.
+    * `QuantityFormatter` also accepts `UnboundedQuantityValue`s.
+* `QuantityParser` defaults to ±0.5 instead of ±1 when asked to guess an uncertainty interval, e.g.
+  `1~` becomes `1±0.5`.
+* `QuantityFormatter` does not round any more when the value is rendered with a known uncertainty
+  interval.
+* Fixed rounding algorithm in `DecimalMath` (rounded 1.45 to 2 instead of 1).
+* `DecimalValue` constructor optionally accepts strings with no leading plus sign.
 
 ### 0.7.0 (2016-04-25)
 

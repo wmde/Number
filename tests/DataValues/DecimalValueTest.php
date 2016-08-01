@@ -129,7 +129,7 @@ class DecimalValueTest extends DataValueTest {
 			'signs/greater' => array( new DecimalValue( '+1' ), new DecimalValue( '-8' ), +1 ),
 			'signs/less' => array( new DecimalValue( '-8' ), new DecimalValue( '+1' ), -1 ),
 
-            'with-and-without-point' => array( new DecimalValue( '+100' ), new DecimalValue( '+100.01' ), -1 ),
+			'with-and-without-point' => array( new DecimalValue( '+100' ), new DecimalValue( '+100.01' ), -1 ),
 		);
 	}
 

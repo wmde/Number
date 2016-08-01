@@ -235,7 +235,6 @@ class QuantityFormatter extends ValueFormatterBase {
 	 */
 	private function formatMargin( DecimalValue $margin, $roundingExponent ) {
 		if ( $this->options->getOption( self::OPT_SHOW_UNCERTAINTY_MARGIN ) ) {
-			// TODO: never round to 0! See bug #56892
 			$roundedMargin = $this->decimalMath->roundToExponent( $margin, $roundingExponent );
 
 			if ( !$roundedMargin->isZero() ) {

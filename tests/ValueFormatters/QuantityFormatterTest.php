@@ -133,6 +133,13 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			array( UnboundedQuantityValue::newFromNumber( '+15.5', '1' ), '15.5', $exactRounding ),
 			array( UnboundedQuantityValue::newFromNumber( '+155', '1' ), '155', $exactRounding ),
 
+			// Default options with different margins
+			'24+-000.01' => array( QuantityValue::newFromNumber( '+24', '1', '+24.01', '+23.99' ), '24±0.01' ),
+			'24+-000.10' => array( QuantityValue::newFromNumber( '+24', '1', '+24.1', '+23.9' ), '24±0.1' ),
+			'24+-001.00' => array( QuantityValue::newFromNumber( '+24', '1', '+25', '+23' ), '24±1' ),
+			'24+-010.00' => array( QuantityValue::newFromNumber( '+24', '1', '+34', '+14' ), '24±10' ),
+			'24+-100.00' => array( QuantityValue::newFromNumber( '+24', '1', '+124', '-76' ), '24±100' ),
+
 			// Rounding with a fixed +/-1 margin
 			array( QuantityValue::newFromNumber( '+1.44', '1', '+2.44', '+0.44' ), '1', $noMargin ),
 			array( QuantityValue::newFromNumber( '+1.45', '1', '+2.45', '+0.45' ), '1', $noMargin ),
@@ -157,8 +164,12 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			array( QuantityValue::newFromNumber( '+1.0005', '1', '+1.0015', '+0.9995' ), '1.0005±0.001' ),
 			array( QuantityValue::newFromNumber( '+0.0015', '1', '+0.0025', '+0.0005' ), '0.0015±0.001' ),
 
-			// Never mess with the margin
+			/**
+			 * Never mess with the margin
+			 * @see https://phabricator.wikimedia.org/T58892
+			 */
 			array( QuantityValue::newFromNumber( '+2', '1', '+3.5', '+0.5' ), '2±1.5' ),
+			array( QuantityValue::newFromNumber( '+2', '1', '+2.016', '+1.984' ), '2±0.016' ),
 			array( QuantityValue::newFromNumber( '+2', '1', '+2.0015', '+1.9985' ), '2±0.0015' ),
 			array( QuantityValue::newFromNumber( '+0.0015', '1', '+0.003', '+0' ), '0.0015±0.0015' ),
 			array( QuantityValue::newFromNumber( '+2.0011', '1', '+2.0022', '+2' ), '2.0011±0.0011' ),

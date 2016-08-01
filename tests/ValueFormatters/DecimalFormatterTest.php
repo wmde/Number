@@ -74,7 +74,7 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 		$value = new DecimalValue( '+12345' );
 		$formatter = new DecimalFormatter( null, $localizer );
 
-		$this->assertEquals( 'n:12345', $formatter->format( $value ) );
+		$this->assertSame( 'n:12345', $formatter->format( $value ) );
 	}
 
 }

@@ -48,21 +48,21 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetValue( UnboundedQuantityValue $quantity, array $arguments ) {
-		$this->assertInstanceOf( $this->getClass(), $quantity->getValue() );
+		$this->assertSame( $quantity, $quantity->getValue() );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetAmount( UnboundedQuantityValue $quantity, array $arguments ) {
-		$this->assertEquals( $arguments[0], $quantity->getAmount() );
+		$this->assertSame( $arguments[0], $quantity->getAmount() );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetUnit( UnboundedQuantityValue $quantity, array $arguments ) {
-		$this->assertEquals( $arguments[1], $quantity->getUnit() );
+		$this->assertSame( $arguments[1], $quantity->getUnit() );
 	}
 
 	/**
@@ -185,7 +185,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetSortKey( UnboundedQuantityValue $quantity ) {
-		$this->assertEquals( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );
+		$this->assertSame( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );
 	}
 
 	/**
@@ -199,7 +199,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 		$callArgs = array_merge( array( 'x', $transformation ), $extraArgs );
 		$actual = call_user_func_array( $call, $callArgs );
 
-		$this->assertEquals( 'x', $actual->getUnit() );
+		$this->assertSame( 'x', $actual->getUnit() );
 		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
 	}
 
@@ -218,15 +218,46 @@ class UnboundedQuantityValueTest extends DataValueTest {
 		};
 
 		return array(
-			 0 => array( UnboundedQuantityValue::newFromNumber( '+10', '1' ), $identity, UnboundedQuantityValue::newFromNumber( '+10', '?' ) ),
-			 1 => array( UnboundedQuantityValue::newFromNumber( '-0.5', '1' ), $identity, UnboundedQuantityValue::newFromNumber( '-0.5', '?' ) ),
-			 2 => array( UnboundedQuantityValue::newFromNumber( '+0', '1' ), $square,   UnboundedQuantityValue::newFromNumber( '+0', '?' ) ),
-			 3 => array( UnboundedQuantityValue::newFromNumber( '+10', '1' ), $square,   UnboundedQuantityValue::newFromNumber( '+1000', '?' ) ), // note how rounding applies to bounds
-			 4 => array( UnboundedQuantityValue::newFromNumber( '+0.5', '1' ), $scale,    UnboundedQuantityValue::newFromNumber( '+0.25', '?' ), 0.5 ),
+			0 => array(
+				UnboundedQuantityValue::newFromNumber( '+10', '1' ),
+				$identity,
+				UnboundedQuantityValue::newFromNumber( '+10', '?' )
+			),
+			1 => array(
+				UnboundedQuantityValue::newFromNumber( '-0.5', '1' ),
+				$identity,
+				UnboundedQuantityValue::newFromNumber( '-0.5', '?' )
+			),
+			2 => array(
+				UnboundedQuantityValue::newFromNumber( '+0', '1' ),
+				$square,
+				UnboundedQuantityValue::newFromNumber( '+0', '?' )
+			),
+			3 => array(
+				UnboundedQuantityValue::newFromNumber( '+10', '1' ),
+				$square,
+				UnboundedQuantityValue::newFromNumber( '+1000', '?' )
+			),
+			4 => array(
+				UnboundedQuantityValue::newFromNumber( '+0.5', '1' ),
+				$scale,
+				UnboundedQuantityValue::newFromNumber( '+0.25', '?' ),
+				0.5
+			),
 
 			// note: absolutely exact values require conversion with infinite precision!
-			10 => array( UnboundedQuantityValue::newFromNumber( '+100', '1' ), $scale, UnboundedQuantityValue::newFromNumber( '+12825.0', '?' ), 128.25 ),
-			13 => array( UnboundedQuantityValue::newFromNumber( '+100', '1' ), $scale, UnboundedQuantityValue::newFromNumber( '+333.33', '?' ), 3.3333 ),
+			10 => array(
+				UnboundedQuantityValue::newFromNumber( '+100', '1' ),
+				$scale,
+				UnboundedQuantityValue::newFromNumber( '+12825', '?' ),
+				128.25
+			),
+			13 => array(
+				UnboundedQuantityValue::newFromNumber( '+100', '1' ),
+				$scale,
+				UnboundedQuantityValue::newFromNumber( '+333.33', '?' ),
+				3.3333
+			),
 		);
 	}
 

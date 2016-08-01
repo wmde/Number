@@ -91,10 +91,10 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		$math = new DecimalMath();
 
 		$actual = $math->product( $a, $b );
-		$this->assertEquals( $value, $actual->getValue() );
+		$this->assertSame( $value, $actual->getValue() );
 
 		$actual = $math->product( $b, $a );
-		$this->assertEquals( $value, $actual->getValue() );
+		$this->assertSame( $value, $actual->getValue() );
 	}
 
 	public function productProvider() {
@@ -111,9 +111,9 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+1'  ), '+2' ),
 			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+2'  ), '+4' ),
 
-			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+0'  ), '+0' ),
+			array( new DecimalValue( '+0.5' ), new DecimalValue( '+0' ), '+0.0' ),
 			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+1'  ), '+0.5' ),
-			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+2'  ), '+1' ),
+			array( new DecimalValue( '+0.5' ), new DecimalValue( '+2' ), '+1.0' ),
 		);
 	}
 
@@ -128,10 +128,10 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$actual = $math->product( $a, $b );
-		$this->assertEquals( $value, $actual->getValue() );
+		$this->assertSame( $value, $actual->getValue() );
 
 		$actual = $math->product( $b, $a );
-		$this->assertEquals( $value, $actual->getValue() );
+		$this->assertSame( $value, $actual->getValue() );
 	}
 
 	public function productWithBCProvider() {
@@ -148,10 +148,10 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		$math = new DecimalMath();
 
 		$actual = $math->sum( $a, $b );
-		$this->assertEquals( $value, $actual->getValue() );
+		$this->assertSame( $value, $actual->getValue() );
 
 		$actual = $math->sum( $b, $a );
-		$this->assertEquals( $value, $actual->getValue() );
+		$this->assertSame( $value, $actual->getValue() );
 	}
 
 	public function sumProvider() {
@@ -177,10 +177,10 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		$math = new DecimalMath();
 
 		$actual = $math->min( $min, $max );
-		$this->assertEquals( $min->getValue(), $actual->getValue() );
+		$this->assertSame( $min->getValue(), $actual->getValue() );
 
 		$actual = $math->min( $max, $min );
-		$this->assertEquals( $min->getValue(), $actual->getValue() );
+		$this->assertSame( $min->getValue(), $actual->getValue() );
 	}
 
 	/**
@@ -190,10 +190,10 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		$math = new DecimalMath();
 
 		$actual = $math->max( $min, $max );
-		$this->assertEquals( $max->getValue(), $actual->getValue() );
+		$this->assertSame( $max->getValue(), $actual->getValue() );
 
 		$actual = $math->max( $max, $min );
-		$this->assertEquals( $max->getValue(), $actual->getValue() );
+		$this->assertSame( $max->getValue(), $actual->getValue() );
 	}
 
 	public function minMaxProvider() {
@@ -408,7 +408,7 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		$math = new DecimalMath();
 
 		$actual = $math->shift( $value, $exponent );
-		$this->assertEquals( $expected, $actual->getValue() );
+		$this->assertSame( $expected, $actual->getValue() );
 	}
 
 	public function shiftProvider() {

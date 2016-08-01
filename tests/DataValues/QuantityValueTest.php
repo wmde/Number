@@ -51,35 +51,35 @@ class QuantityValueTest extends DataValueTest {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetValue( QuantityValue $quantity, array $arguments ) {
-		$this->assertInstanceOf( $this->getClass(), $quantity->getValue() );
+		$this->assertSame( $quantity, $quantity->getValue() );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetAmount( QuantityValue $quantity, array $arguments ) {
-		$this->assertEquals( $arguments[0], $quantity->getAmount() );
+		$this->assertSame( $arguments[0], $quantity->getAmount() );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetUnit( QuantityValue $quantity, array $arguments ) {
-		$this->assertEquals( $arguments[1], $quantity->getUnit() );
+		$this->assertSame( $arguments[1], $quantity->getUnit() );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetUpperBound( QuantityValue $quantity, array $arguments ) {
-		$this->assertEquals( $arguments[2], $quantity->getUpperBound() );
+		$this->assertSame( $arguments[2], $quantity->getUpperBound() );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetLowerBound( QuantityValue $quantity, array $arguments ) {
-		$this->assertEquals( $arguments[3], $quantity->getLowerBound() );
+		$this->assertSame( $arguments[3], $quantity->getLowerBound() );
 	}
 
 	/**
@@ -243,26 +243,23 @@ class QuantityValueTest extends DataValueTest {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetSortKey( QuantityValue $quantity ) {
-		$this->assertEquals( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );
+		$this->assertSame( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );
 	}
 
 	/**
 	 * @dataProvider getUncertaintyProvider
 	 */
 	public function testGetUncertainty( QuantityValue $quantity, $expected ) {
-		$actual = $quantity->getUncertainty();
-
-		// floats are wonkey, accept small differences here
-		$this->assertTrue( abs( $actual - $expected ) < 0.000000001, "expected $expected, got $actual" );
+		$this->assertSame( $expected, $quantity->getUncertainty() );
 	}
 
 	public function getUncertaintyProvider() {
 		return array(
-			array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), 0 ),
+			array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), 0.0 ),
 
-			array( QuantityValue::newFromNumber( '+0', '1', '+1', '-1' ), 2 ),
+			array( QuantityValue::newFromNumber( '+0', '1', '+1', '-1' ), 2.0 ),
 			array( QuantityValue::newFromNumber( '+0.00', '1', '+0.01', '-0.01' ), 0.02 ),
-			array( QuantityValue::newFromNumber( '+100', '1', '+101', '+99' ), 2 ),
+			array( QuantityValue::newFromNumber( '+100', '1', '+101', '+99' ), 2.0 ),
 			array( QuantityValue::newFromNumber( '+100.0', '1', '+100.1', '+99.9' ), 0.2 ),
 			array( QuantityValue::newFromNumber( '+12.34', '1', '+12.35', '+12.33' ), 0.02 ),
 
@@ -275,9 +272,7 @@ class QuantityValueTest extends DataValueTest {
 	 * @dataProvider getUncertaintyMarginProvider
 	 */
 	public function testGetUncertaintyMargin( QuantityValue $quantity, $expected ) {
-		$actual = $quantity->getUncertaintyMargin();
-
-		$this->assertEquals( $expected, $actual->getValue() );
+		$this->assertSame( $expected, $quantity->getUncertaintyMargin()->getValue() );
 	}
 
 	public function getUncertaintyMarginProvider() {
@@ -288,7 +283,7 @@ class QuantityValueTest extends DataValueTest {
 			array( QuantityValue::newFromNumber( '-1', '1', '-1', '-1' ), '+0' ),
 
 			array( QuantityValue::newFromNumber( '+0', '1', '+0.2', '-0.6' ), '+0.6' ),
-			array( QuantityValue::newFromNumber( '+7.5', '1', '+7.5', '+5.5' ), '+2' ),
+			array( QuantityValue::newFromNumber( '+7.5', '1', '+7.5', '+5.5' ), '+2.0' ),
 			array( QuantityValue::newFromNumber( '+11.5', '1', '+15', '+10.5' ), '+3.5' ),
 		);
 	}
@@ -297,9 +292,7 @@ class QuantityValueTest extends DataValueTest {
 	 * @dataProvider getOrderOfUncertaintyProvider
 	 */
 	public function testGetOrderOfUncertainty( QuantityValue $quantity, $expected ) {
-		$actual = $quantity->getOrderOfUncertainty();
-
-		$this->assertEquals( $expected, $actual );
+		$this->assertSame( $expected, $quantity->getOrderOfUncertainty() );
 	}
 
 	public function getOrderOfUncertaintyProvider() {
@@ -333,7 +326,7 @@ class QuantityValueTest extends DataValueTest {
 		$callArgs = array_merge( array( 'x', $transformation ), $extraArgs );
 		$actual = call_user_func_array( $call, $callArgs );
 
-		$this->assertEquals( 'x', $actual->getUnit() );
+		$this->assertSame( 'x', $actual->getUnit() );
 		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
 		$this->assertEquals( $expected->getUpperBound()->getValue(), $actual->getUpperBound()->getValue(), 'upper bound' );
 		$this->assertEquals( $expected->getLowerBound()->getValue(), $actual->getLowerBound()->getValue(), 'lower bound' );
@@ -354,18 +347,60 @@ class QuantityValueTest extends DataValueTest {
 		};
 
 		return array(
-			 0 => array( QuantityValue::newFromNumber( '+10',   '1', '+11',  '+9' ),   $identity, QuantityValue::newFromNumber(   '+10',    '?',   '+11',    '+9' ) ),
-			 1 => array( QuantityValue::newFromNumber(  '-0.5', '1', '-0.4', '-0.6' ), $identity, QuantityValue::newFromNumber(    '-0.5',  '?',    '-0.4',  '-0.6' ) ),
-			 2 => array( QuantityValue::newFromNumber(  '+0',   '1', '+1',   '-1' ),   $square,   QuantityValue::newFromNumber(    '+0',    '?',    '+1',    '-1' ) ),
-			 3 => array( QuantityValue::newFromNumber( '+10',   '1', '+11',  '+9' ),   $square,   QuantityValue::newFromNumber( '+1000',    '?', '+1300',  '+700' ) ), // note how rounding applies to bounds
-			 4 => array( QuantityValue::newFromNumber(  '+0.5', '1', '+0.6', '+0.4' ), $scale,    QuantityValue::newFromNumber(    '+0.25', '?',    '+0.3',  '+0.2' ), 0.5 ),
+			0 => array(
+				QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),
+				$identity,
+				QuantityValue::newFromNumber( '+10', '?', '+11', '+9' )
+			),
+			1 => array(
+				QuantityValue::newFromNumber( '-0.5', '1', '-0.4', '-0.6' ),
+				$identity,
+				QuantityValue::newFromNumber( '-0.5', '?', '-0.4', '-0.6' )
+			),
+			2 => array(
+				QuantityValue::newFromNumber( '+0', '1', '+1', '-1' ),
+				$square,
+				QuantityValue::newFromNumber( '+0', '?', '+1', '-1' )
+			),
+			3 => array(
+				QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),
+				$square,
+				// note how rounding applies to bounds
+				QuantityValue::newFromNumber( '+1000', '?', '+1300', '+700' )
+			),
+			4 => array(
+				QuantityValue::newFromNumber( '+0.5', '1', '+0.6', '+0.4' ),
+				$scale,
+				QuantityValue::newFromNumber( '+0.25', '?', '+0.30', '+0.20' ),
+				0.5
+			),
 
 			// note: absolutely exact values require conversion with infinite precision!
-			10 => array( QuantityValue::newFromNumber( '+100', '1', '+100',   '+100' ),    $scale, QuantityValue::newFromNumber( '+12825.0', '?', '+12825.0', '+12825.0' ), 128.25 ),
+			10 => array(
+				QuantityValue::newFromNumber( '+100', '1', '+100', '+100' ),
+				$scale,
+				QuantityValue::newFromNumber( '+12825', '?', '+12825', '+12825' ),
+				128.25
+			),
 
-			11 => array( QuantityValue::newFromNumber( '+100', '1', '+110',    '+90' ),    $scale, QuantityValue::newFromNumber( '+330',    '?', '+370',    '+300' ), 3.3333 ),
-			12 => array( QuantityValue::newFromNumber( '+100', '1', '+100.1',  '+99.9' ),  $scale, QuantityValue::newFromNumber( '+333.3',  '?', '+333.7',  '+333.0' ), 3.3333 ),
-			13 => array( QuantityValue::newFromNumber( '+100', '1', '+100.01', '+99.99' ), $scale, QuantityValue::newFromNumber( '+333.33', '?', '+333.36', '+333.30' ), 3.3333 ),
+			11 => array(
+				QuantityValue::newFromNumber( '+100', '1', '+110', '+90' ),
+				$scale,
+				QuantityValue::newFromNumber( '+330', '?', '+370', '+300' ),
+				3.3333
+			),
+			12 => array(
+				QuantityValue::newFromNumber( '+100', '1', '+100.1', '+99.9' ),
+				$scale,
+				QuantityValue::newFromNumber( '+333.3', '?', '+333.7', '+333.0' ),
+				3.3333
+			),
+			13 => array(
+				QuantityValue::newFromNumber( '+100', '1', '+100.01', '+99.99' ),
+				$scale,
+				QuantityValue::newFromNumber( '+333.33', '?', '+333.36', '+333.30' ),
+				3.3333
+			),
 		);
 	}
 

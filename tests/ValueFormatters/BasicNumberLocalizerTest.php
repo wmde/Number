@@ -37,7 +37,7 @@ class BasicNumberLocalizerTest extends \PHPUnit_Framework_TestCase {
 		$localizer = new BasicNumberLocalizer();
 		$localized = $localizer->localizeNumber( $localized );
 
-		$this->assertEquals( $expected, $localized );
+		$this->assertSame( $expected, $localized );
 	}
 
 }

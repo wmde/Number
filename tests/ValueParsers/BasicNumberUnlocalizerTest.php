@@ -52,7 +52,7 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 		$unlocalizer = new BasicNumberUnlocalizer();
 		$unlocalized = $unlocalizer->unlocalizeNumber( $localized );
 
-		$this->assertEquals( $expected, $unlocalized );
+		$this->assertSame( $expected, $unlocalized );
 	}
 
 	public function provideGetNumberRegexMatch() {

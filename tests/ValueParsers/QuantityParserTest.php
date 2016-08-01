@@ -225,10 +225,11 @@ class QuantityParserTest extends StringValueParserTest {
 
 		$parser = new QuantityParser( $options, $unlocalizer );
 
+		/** @var QuantityValue $quantity */
 		$quantity = $parser->parse( '1 22 333,77+-3a~b' );
 
-		$this->assertEquals( '122333.77', $quantity->getAmount() );
-		$this->assertEquals( 'a~b', $quantity->getUnit() );
+		$this->assertSame( '+122333.77', $quantity->getAmount()->getValue() );
+		$this->assertSame( 'a~b', $quantity->getUnit() );
 	}
 
 	/**
@@ -241,7 +242,7 @@ class QuantityParserTest extends StringValueParserTest {
 		$parser = $this->getQuantityParser( $options );
 
 		$quantity = $parser->parse( $value );
-		$this->assertEquals( $expected, $quantity->getUnit() );
+		$this->assertSame( $expected, $quantity->getUnit() );
 	}
 
 	public function unitOptionProvider() {

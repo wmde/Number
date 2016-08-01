@@ -122,9 +122,10 @@ class DecimalParserTest extends StringValueParserTest {
 		$parser = new DecimalParser( null, $unlocalizer );
 
 		$input = '###20#000#000###';
+		/** @var DecimalValue $value */
 		$value = $parser->parse( $input );
 
-		$this->assertEquals( '20000000', $value->getValue() );
+		$this->assertSame( '+20000000', $value->getValue() );
 	}
 
 	public function splitDecimalExponentProvider() {

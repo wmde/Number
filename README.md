@@ -66,6 +66,7 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 * `DecimalValue` constructor optionally accepts strings with no leading plus sign.
 * Removed `QuantityValue::getSignificantFigures`.
 * Removed `QuantityValue::newFromDecimal` (deprecated since 0.1).
+* The `$vocabularyUriFormatter` parameter in the `QuantityFormatter` constructor is not nullable any more.
 
 ### 0.7.0 (2016-04-25)
 

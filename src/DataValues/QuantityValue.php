@@ -292,26 +292,4 @@ class QuantityValue extends UnboundedQuantityValue {
 		);
 	}
 
-	/**
-	 * Constructs a new instance of the DataValue from the provided data.
-	 * This can round-trip with @see getArrayValue
-	 *
-	 * @since 0.1
-	 *
-	 * @param mixed $data
-	 *
-	 * @return self
-	 * @throws IllegalValueException
-	 */
-	public static function newFromArray( $data ) {
-		self::requireArrayFields( $data, array( 'amount', 'unit', 'upperBound', 'lowerBound' ) );
-
-		return new static(
-			DecimalValue::newFromArray( $data['amount'] ),
-			$data['unit'],
-			DecimalValue::newFromArray( $data['upperBound'] ),
-			DecimalValue::newFromArray( $data['lowerBound'] )
-		);
-	}
-
 }

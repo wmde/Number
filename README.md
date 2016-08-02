@@ -50,6 +50,11 @@ DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.1 (2016-08-02)
+
+* `UnboundedQuantityValue::newFromArray` and `QuantityValue::newFromArray` both accept
+  serializations without and with an uncertainty interval.
+
 ### 0.8.0 (2016-08-01)
 
 * Added `DecimalValue::getTrimmed`.

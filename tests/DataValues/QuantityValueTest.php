@@ -4,6 +4,7 @@ namespace DataValues\Tests;
 
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
+use DataValues\UnboundedQuantityValue;
 
 /**
  * @covers DataValues\QuantityValue
@@ -129,7 +130,7 @@ class QuantityValueTest extends DataValueTest {
 	/**
 	 * @dataProvider validArraySerializationProvider
 	 */
-	public function testNewFromArray( $data, QuantityValue $expected ) {
+	public function testNewFromArray( $data, UnboundedQuantityValue $expected ) {
 		$value = QuantityValue::newFromArray( $data );
 		$this->assertTrue( $expected->equals( $value ), $value . ' should equal ' . $expected );
 	}
@@ -144,6 +145,22 @@ class QuantityValueTest extends DataValueTest {
 					'lowerBound' => '+1.5',
 				),
 				QuantityValue::newFromNumber( '+2', '1', '+2.5', '+1.5' )
+			),
+			'unbounded' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+				),
+				UnboundedQuantityValue::newFromNumber( '+2', '1' )
+			),
+			'unbounded with existing array keys' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => null,
+					'lowerBound' => null,
+				),
+				UnboundedQuantityValue::newFromNumber( '+2', '1' )
 			),
 		);
 	}
@@ -184,12 +201,6 @@ class QuantityValueTest extends DataValueTest {
 					'amount' => '+2',
 					'unit' => '1',
 					'upperBound' => '+2.5',
-				)
-			),
-			'unbounded' => array(
-				array(
-					'amount' => '+2',
-					'unit' => '1',
 				)
 			),
 			'bad-amount' => array(

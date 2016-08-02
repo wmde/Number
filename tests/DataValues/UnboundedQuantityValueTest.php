@@ -3,6 +3,7 @@
 namespace DataValues\Tests;
 
 use DataValues\DecimalValue;
+use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
 
 /**
@@ -124,6 +125,15 @@ class UnboundedQuantityValueTest extends DataValueTest {
 				),
 				UnboundedQuantityValue::newFromNumber( '+2', '1' )
 			),
+			'unbounded with existing array keys' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => null,
+					'lowerBound' => null,
+				),
+				UnboundedQuantityValue::newFromNumber( '+2', '1' )
+			),
 			'with-extra' => array(
 				array(
 					'amount' => '+2',
@@ -131,7 +141,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 					'upperBound' => '+2.5',
 					'lowerBound' => '+1.5',
 				),
-				UnboundedQuantityValue::newFromNumber( '+2', '1' )
+				QuantityValue::newFromNumber( '+2', '1', '+2.5', '+1.5' )
 			),
 		);
 	}
@@ -156,10 +166,40 @@ class UnboundedQuantityValueTest extends DataValueTest {
 					'amount' => '+2',
 				)
 			),
+			'no-upperBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'no-lowerBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+				)
+			),
 			'bad-amount' => array(
 				array(
 					'amount' => 'x',
 					'unit' => '1',
+				)
+			),
+			'bad-upperBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => 'x',
+					'lowerBound' => '+1.5',
+				)
+			),
+			'bad-lowerBound' => array(
+				array(
+					'amount' => '+2',
+					'unit' => '1',
+					'upperBound' => '+2.5',
+					'lowerBound' => 'x',
 				)
 			),
 		);

@@ -247,21 +247,33 @@ class UnboundedQuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * Constructs a new instance of the DataValue from the provided data.
-	 * This can round-trip with @see getArrayValue
+	 * Static helper capable of constructing both unbounded and bounded quantity value objects,
+	 * depending on the serialization provided. Required for @see DataValueDeserializer. This can
+	 * round-trip with both @see self::getArrayValue as well as @see QuantityValue::getArrayValue.
 	 *
-	 * @param mixed $data
+	 * @param array $data
 	 *
-	 * @return self
+	 * @return self|QuantityValue Either an unbounded or bounded quantity value object.
 	 * @throws IllegalValueException
 	 */
-	public static function newFromArray( $data ) {
+	public static function newFromArray( array $data ) {
 		self::requireArrayFields( $data, array( 'amount', 'unit' ) );
 
-		return new static(
-			DecimalValue::newFromArray( $data['amount'] ),
-			$data['unit']
-		);
+		if ( !isset( $data['upperBound'] ) && !isset( $data['lowerBound'] ) ) {
+			return new self(
+				DecimalValue::newFromArray( $data['amount'] ),
+				$data['unit']
+			);
+		} else {
+			self::requireArrayFields( $data, array( 'upperBound', 'lowerBound' ) );
+
+			return new QuantityValue(
+				DecimalValue::newFromArray( $data['amount'] ),
+				$data['unit'],
+				DecimalValue::newFromArray( $data['upperBound'] ),
+				DecimalValue::newFromArray( $data['lowerBound'] )
+			);
+		}
 	}
 
 	/**

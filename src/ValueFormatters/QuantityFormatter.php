@@ -118,24 +118,11 @@ class QuantityFormatter extends ValueFormatterBase {
 	 */
 	public function format( $value ) {
 		if ( !( $value instanceof UnboundedQuantityValue ) ) {
-			throw new InvalidArgumentException( 'Data value type mismatch. Expected a UnboundedQuantityValue.' );
+			throw new InvalidArgumentException( 'Data value type mismatch. Expected an UnboundedQuantityValue.' );
 		}
 
-		return $this->formatQuantityValue( $value );
-	}
-
-	/**
-	 * @since 0.6
-	 *
-	 * @param UnboundedQuantityValue|QuantityValue $quantity
-	 *
-	 * @return string Text
-	 */
-	protected function formatQuantityValue( UnboundedQuantityValue $quantity ) {
-		$formatted = $quantity instanceof QuantityValue
-			? $this->formatNumber( $quantity )
-			: $this->formatUnboundedQuantityValue( $quantity );
-		$unit = $this->formatUnit( $quantity->getUnit() );
+		$formatted = $this->formatNumber( $value );
+		$unit = $this->formatUnit( $value->getUnit() );
 
 		if ( $unit !== null ) {
 			$formatted = strtr(
@@ -148,6 +135,19 @@ class QuantityFormatter extends ValueFormatterBase {
 		}
 
 		return $formatted;
+	}
+
+	/**
+	 * @since 0.8.2
+	 *
+	 * @param UnboundedQuantityValue $quantity
+	 *
+	 * @return string Text
+	 */
+	protected function formatNumber( UnboundedQuantityValue $quantity ) {
+		return $quantity instanceof QuantityValue
+			? $this->formatQuantityValue( $quantity )
+			: $this->formatUnboundedQuantityValue( $quantity );
 	}
 
 	/**
@@ -167,13 +167,11 @@ class QuantityFormatter extends ValueFormatterBase {
 	}
 
 	/**
-	 * @since 0.6
-	 *
 	 * @param QuantityValue $quantity
 	 *
 	 * @return string Text
 	 */
-	protected function formatNumber( QuantityValue $quantity ) {
+	private function formatQuantityValue( QuantityValue $quantity ) {
 		$roundingExponent = $this->getRoundingExponent( $quantity );
 
 		$amount = $quantity->getAmount();

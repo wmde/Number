@@ -27,22 +27,22 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	public function bumpProvider() {
 		return array(
-			array( new DecimalValue(  '+0' ),   '+1' ),
-			array( new DecimalValue(  '-0' ),   '+1' ),
-			array( new DecimalValue(  '+0.0' ), '+0.1' ),
-			array( new DecimalValue(  '-0.0' ), '+0.1' ),
-			array( new DecimalValue(  '+1' ),   '+2' ),
-			array( new DecimalValue(  '-1' ),   '-2' ),
-			array( new DecimalValue( '+10' ),  '+11' ),
-			array( new DecimalValue( '-10' ),  '-11' ),
-			array( new DecimalValue(  '+9' ),  '+10' ),
-			array( new DecimalValue(  '-9' ),  '-10' ),
+			array( new DecimalValue( '+0' ), '+1' ),
+			array( new DecimalValue( '-0' ), '+1' ),
+			array( new DecimalValue( '+0.0' ), '+0.1' ),
+			array( new DecimalValue( '-0.0' ), '+0.1' ),
+			array( new DecimalValue( '+1' ), '+2' ),
+			array( new DecimalValue( '-1' ), '-2' ),
+			array( new DecimalValue( '+10' ), '+11' ),
+			array( new DecimalValue( '-10' ), '-11' ),
+			array( new DecimalValue( '+9' ), '+10' ),
+			array( new DecimalValue( '-9' ), '-10' ),
 			array( new DecimalValue( '+0.01' ), '+0.02' ),
 			array( new DecimalValue( '-0.01' ), '-0.02' ),
 			array( new DecimalValue( '+0.09' ), '+0.10' ),
 			array( new DecimalValue( '-0.09' ), '-0.10' ),
-			array( new DecimalValue( '+0.9' ),  '+1.0' ),
-			array( new DecimalValue( '-0.9' ),  '-1.0' ),
+			array( new DecimalValue( '+0.9' ), '+1.0' ),
+			array( new DecimalValue( '-0.9' ), '-1.0' ),
 		);
 	}
 
@@ -57,30 +57,30 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	public function slumpProvider() {
 		return array(
-			array( new DecimalValue(  '+0' ),    '-1' ),
-			array( new DecimalValue(  '-0' ),    '-1' ),
-			array( new DecimalValue(  '+0.0' ),  '-0.1' ),
-			array( new DecimalValue(  '-0.0' ),  '-0.1' ),
-			array( new DecimalValue(  '+0.00' ),  '-0.01' ),
-			array( new DecimalValue(  '-0.00' ),  '-0.01' ),
-			array( new DecimalValue(  '+1' ),    '+0' ),
-			array( new DecimalValue(  '-1' ),    '+0' ),
-			array( new DecimalValue(  '+1.0' ),  '+0.9' ),
-			array( new DecimalValue(  '-1.0' ),  '-0.9' ),
-			array( new DecimalValue(  '+0.1' ),  '+0.0' ),
-			array( new DecimalValue(  '-0.1' ),  '+0.0' ), // zero is always normalized to be positive
-			array( new DecimalValue(  '+0.01' ), '+0.00' ),
-			array( new DecimalValue(  '-0.01' ), '+0.00' ), // zero is always normalized to be positive
-			array( new DecimalValue( '+12' ),   '+11' ),
-			array( new DecimalValue( '-12' ),   '-11' ),
-			array( new DecimalValue( '+10' ),    '+9' ),
-			array( new DecimalValue( '-10' ),    '-9' ),
-			array( new DecimalValue('+100' ),   '+99' ),
-			array( new DecimalValue('-100' ),   '-99' ),
-			array( new DecimalValue(  '+0.02' ), '+0.01' ),
-			array( new DecimalValue(  '-0.02' ), '-0.01' ),
-			array( new DecimalValue(  '+0.10' ), '+0.09' ),
-			array( new DecimalValue(  '-0.10' ), '-0.09' ),
+			array( new DecimalValue( '+0' ), '-1' ),
+			array( new DecimalValue( '-0' ), '-1' ),
+			array( new DecimalValue( '+0.0' ), '-0.1' ),
+			array( new DecimalValue( '-0.0' ), '-0.1' ),
+			array( new DecimalValue( '+0.00' ), '-0.01' ),
+			array( new DecimalValue( '-0.00' ), '-0.01' ),
+			array( new DecimalValue( '+1' ), '+0' ),
+			array( new DecimalValue( '-1' ), '+0' ),
+			array( new DecimalValue( '+1.0' ), '+0.9' ),
+			array( new DecimalValue( '-1.0' ), '-0.9' ),
+			array( new DecimalValue( '+0.1' ), '+0.0' ),
+			array( new DecimalValue( '-0.1' ), '+0.0' ), // zero is always normalized to be positive
+			array( new DecimalValue( '+0.01' ), '+0.00' ),
+			array( new DecimalValue( '-0.01' ), '+0.00' ), // zero is always normalized to be positive
+			array( new DecimalValue( '+12' ), '+11' ),
+			array( new DecimalValue( '-12' ), '-11' ),
+			array( new DecimalValue( '+10' ), '+9' ),
+			array( new DecimalValue( '-10' ), '-9' ),
+			array( new DecimalValue( '+100' ), '+99' ),
+			array( new DecimalValue( '-100' ), '-99' ),
+			array( new DecimalValue( '+0.02' ), '+0.01' ),
+			array( new DecimalValue( '-0.02' ), '-0.01' ),
+			array( new DecimalValue( '+0.10' ), '+0.09' ),
+			array( new DecimalValue( '-0.10' ), '-0.09' ),
 		);
 	}
 
@@ -99,20 +99,20 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	public function productProvider() {
 		return array(
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+0'  ), '+0' ),
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+1'  ), '+0' ),
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+2'  ), '+0' ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+0' ), '+0' ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+1' ), '+0' ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+2' ), '+0' ),
 
-			array( new DecimalValue(  '+1'  ), new DecimalValue(  '+0'  ), '+0' ),
-			array( new DecimalValue(  '+1'  ), new DecimalValue(  '+1'  ), '+1' ),
-			array( new DecimalValue(  '+1'  ), new DecimalValue(  '+2'  ), '+2' ),
+			array( new DecimalValue( '+1' ), new DecimalValue( '+0' ), '+0' ),
+			array( new DecimalValue( '+1' ), new DecimalValue( '+1' ), '+1' ),
+			array( new DecimalValue( '+1' ), new DecimalValue( '+2' ), '+2' ),
 
-			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+0'  ), '+0' ),
-			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+1'  ), '+2' ),
-			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+2'  ), '+4' ),
+			array( new DecimalValue( '+2' ), new DecimalValue( '+0' ), '+0' ),
+			array( new DecimalValue( '+2' ), new DecimalValue( '+1' ), '+2' ),
+			array( new DecimalValue( '+2' ), new DecimalValue( '+2' ), '+4' ),
 
 			array( new DecimalValue( '+0.5' ), new DecimalValue( '+0' ), '+0.0' ),
-			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+1'  ), '+0.5' ),
+			array( new DecimalValue( '+0.5' ), new DecimalValue( '+1' ), '+0.5' ),
 			array( new DecimalValue( '+0.5' ), new DecimalValue( '+2' ), '+1.0' ),
 		);
 	}
@@ -136,8 +136,8 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	public function productWithBCProvider() {
 		return array(
-			array( new DecimalValue(  '+0.1'  ), new DecimalValue(  '+0.1'  ), '+0.01' ),
-			array( new DecimalValue(  '-5000000'  ), new DecimalValue(  '-0.1'  ), '+500000.0' ),
+			array( new DecimalValue( '+0.1' ), new DecimalValue( '+0.1' ), '+0.01' ),
+			array( new DecimalValue( '-5000000' ), new DecimalValue( '-0.1' ), '+500000.0' ),
 		);
 	}
 
@@ -156,17 +156,17 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	public function sumProvider() {
 		return array(
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+0'  ), '+0' ),
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+1'  ), '+1' ),
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+2'  ), '+2' ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+0' ), '+0' ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+1' ), '+1' ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+2' ), '+2' ),
 
-			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+0'  ), '+2' ),
-			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+1'  ), '+3' ),
-			array( new DecimalValue(  '+2'  ), new DecimalValue(  '+2'  ), '+4' ),
+			array( new DecimalValue( '+2' ), new DecimalValue( '+0' ), '+2' ),
+			array( new DecimalValue( '+2' ), new DecimalValue( '+1' ), '+3' ),
+			array( new DecimalValue( '+2' ), new DecimalValue( '+2' ), '+4' ),
 
-			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+0'  ),  '+0.5' ),
-			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+0.5' ), '+1.0' ),
-			array( new DecimalValue(  '+0.5'  ), new DecimalValue(  '+2'  ),  '+2.5' ),
+			array( new DecimalValue( '+0.5' ), new DecimalValue( '+0' ), '+0.5' ),
+			array( new DecimalValue( '+0.5' ), new DecimalValue( '+0.5' ), '+1.0' ),
+			array( new DecimalValue( '+0.5' ), new DecimalValue( '+2' ), '+2.5' ),
 		);
 	}
 
@@ -198,12 +198,12 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 
 	public function minMaxProvider() {
 		return array(
-			array( new DecimalValue(  '+0'  ), new DecimalValue(  '+0'  ) ),
-			array( new DecimalValue(  '+1'  ), new DecimalValue(  '+1'  ) ),
-			array( new DecimalValue(  '-0.2'  ), new DecimalValue(  '-0.2'  ) ),
+			array( new DecimalValue( '+0' ), new DecimalValue( '+0' ) ),
+			array( new DecimalValue( '+1' ), new DecimalValue( '+1' ) ),
+			array( new DecimalValue( '-0.2' ), new DecimalValue( '-0.2' ) ),
 
-			array( new DecimalValue(  '-2'  ), new DecimalValue(  '+1'  ) ),
-			array( new DecimalValue(  '+0.33333'  ), new DecimalValue(  '+1'  ) ),
+			array( new DecimalValue( '-2' ), new DecimalValue( '+1' ) ),
+			array( new DecimalValue( '+0.33333' ), new DecimalValue( '+1' ) ),
 		);
 	}
 
@@ -312,10 +312,10 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 	public function getPositionForExponentProvider() {
 		$argLists = array();
 
-		$argLists[] = array(  0, new DecimalValue( '+0' ), 1 );
-		$argLists[] = array(  1, new DecimalValue( '+10.25' ), 1 );
-		$argLists[] = array(  1, new DecimalValue( '-100.25' ), 2 );
-		$argLists[] = array(  2, new DecimalValue( '+100.25' ), 1 );
+		$argLists[] = array( 0, new DecimalValue( '+0' ), 1 );
+		$argLists[] = array( 1, new DecimalValue( '+10.25' ), 1 );
+		$argLists[] = array( 1, new DecimalValue( '-100.25' ), 2 );
+		$argLists[] = array( 2, new DecimalValue( '+100.25' ), 1 );
 		$argLists[] = array( -2, new DecimalValue( '+0.234' ), 4 );
 		$argLists[] = array( -2, new DecimalValue( '+11.234' ), 5 );
 

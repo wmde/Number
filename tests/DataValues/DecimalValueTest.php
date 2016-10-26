@@ -228,13 +228,13 @@ class DecimalValueTest extends DataValueTest {
 
 	public function getGetIntegerPartProvider() {
 		return array(
-			array( new DecimalValue(  '+0' ),      '0' ),
-			array( new DecimalValue(  '-0.0' ),    '0' ),
-			array( new DecimalValue( '+10' ),     '10' ),
-			array( new DecimalValue( '-10' ),     '10' ),
+			array( new DecimalValue( '+0' ), '0' ),
+			array( new DecimalValue( '-0.0' ), '0' ),
+			array( new DecimalValue( '+10' ), '10' ),
+			array( new DecimalValue( '-10' ), '10' ),
 			array( new DecimalValue( '+10.663' ), '10' ),
 			array( new DecimalValue( '-10.001' ), '10' ),
-			array( new DecimalValue(  '+0.01' ),   '0' ),
+			array( new DecimalValue( '+0.01' ), '0' ),
 		);
 	}
 
@@ -248,12 +248,12 @@ class DecimalValueTest extends DataValueTest {
 
 	public function getGetFractionalPartProvider() {
 		return array(
-			array( new DecimalValue(  '+0' ),     '' ),
-			array( new DecimalValue(  '-0.0' ),   '0' ),
-			array( new DecimalValue( '+10' ),     '' ),
+			array( new DecimalValue( '+0' ), '' ),
+			array( new DecimalValue( '-0.0' ), '0' ),
+			array( new DecimalValue( '+10' ), '' ),
 			array( new DecimalValue( '+10.663' ), '663' ),
 			array( new DecimalValue( '-10.001' ), '001' ),
-			array( new DecimalValue(  '+0.01' ),  '01' ),
+			array( new DecimalValue( '+0.01' ), '01' ),
 		);
 	}
 
@@ -270,11 +270,11 @@ class DecimalValueTest extends DataValueTest {
 
 	public function computeComplementProvider() {
 		return array(
-			array( new DecimalValue(   '+0' ),       '+0' ),
-			array( new DecimalValue(   '+0.00' ),    '+0.00' ),
-			array( new DecimalValue(   '+1' ),       '-1' ),
+			array( new DecimalValue( '+0' ), '+0' ),
+			array( new DecimalValue( '+0.00' ), '+0.00' ),
+			array( new DecimalValue( '+1' ), '-1' ),
 			array( new DecimalValue( '+100.663' ), '-100.663' ),
-			array( new DecimalValue(   '-0.001' ),   '+0.001' ),
+			array( new DecimalValue( '-0.001' ), '+0.001' ),
 		);
 	}
 
@@ -291,13 +291,13 @@ class DecimalValueTest extends DataValueTest {
 
 	public function computeComputeAbsolute() {
 		return array(
-			array( new DecimalValue(   '+0' ),       '+0' ),
-			array( new DecimalValue(   '+1' ),       '+1' ),
-			array( new DecimalValue(   '-1' ),       '+1' ),
+			array( new DecimalValue( '+0' ), '+0' ),
+			array( new DecimalValue( '+1' ), '+1' ),
+			array( new DecimalValue( '-1' ), '+1' ),
 			array( new DecimalValue( '+100.663' ), '+100.663' ),
 			array( new DecimalValue( '-100.663' ), '+100.663' ),
-			array( new DecimalValue(   '+0.001' ),   '+0.001' ),
-			array( new DecimalValue(   '-0.001' ),   '+0.001' ),
+			array( new DecimalValue( '+0.001' ), '+0.001' ),
+			array( new DecimalValue( '-0.001' ), '+0.001' ),
 		);
 	}
 
@@ -311,8 +311,8 @@ class DecimalValueTest extends DataValueTest {
 
 	public function isZeroProvider() {
 		return array(
-			array( new DecimalValue(  '+0' ),    true ),
-			array( new DecimalValue(  '-0.00' ), true ),
+			array( new DecimalValue( '+0' ), true ),
+			array( new DecimalValue( '-0.00' ), true ),
 
 			array( new DecimalValue( '+1' ),       false ),
 			array( new DecimalValue( '+100.663' ), false ),

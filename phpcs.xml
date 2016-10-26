@@ -4,7 +4,6 @@
 	<rule ref="vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
 		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis" />
 	</rule>
 
 	<rule ref="Generic.ControlStructures" />

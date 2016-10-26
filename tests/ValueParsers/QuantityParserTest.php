@@ -217,7 +217,7 @@ class QuantityParserTest extends StringValueParserTest {
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'getNumberRegex' )
-			->will(  $this->returnValue( '[\d ]+(?:,\d+)?' ) );
+			->will( $this->returnValue( '[\d ]+(?:,\d+)?' ) );
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'getUnitRegex' )

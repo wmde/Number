@@ -179,7 +179,7 @@ class QuantityFormatter extends ValueFormatterBase {
 		if ( $roundingExponent === null ) {
 			$formatted = $this->formatMinimalDecimal( $amount );
 			$margin = $quantity->getUncertaintyMargin();
-			$margin = $margin->isZero() ? null : $this->formatMinimalDecimal( $margin );
+			$margin = $this->formatMinimalDecimal( $margin );
 		} else {
 			$roundedAmount = $this->decimalMath->roundToExponent( $amount, $roundingExponent );
 			$formatted = $this->decimalFormatter->format( $roundedAmount );

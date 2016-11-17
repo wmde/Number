@@ -45,8 +45,8 @@ via TravisCI, as a TravisCI configuration file is also provided in the root dire
 
 ## Authors
 
-DataValues Number has been written by Daniel Kinzler, as [Wikimedia Germany]
-(https://wikimedia.de) employee for the [Wikidata project](https://wikidata.org/).
+DataValues Number was created by [Wikimedia Deutschland](https://www.wikimedia.de/) employees for
+the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 

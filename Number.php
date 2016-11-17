@@ -24,6 +24,7 @@ if ( defined( 'MEDIAWIKI' ) ) {
 		'version' => DATAVALUES_NUMBER_VERSION,
 		'author' => array(
 			'Daniel Kinzler',
+			'Thiemo Mättig',
 		),
 		'url' => 'https://github.com/DataValues/Number',
 		'description' => 'Numerical value objects, parsers and formatters',

@@ -106,14 +106,14 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 			),
 			'HTML injection' => array(
 				QuantityValue::newFromNumber( '+2', '<b>injection</b>', '+2', '+2' ),
-				'2 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
+				'2±0 <span class="wb-unit">&lt;b&gt;injection&lt;/b&gt;</span>'
 			),
 		);
 	}
 
 	public function testFormatWithFormatString() {
 		$formatter = $this->getQuantityHtmlFormatter( null, null, '$2&thinsp;$1' );
-		$value = QuantityValue::newFromNumber( '+5', 'USD' );
+		$value = UnboundedQuantityValue::newFromNumber( '+5', 'USD' );
 		$formatted = $formatter->format( $value );
 		$this->assertSame( '<span class="wb-unit">USD</span>&thinsp;5', $formatted );
 	}
@@ -143,28 +143,28 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		return array(
 			'Disabled without unit' => array(
 				$noUnit,
-				QuantityValue::newFromNumber( 2, '1' ),
+				UnboundedQuantityValue::newFromNumber( 2, '1' ),
 				'&lt;b&gt;+2&lt;/b&gt;'
 			),
 			'Disabled with unit' => array(
 				$noUnit,
-				QuantityValue::newFromNumber( 2, '<b>m</b>' ),
+				UnboundedQuantityValue::newFromNumber( 2, '<b>m</b>' ),
 				'&lt;b&gt;+2&lt;/b&gt;'
 			),
 			'Default without unit' => array(
 				null,
-				QuantityValue::newFromNumber( 2, '1' ),
+				UnboundedQuantityValue::newFromNumber( 2, '1' ),
 				'&lt;b&gt;+2&lt;/b&gt;'
 			),
 			'Default with unit' => array(
 				null,
-				QuantityValue::newFromNumber( 2, '<b>m</b>' ),
+				UnboundedQuantityValue::newFromNumber( 2, '<b>m</b>' ),
 				'&lt;b&gt;+2&lt;/b&gt; <span class="wb-unit">&lt;b&gt;m&lt;/b&gt;</span>'
 			),
 			'HTML escaping bounded' => array(
 				null,
 				$this->newQuantityValue( 'DataValues\QuantityValue' ),
-				'&lt;b&gt;+2&lt;/b&gt;'
+				'&lt;b&gt;+2&lt;/b&gt;±&lt;b&gt;+2&lt;/b&gt;'
 			),
 			'HTML escaping bounded with uncertainty' => array(
 				null,

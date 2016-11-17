@@ -95,7 +95,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 
 		return array(
 			'+0/nm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $noMargin ),
-			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0', $withMargin ),
+			'+0/wm' => array( QuantityValue::newFromNumber( '+0', '1', '+0', '+0' ), '0±0', $withMargin ),
 
 			'+0.0/nm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0 °', $noMargin ),
 			'+0.0/wm' => array( QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0±0.1 °', $withMargin ),
@@ -192,7 +192,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 					'+0.2000000000000000111',
 					'+0.2000000000000000111'
 				),
-				'0.2000000000000000111'
+				'0.2000000000000000111±0'
 			),
 			'8 - 6.4' => array(
 				QuantityValue::newFromNumber(
@@ -201,14 +201,14 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 					'+1.59999999999999964473',
 					'+1.59999999999999964473'
 				),
-				'1.59999999999999964473'
+				'1.59999999999999964473±0'
 			),
 		);
 	}
 
 	public function testFormatWithFormatString() {
 		$formatter = $this->getQuantityFormatter( null, '<$2>$1' );
-		$value = QuantityValue::newFromNumber( '+5', 'USD' );
+		$value = UnboundedQuantityValue::newFromNumber( '+5', 'USD' );
 		$formatted = $formatter->format( $value );
 		$this->assertSame( '<USD>5', $formatted );
 	}

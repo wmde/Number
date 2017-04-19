@@ -325,14 +325,14 @@ class DecimalValue extends DataValueObject {
 	 * after the decimal point removed. If there are no trailing zeros after the decimal
 	 * point, this method will return $this.
 	 *
-	 * @return DecimalValue
+	 * @return self
 	 */
 	public function getTrimmed() {
 		$trimmed = preg_replace( '/(\.\d+?)0+$/', '$1', $this->value );
 		$trimmed = preg_replace( '/(?<=\d)\.0*$/', '', $trimmed );
 
 		if ( $trimmed !== $this->value ) {
-			return new DecimalValue( $trimmed );
+			return new self( $trimmed );
 		} else {
 			return $this;
 		}

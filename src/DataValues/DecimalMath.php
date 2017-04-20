@@ -52,8 +52,6 @@ class DecimalMath {
 	}
 
 	/**
-	 * Returns the product of the two values.
-	 *
 	 * @param DecimalValue $a
 	 * @param DecimalValue $b
 	 *
@@ -71,8 +69,6 @@ class DecimalMath {
 	}
 
 	/**
-	 * Returns the sum of the two values.
-	 *
 	 * @param DecimalValue $a
 	 * @param DecimalValue $b
 	 *
@@ -90,8 +86,6 @@ class DecimalMath {
 	}
 
 	/**
-	 * Returns the minimum of the two values
-	 *
 	 * @param DecimalValue $a
 	 * @param DecimalValue $b
 	 *
@@ -111,8 +105,6 @@ class DecimalMath {
 	}
 
 	/**
-	 * Returns the maximum of the two values
-	 *
 	 * @param DecimalValue $a
 	 * @param DecimalValue $b
 	 *

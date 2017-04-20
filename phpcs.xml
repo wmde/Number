@@ -3,7 +3,6 @@
 	<!-- See https://github.com/wikimedia/mediawiki-tools-codesniffer/blob/master/MediaWiki/ruleset.xml -->
 	<rule ref="vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
 		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment" />
 	</rule>
 
 	<rule ref="Generic.ControlStructures" />
@@ -33,6 +32,12 @@
 			<property name="spacing" value="1" />
 		</properties>
 	</rule>
+	<rule ref="Squiz.WhiteSpace.OperatorSpacing">
+		<properties>
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
 
 	<arg name="extensions" value="php" />
+	<arg name="encoding" value="utf8" />
 </ruleset>

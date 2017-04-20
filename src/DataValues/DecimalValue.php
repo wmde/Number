@@ -279,9 +279,9 @@ class DecimalValue extends DataValueObject {
 	public function computeAbsolute() {
 		if ( $this->getSign() === '+' ) {
 			return $this;
-		} else {
-			return $this->computeComplement();
 		}
+
+		return $this->computeComplement();
 	}
 
 	/**
@@ -331,11 +331,11 @@ class DecimalValue extends DataValueObject {
 		$trimmed = preg_replace( '/(\.\d+?)0+$/', '$1', $this->value );
 		$trimmed = preg_replace( '/(?<=\d)\.0*$/', '', $trimmed );
 
-		if ( $trimmed !== $this->value ) {
-			return new self( $trimmed );
-		} else {
+		if ( $trimmed === $this->value ) {
 			return $this;
 		}
+
+		return new self( $trimmed );
 	}
 
 	/**

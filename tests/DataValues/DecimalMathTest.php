@@ -4,6 +4,7 @@ namespace DataValues\Tests;
 
 use DataValues\DecimalMath;
 use DataValues\DecimalValue;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @covers DataValues\DecimalMath
@@ -14,7 +15,7 @@ use DataValues\DecimalValue;
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class DecimalMathTest extends \PHPUnit_Framework_TestCase {
+class DecimalMathTest extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider bumpProvider

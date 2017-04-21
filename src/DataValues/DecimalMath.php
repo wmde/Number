@@ -193,7 +193,7 @@ class DecimalMath {
 
 		if ( $exponent < 0 ) {
 			// account for decimal point
-			$position = $pointPos +1 - $exponent;
+			$position = $pointPos + 1 - $exponent;
 		} else {
 			// make sure we don't remove more digits than are there
 			$position = max( 0, $pointPos - $exponent );
@@ -229,12 +229,12 @@ class DecimalMath {
 		$len = strlen( $value );
 
 		// keeping all digits means no rounding
-		if ( $significantDigits >= ( $len -1 ) ) {
+		if ( $significantDigits >= $len - 1 ) {
 			return $value;
 		}
 
 		// whether the last character is already part of the integer part of the decimal value
-		$i = min( $significantDigits +1, $len ); // account for the sign
+		$i = min( $significantDigits + 1, $len ); // account for the sign
 		$ch = $i < $len ? $value[$i] : '0';
 
 		if ( $ch === '.' ) {
@@ -268,9 +268,9 @@ class DecimalMath {
 
 		$rounded .= $suffix;
 
-		if ( $significantDigits > strlen( $rounded ) -1 ) {
+		if ( $significantDigits > strlen( $rounded ) - 1 ) {
 			if ( strpos( $rounded, '.' ) !== false ) {
-				$rounded = str_pad( $rounded, $significantDigits+1, '0', STR_PAD_RIGHT );
+				$rounded = str_pad( $rounded, $significantDigits + 1, '0', STR_PAD_RIGHT );
 			}
 		}
 
@@ -317,7 +317,7 @@ class DecimalMath {
 
 		$bumped = '';
 
-		for ( $i = strlen( $value ) -1; $i >= 0; $i-- ) {
+		for ( $i = strlen( $value ) - 1; $i >= 0; $i-- ) {
 			$ch = $value[$i];
 
 			if ( $ch === '.' ) {
@@ -330,7 +330,7 @@ class DecimalMath {
 				$bumped = $ch . '1' . $bumped;
 				break;
 			} else {
-				$bumped =  chr( ord( $ch ) + 1 ) . $bumped;
+				$bumped = chr( ord( $ch ) + 1 ) . $bumped;
 				break;
 			}
 		}
@@ -381,7 +381,7 @@ class DecimalMath {
 
 		$slumped = '';
 
-		for ( $i = strlen( $value ) -1; $i >= 0; $i-- ) {
+		for ( $i = strlen( $value ) - 1; $i >= 0; $i-- ) {
 			$ch = substr( $value, $i, 1 );
 
 			if ( $ch === '.' ) {
@@ -394,7 +394,7 @@ class DecimalMath {
 				$slumped = '0';
 				break;
 			} else {
-				$slumped =  chr( ord( $ch ) - 1 ) . $slumped;
+				$slumped = chr( ord( $ch ) - 1 ) . $slumped;
 				break;
 			}
 		}

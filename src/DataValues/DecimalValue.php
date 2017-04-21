@@ -299,7 +299,7 @@ class DecimalValue extends DataValueObject {
 			$n = strlen( $this->value );
 		}
 
-		return substr( $this->value, 1, $n -1 );
+		return substr( $this->value, 1, $n - 1 );
 	}
 
 	/**

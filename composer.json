@@ -29,6 +29,7 @@
 		"data-values/common": "~0.3.0|~0.2.0"
 	},
 	"require-dev": {
+		"ext-bcmath": "*",
 		"mediawiki/mediawiki-codesniffer": ">=0.4 <0.8",
 		"phpunit/phpunit": "~4.8"
 	},

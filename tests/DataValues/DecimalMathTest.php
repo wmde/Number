@@ -123,10 +123,6 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 	public function testProductWithBC( DecimalValue $a, DecimalValue $b, $value ) {
 		$math = new DecimalMath();
 
-		if ( !$math->getUseBC() ) {
-			$this->markTestSkipped( 'bcmath library not available' );
-		}
-
 		$actual = $math->product( $a, $b );
 		$this->assertSame( $value, $actual->getValue() );
 

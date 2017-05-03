@@ -50,6 +50,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.8.3 (dev)
+
+* Updated minimal required PHP version to 5.5.9.
+
 ### 0.8.2 (2016-11-17)
 
 * Fixed `QuantityFormatter` suppressing ±0 for `QuantityValue`s.

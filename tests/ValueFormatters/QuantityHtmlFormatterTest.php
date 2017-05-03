@@ -8,6 +8,7 @@ use DataValues\UnboundedQuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityHtmlFormatter;
+use ValueFormatters\ValueFormatter;
 
 /**
  * @covers ValueFormatters\QuantityHtmlFormatter
@@ -47,7 +48,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		DecimalFormatter $decimalFormatter = null,
 		$quantityWithUnitFormat = null
 	) {
-		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
+		$vocabularyUriFormatter = $this->getMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
 			->will( $this->returnCallback( function( $unit ) {
@@ -126,7 +127,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		UnboundedQuantityValue $value,
 		$expected
 	) {
-		$decimalFormatter = $this->getMock( 'ValueFormatters\DecimalFormatter' );
+		$decimalFormatter = $this->getMock( DecimalFormatter::class );
 		$decimalFormatter->expects( $this->any() )
 			->method( 'format' )
 			->will( $this->returnValue( '<b>+2</b>' ) );

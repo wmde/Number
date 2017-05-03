@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use ValueParsers\NumberUnlocalizer;
 use ValueParsers\ParserOptions;
 use ValueParsers\QuantityParser;
 use ValueParsers\ValueParser;
@@ -41,7 +42,7 @@ class QuantityParserTest extends StringValueParserTest {
 	 * @return QuantityParser
 	 */
 	private function getQuantityParser( ParserOptions $options = null ) {
-		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
+		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'unlocalizeNumber' )
@@ -200,7 +201,7 @@ class QuantityParserTest extends StringValueParserTest {
 		$options = new ParserOptions();
 		$options->setOption( ValueParser::OPT_LANG, 'test' );
 
-		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
+		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
 
 		$charmap = array(
 			' ' => '',

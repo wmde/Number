@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use DataValues\DecimalValue;
 use ValueParsers\DecimalParser;
+use ValueParsers\NumberUnlocalizer;
 
 /**
  * @covers ValueParsers\DecimalParser
@@ -105,7 +106,7 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	public function testUnlocalization() {
-		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
+		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
 
 		$unlocalizer->expects( $this->once() )
 			->method( 'unlocalizeNumber' )

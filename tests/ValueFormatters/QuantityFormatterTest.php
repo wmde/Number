@@ -7,6 +7,7 @@ use DataValues\UnboundedQuantityValue;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
+use ValueFormatters\ValueFormatter;
 
 /**
  * @covers ValueFormatters\QuantityFormatter
@@ -47,7 +48,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 		FormatterOptions $options = null,
 		$quantityWithUnitFormat = null
 	) {
-		$vocabularyUriFormatter = $this->getMock( 'ValueFormatters\ValueFormatter' );
+		$vocabularyUriFormatter = $this->getMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
 			->will( $this->returnCallback( function( $unit ) {

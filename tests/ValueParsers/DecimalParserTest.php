@@ -37,9 +37,9 @@ class DecimalParserTest extends StringValueParserTest {
 	 * @see ValueParserTestBase::validInputProvider
 	 */
 	public function validInputProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$valid = array(
+		$valid = [
 			'0' => 0,
 			'-0' => 0,
 			'-00.00' => '-0.00',
@@ -67,14 +67,14 @@ class DecimalParserTest extends StringValueParserTest {
 			'100,000' => 100000,
 			'100 000' => 100000,
 			'100\'000' => 100000,
-		);
+		];
 
 		foreach ( $valid as $value => $expected ) {
 			// Because PHP turns them into ints using black magic
 			$value = (string)$value;
 
 			$expected = new DecimalValue( $expected );
-			$argLists[] = array( $value, $expected );
+			$argLists[] = [ $value, $expected ];
 		}
 
 		return $argLists;
@@ -86,7 +86,7 @@ class DecimalParserTest extends StringValueParserTest {
 	public function invalidInputProvider() {
 		$argLists = parent::invalidInputProvider();
 
-		$invalid = array(
+		$invalid = [
 			'foo',
 			'',
 			'--1',
@@ -96,10 +96,10 @@ class DecimalParserTest extends StringValueParserTest {
 			'1+1',
 			'1-1',
 			'1.2.3',
-		);
+		];
 
 		foreach ( $invalid as $value ) {
-			$argLists[] = array( $value );
+			$argLists[] = [ $value ];
 		}
 
 		return $argLists;
@@ -130,20 +130,20 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	public function splitDecimalExponentProvider() {
-		return array(
-			'trailing newline' => array( "1.2E3\n", '1.2', 3 ),
-			'whitespace' => array( ' 1.2E3 ', ' 1.2E3 ', 0 ),
-			'no exponent' => array( '1.2', '1.2', 0 ),
-			'exponent' => array( '1.2E3', '1.2', 3 ),
-			'negative exponent' => array( '+1.2e-2', '+1.2', -2 ),
-			'positive exponent' => array( '-12e+3', '-12', 3 ),
-			'leading zero' => array( '12e+09', '12', 9 ),
-			'trailing decimal point' => array( '12.e+3', '12.', 3 ),
-			'leading decimal point' => array( '.12e+3', '.12', 3 ),
-			'space' => array( '12 e+3', '12 ', 3 ),
-			'x10 syntax' => array( '12x10^3', '12', 3 ),
-			'comma' => array( '12e3,4', '12', 34 ),
-		);
+		return [
+			'trailing newline' => [ "1.2E3\n", '1.2', 3 ],
+			'whitespace' => [ ' 1.2E3 ', ' 1.2E3 ', 0 ],
+			'no exponent' => [ '1.2', '1.2', 0 ],
+			'exponent' => [ '1.2E3', '1.2', 3 ],
+			'negative exponent' => [ '+1.2e-2', '+1.2', -2 ],
+			'positive exponent' => [ '-12e+3', '-12', 3 ],
+			'leading zero' => [ '12e+09', '12', 9 ],
+			'trailing decimal point' => [ '12.e+3', '12.', 3 ],
+			'leading decimal point' => [ '.12e+3', '.12', 3 ],
+			'space' => [ '12 e+3', '12 ', 3 ],
+			'x10 syntax' => [ '12x10^3', '12', 3 ],
+			'comma' => [ '12e3,4', '12', 34 ],
+		];
 	}
 
 	/**
@@ -158,11 +158,11 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	public function applyDecimalExponentProvider() {
-		return array(
-			'no exponent' => array( new DecimalValue( '+1.2' ), 0, new DecimalValue( '+1.2' ) ),
-			'negative exponent' => array( new DecimalValue( '-1.2' ), -2, new DecimalValue( '-0.012' ) ),
-			'positive exponent' => array( new DecimalValue( '-12' ), 3, new DecimalValue( '-12000' ) ),
-		);
+		return [
+			'no exponent' => [ new DecimalValue( '+1.2' ), 0, new DecimalValue( '+1.2' ) ],
+			'negative exponent' => [ new DecimalValue( '-1.2' ), -2, new DecimalValue( '-0.012' ) ],
+			'positive exponent' => [ new DecimalValue( '-12' ), 3, new DecimalValue( '-12000' ) ],
+		];
 	}
 
 	/**

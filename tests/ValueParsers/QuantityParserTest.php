@@ -65,7 +65,7 @@ class QuantityParserTest extends StringValueParserTest {
 	 * @see ValueParserTestBase::validInputProvider
 	 */
 	public function validInputProvider() {
-		$amounts = array(
+		$amounts = [
 			// amounts in various styles and forms
 			'0' => UnboundedQuantityValue::newFromNumber( 0 ),
 			'-0' => UnboundedQuantityValue::newFromNumber( 0 ),
@@ -129,13 +129,13 @@ class QuantityParserTest extends StringValueParserTest {
 			'100003 m³' => UnboundedQuantityValue::newFromNumber( 100003, 'm³' ),
 			'3.±-0.2µ' => QuantityValue::newFromNumber( '+3', 'µ', '+3.2', '+2.8' ),
 			'+00.20 Å' => UnboundedQuantityValue::newFromNumber( '+0.20', 'Å' ),
-		);
+		];
 
-		$argLists = array();
+		$argLists = [];
 
 		foreach ( $amounts as $amount => $expected ) {
 			//NOTE: PHP may "helpfully" have converted $amount to an integer. Yay.
-			$argLists[$amount] = array( strval( $amount ), $expected );
+			$argLists[$amount] = [ strval( $amount ), $expected ];
 		}
 
 		return $argLists;
@@ -147,7 +147,7 @@ class QuantityParserTest extends StringValueParserTest {
 	public function invalidInputProvider() {
 		$argLists = parent::invalidInputProvider();
 
-		$invalid = array(
+		$invalid = [
 			'foo',
 			'',
 			'.',
@@ -188,10 +188,10 @@ class QuantityParserTest extends StringValueParserTest {
 
 			'100 003',
 			'1 . 0',
-		);
+		];
 
 		foreach ( $invalid as $value ) {
-			$argLists[] = array( $value );
+			$argLists[] = [ $value ];
 		}
 
 		return $argLists;
@@ -203,10 +203,10 @@ class QuantityParserTest extends StringValueParserTest {
 
 		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
 
-		$charmap = array(
+		$charmap = [
 			' ' => '',
 			',' => '.',
-		);
+		];
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'unlocalizeNumber' )
@@ -247,13 +247,13 @@ class QuantityParserTest extends StringValueParserTest {
 	}
 
 	public function unitOptionProvider() {
-		return array(
-			array( '17 kittens', null, 'kittens' ),
-			array( '17', 'kittens', 'kittens' ),
-			array( '17 kittens', 'kittens', 'kittens' ),
-			array( '17m', 'm', 'm' ),
-			array( ' 17 ', ' http://concept.uri ', 'http://concept.uri' ),
-		);
+		return [
+			[ '17 kittens', null, 'kittens' ],
+			[ '17', 'kittens', 'kittens' ],
+			[ '17 kittens', 'kittens', 'kittens' ],
+			[ '17m', 'm', 'm' ],
+			[ ' 17 ', ' http://concept.uri ', 'http://concept.uri' ],
+		];
 	}
 
 	/**
@@ -270,11 +270,11 @@ class QuantityParserTest extends StringValueParserTest {
 	}
 
 	public function conflictingUnitOptionProvider() {
-		return array(
-			array( '17 kittens', 'm' ),
-			array( '17m', 'kittens' ),
-			array( '17m', '' ),
-		);
+		return [
+			[ '17 kittens', 'm' ],
+			[ '17m', 'kittens' ],
+			[ '17m', '' ],
+		];
 	}
 
 }

@@ -116,10 +116,10 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array(
+		return serialize( [
 			$this->amount,
 			$this->unit
-		) );
+		] );
 	}
 
 	/**
@@ -240,10 +240,10 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @return array
 	 */
 	public function getArrayValue() {
-		return array(
+		return [
 			'amount' => $this->amount->getArrayValue(),
 			'unit' => $this->unit,
-		);
+		];
 	}
 
 	/**
@@ -257,7 +257,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( array $data ) {
-		self::requireArrayFields( $data, array( 'amount', 'unit' ) );
+		self::requireArrayFields( $data, [ 'amount', 'unit' ] );
 
 		if ( !isset( $data['upperBound'] ) && !isset( $data['lowerBound'] ) ) {
 			return new self(
@@ -265,7 +265,7 @@ class UnboundedQuantityValue extends DataValueObject {
 				$data['unit']
 			);
 		} else {
-			self::requireArrayFields( $data, array( 'upperBound', 'lowerBound' ) );
+			self::requireArrayFields( $data, [ 'upperBound', 'lowerBound' ] );
 
 			return new QuantityValue(
 				DecimalValue::newFromArray( $data['amount'] ),

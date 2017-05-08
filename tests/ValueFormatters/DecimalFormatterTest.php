@@ -40,24 +40,24 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 	 * @see ValueFormatterTestBase::validProvider
 	 */
 	public function validProvider() {
-		$optionsForceSign = new FormatterOptions( array(
+		$optionsForceSign = new FormatterOptions( [
 			DecimalFormatter::OPT_FORCE_SIGN => true
-		) );
+		] );
 
-		$decimals = array(
-			'+0' => array( '0', null ),
-			'+0.0' => array( '0.0', null ),
-			'-0.0130' => array( '-0.0130', null ),
-			'+10000.013' => array( '10000.013', null ),
-			'+20000.4' => array( '+20000.4', $optionsForceSign ),
-			'-12' => array( '-12', null )
-		);
+		$decimals = [
+			'+0' => [ '0', null ],
+			'+0.0' => [ '0.0', null ],
+			'-0.0130' => [ '-0.0130', null ],
+			'+10000.013' => [ '10000.013', null ],
+			'+20000.4' => [ '+20000.4', $optionsForceSign ],
+			'-12' => [ '-12', null ]
+		];
 
-		$argLists = array();
+		$argLists = [];
 		foreach ( $decimals as $input => $args ) {
 			$inputValue = new DecimalValue( $input );
 
-			$argLists[$input] = array_merge( array( $inputValue ), $args );
+			$argLists[$input] = array_merge( [ $inputValue ], $args );
 		}
 
 		return $argLists;

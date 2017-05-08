@@ -115,18 +115,18 @@ class DecimalValueTest extends DataValueTest {
 			'negative/equal' => array( new DecimalValue( '-1.33' ), new DecimalValue( '-1.33' ), 0 ),
 
 			'simple/smaller' => array( new DecimalValue( '+1' ), new DecimalValue( '+2' ), -1 ),
-			'simple/greater' => array( new DecimalValue( '+2' ), new DecimalValue( '+1' ), +1 ),
-			'negative/greater' => array( new DecimalValue( '-1' ), new DecimalValue( '-2' ), +1 ),
+			'simple/greater' => array( new DecimalValue( '+2' ), new DecimalValue( '+1' ), 1 ),
+			'negative/greater' => array( new DecimalValue( '-1' ), new DecimalValue( '-2' ), 1 ),
 			'negative/smaller' => array( new DecimalValue( '-2' ), new DecimalValue( '-1' ), -1 ),
-			'negative-small/greater' => array( new DecimalValue( '-0.5' ), new DecimalValue( '-0.7' ), +1 ),
+			'negative-small/greater' => array( new DecimalValue( '-0.5' ), new DecimalValue( '-0.7' ), 1 ),
 			'negative-small/smaller' => array( new DecimalValue( '-0.7' ), new DecimalValue( '-0.5' ), -1 ),
 
-			'digits/greater' => array( new DecimalValue( '+11' ), new DecimalValue( '+8' ), +1 ),
-			'digits-sub/greater' => array( new DecimalValue( '+11' ), new DecimalValue( '+8.0' ), +1 ),
-			'negative-digits/greater' => array( new DecimalValue( '-11' ), new DecimalValue( '-80' ), +1 ),
-			'small/greater' => array( new DecimalValue( '+0.050' ), new DecimalValue( '+0.005' ), +1 ),
+			'digits/greater' => array( new DecimalValue( '+11' ), new DecimalValue( '+8' ), 1 ),
+			'digits-sub/greater' => array( new DecimalValue( '+11' ), new DecimalValue( '+8.0' ), 1 ),
+			'negative-digits/greater' => array( new DecimalValue( '-11' ), new DecimalValue( '-80' ), 1 ),
+			'small/greater' => array( new DecimalValue( '+0.050' ), new DecimalValue( '+0.005' ), 1 ),
 
-			'signs/greater' => array( new DecimalValue( '+1' ), new DecimalValue( '-8' ), +1 ),
+			'signs/greater' => array( new DecimalValue( '+1' ), new DecimalValue( '-8' ), 1 ),
 			'signs/less' => array( new DecimalValue( '-8' ), new DecimalValue( '+1' ), -1 ),
 
 			'with-and-without-point' => array( new DecimalValue( '+100' ), new DecimalValue( '+100.01' ), -1 ),

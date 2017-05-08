@@ -27,20 +27,20 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	}
 
 	public function validConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( new DecimalValue( '+42' ), '1' );
-		$argLists[] = array( new DecimalValue( '+0.01' ), '1' );
-		$argLists[] = array( new DecimalValue( '-0.5' ), '1' );
+		$argLists[] = [ new DecimalValue( '+42' ), '1' ];
+		$argLists[] = [ new DecimalValue( '+0.01' ), '1' ];
+		$argLists[] = [ new DecimalValue( '-0.5' ), '1' ];
 
 		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( new DecimalValue( '+0' ), '' );
-		$argLists[] = array( new DecimalValue( '+0' ), 1 );
+		$argLists[] = [ new DecimalValue( '+0' ), '' ];
+		$argLists[] = [ new DecimalValue( '+0' ), 1 ];
 
 		return $argLists;
 	}
@@ -76,36 +76,36 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	}
 
 	public function newFromNumberProvider() {
-		return array(
-			array(
+		return [
+			[
 				42, '1',
 				new UnboundedQuantityValue( new DecimalValue( '+42' ), '1' )
-			),
-			array(
+			],
+			[
 				-0.05, '1',
 				new UnboundedQuantityValue( new DecimalValue( '-0.05' ), '1' )
-			),
-			array(
+			],
+			[
 				0, 'm',
 				new UnboundedQuantityValue( new DecimalValue( '+0' ), 'm' )
-			),
-			array(
+			],
+			[
 				'+23', '1',
 				new UnboundedQuantityValue( new DecimalValue( '+23' ), '1' )
-			),
-			array(
+			],
+			[
 				'+42', '1',
 				new UnboundedQuantityValue( new DecimalValue( '+42' ), '1' )
-			),
-			array(
+			],
+			[
 				'-0.05', 'm',
 				new UnboundedQuantityValue( new DecimalValue( '-0.05' ), 'm' )
-			),
-			array(
+			],
+			[
 				new DecimalValue( '+42' ), '1',
 				new UnboundedQuantityValue( new DecimalValue( '+42' ), '1' )
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -117,33 +117,33 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	}
 
 	public function validArraySerializationProvider() {
-		return array(
-			'unbounded' => array(
-				array(
+		return [
+			'unbounded' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
-				),
+				],
 				UnboundedQuantityValue::newFromNumber( '+2', '1' )
-			),
-			'unbounded with existing array keys' => array(
-				array(
+			],
+			'unbounded with existing array keys' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
 					'upperBound' => null,
 					'lowerBound' => null,
-				),
+				],
 				UnboundedQuantityValue::newFromNumber( '+2', '1' )
-			),
-			'with-extra' => array(
-				array(
+			],
+			'with-extra' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
 					'upperBound' => '+2.5',
 					'lowerBound' => '+1.5',
-				),
+				],
 				QuantityValue::newFromNumber( '+2', '1', '+2.5', '+1.5' )
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -155,54 +155,54 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	}
 
 	public function invalidArraySerializationProvider() {
-		return array(
-			'no-amount' => array(
-				array(
+		return [
+			'no-amount' => [
+				[
 					'unit' => '1',
-				)
-			),
-			'no-unit' => array(
-				array(
+				]
+			],
+			'no-unit' => [
+				[
 					'amount' => '+2',
-				)
-			),
-			'no-upperBound' => array(
-				array(
+				]
+			],
+			'no-upperBound' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
 					'lowerBound' => '+1.5',
-				)
-			),
-			'no-lowerBound' => array(
-				array(
+				]
+			],
+			'no-lowerBound' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
 					'upperBound' => '+2.5',
-				)
-			),
-			'bad-amount' => array(
-				array(
+				]
+			],
+			'bad-amount' => [
+				[
 					'amount' => 'x',
 					'unit' => '1',
-				)
-			),
-			'bad-upperBound' => array(
-				array(
+				]
+			],
+			'bad-upperBound' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
 					'upperBound' => 'x',
 					'lowerBound' => '+1.5',
-				)
-			),
-			'bad-lowerBound' => array(
-				array(
+				]
+			],
+			'bad-lowerBound' => [
+				[
 					'amount' => '+2',
 					'unit' => '1',
 					'upperBound' => '+2.5',
 					'lowerBound' => 'x',
-				)
-			),
-		);
+				]
+			],
+		];
 	}
 
 	/**
@@ -210,15 +210,15 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @see http://www.regular-expressions.info/anchors.html#realend
 	 */
 	public function testTrailingNewlineRobustness() {
-		$value = UnboundedQuantityValue::newFromArray( array(
+		$value = UnboundedQuantityValue::newFromArray( [
 			'amount' => "-0.0\n",
 			'unit' => "1\n",
-		) );
+		] );
 
-		$this->assertSame( array(
+		$this->assertSame( [
 			'amount' => '+0.0',
 			'unit' => "1\n",
-		), $value->getArrayValue() );
+		], $value->getArrayValue() );
 	}
 
 	/**
@@ -235,8 +235,8 @@ class UnboundedQuantityValueTest extends DataValueTest {
 		$args = func_get_args();
 		$extraArgs = array_slice( $args, 3 );
 
-		$call = array( $quantity, 'transform' );
-		$callArgs = array_merge( array( 'x', $transformation ), $extraArgs );
+		$call = [ $quantity, 'transform' ];
+		$callArgs = array_merge( [ 'x', $transformation ], $extraArgs );
 		$actual = call_user_func_array( $call, $callArgs );
 
 		$this->assertSame( 'x', $actual->getUnit() );
@@ -257,48 +257,48 @@ class UnboundedQuantityValueTest extends DataValueTest {
 			return new DecimalValue( $value->getValueFloat() * $factor );
 		};
 
-		return array(
-			0 => array(
+		return [
+			0 => [
 				UnboundedQuantityValue::newFromNumber( '+10', '1' ),
 				$identity,
 				UnboundedQuantityValue::newFromNumber( '+10', '?' )
-			),
-			1 => array(
+			],
+			1 => [
 				UnboundedQuantityValue::newFromNumber( '-0.5', '1' ),
 				$identity,
 				UnboundedQuantityValue::newFromNumber( '-0.5', '?' )
-			),
-			2 => array(
+			],
+			2 => [
 				UnboundedQuantityValue::newFromNumber( '+0', '1' ),
 				$square,
 				UnboundedQuantityValue::newFromNumber( '+0', '?' )
-			),
-			3 => array(
+			],
+			3 => [
 				UnboundedQuantityValue::newFromNumber( '+10', '1' ),
 				$square,
 				UnboundedQuantityValue::newFromNumber( '+1000', '?' )
-			),
-			4 => array(
+			],
+			4 => [
 				UnboundedQuantityValue::newFromNumber( '+0.5', '1' ),
 				$scale,
 				UnboundedQuantityValue::newFromNumber( '+0.25', '?' ),
 				0.5
-			),
+			],
 
 			// note: absolutely exact values require conversion with infinite precision!
-			10 => array(
+			10 => [
 				UnboundedQuantityValue::newFromNumber( '+100', '1' ),
 				$scale,
 				UnboundedQuantityValue::newFromNumber( '+12825', '?' ),
 				128.25
-			),
-			13 => array(
+			],
+			13 => [
 				UnboundedQuantityValue::newFromNumber( '+100', '1' ),
 				$scale,
 				UnboundedQuantityValue::newFromNumber( '+333.33', '?' ),
 				3.3333
-			),
-		);
+			],
+		];
 	}
 
 }

@@ -98,12 +98,12 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( array(
+		return serialize( [
 			$this->amount,
 			$this->unit,
 			$this->upperBound,
 			$this->lowerBound,
-		) );
+		] );
 	}
 
 	/**
@@ -284,12 +284,12 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @return array
 	 */
 	public function getArrayValue() {
-		return array(
+		return [
 			'amount' => $this->amount->getArrayValue(),
 			'unit' => $this->unit,
 			'upperBound' => $this->upperBound->getArrayValue(),
 			'lowerBound' => $this->lowerBound->getArrayValue(),
-		);
+		];
 	}
 
 }

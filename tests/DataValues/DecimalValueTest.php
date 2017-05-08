@@ -25,56 +25,56 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function validConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( 42 );
-		$argLists[] = array( -42 );
-		$argLists[] = array( '-42' );
-		$argLists[] = array( 4.2 );
-		$argLists[] = array( -4.2 );
-		$argLists[] = array( '+4.2' );
-		$argLists[] = array( " +4.2\n" );
-		$argLists[] = array( 0 );
-		$argLists[] = array( 0.2 );
-		$argLists[] = array( '-0.42' );
-		$argLists[] = array( '-0.0' );
-		$argLists[] = array( '-0' );
-		$argLists[] = array( '+0' );
-		$argLists[] = array( '+0.0' );
-		$argLists[] = array( '+0.000' );
-		$argLists[] = array( '+1.' . str_repeat( '0', 124 ) );
-		$argLists[] = array( '+1.0' . str_repeat( ' ', 124 ) );
-		$argLists[] = array( '4.2' );
-		$argLists[] = array( " 4.2\n" );
+		$argLists[] = [ 42 ];
+		$argLists[] = [ -42 ];
+		$argLists[] = [ '-42' ];
+		$argLists[] = [ 4.2 ];
+		$argLists[] = [ -4.2 ];
+		$argLists[] = [ '+4.2' ];
+		$argLists[] = [ " +4.2\n" ];
+		$argLists[] = [ 0 ];
+		$argLists[] = [ 0.2 ];
+		$argLists[] = [ '-0.42' ];
+		$argLists[] = [ '-0.0' ];
+		$argLists[] = [ '-0' ];
+		$argLists[] = [ '+0' ];
+		$argLists[] = [ '+0.0' ];
+		$argLists[] = [ '+0.000' ];
+		$argLists[] = [ '+1.' . str_repeat( '0', 124 ) ];
+		$argLists[] = [ '+1.0' . str_repeat( ' ', 124 ) ];
+		$argLists[] = [ '4.2' ];
+		$argLists[] = [ " 4.2\n" ];
 
 		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( 'foo' );
-		$argLists[] = array( '' );
-		$argLists[] = array( '++4.2' );
-		$argLists[] = array( '--4.2' );
-		$argLists[] = array( '-+4.2' );
-		$argLists[] = array( '+-4.2' );
-		$argLists[] = array( '+/-0' );
-		$argLists[] = array( '-.42' );
-		$argLists[] = array( '+.42' );
-		$argLists[] = array( '.42' );
-		$argLists[] = array( '.0' );
-		$argLists[] = array( '-00' );
-		$argLists[] = array( '−1' );
-		$argLists[] = array( '+01.2' );
-		$argLists[] = array( 'x2' );
-		$argLists[] = array( '2x' );
-		$argLists[] = array( '+0100' );
-		$argLists[] = array( false );
-		$argLists[] = array( true );
-		$argLists[] = array( null );
-		$argLists[] = array( '0x20' );
-		$argLists[] = array( '+1.' . str_repeat( '0', 125 ) );
+		$argLists[] = [ 'foo' ];
+		$argLists[] = [ '' ];
+		$argLists[] = [ '++4.2' ];
+		$argLists[] = [ '--4.2' ];
+		$argLists[] = [ '-+4.2' ];
+		$argLists[] = [ '+-4.2' ];
+		$argLists[] = [ '+/-0' ];
+		$argLists[] = [ '-.42' ];
+		$argLists[] = [ '+.42' ];
+		$argLists[] = [ '.42' ];
+		$argLists[] = [ '.0' ];
+		$argLists[] = [ '-00' ];
+		$argLists[] = [ '−1' ];
+		$argLists[] = [ '+01.2' ];
+		$argLists[] = [ 'x2' ];
+		$argLists[] = [ '2x' ];
+		$argLists[] = [ '+0100' ];
+		$argLists[] = [ false ];
+		$argLists[] = [ true ];
+		$argLists[] = [ null ];
+		$argLists[] = [ '0x20' ];
+		$argLists[] = [ '+1.' . str_repeat( '0', 125 ) ];
 
 		return $argLists;
 	}
@@ -106,31 +106,31 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function compareProvider() {
-		return array(
-			'zero/equal' => array( new DecimalValue( 0 ), new DecimalValue( 0 ), 0 ),
-			'zero-signs/equal' => array( new DecimalValue( '+0' ), new DecimalValue( '-0' ), 0 ),
-			'zero-digits/equal' => array( new DecimalValue( '+0' ), new DecimalValue( '+0.000' ), 0 ),
-			'digits/equal' => array( new DecimalValue( '+2.2' ), new DecimalValue( '+2.2000' ), 0 ),
-			'conversion/equal' => array( new DecimalValue( 2.5 ), new DecimalValue( '+2.50' ), 0 ),
-			'negative/equal' => array( new DecimalValue( '-1.33' ), new DecimalValue( '-1.33' ), 0 ),
+		return [
+			'zero/equal' => [ new DecimalValue( 0 ), new DecimalValue( 0 ), 0 ],
+			'zero-signs/equal' => [ new DecimalValue( '+0' ), new DecimalValue( '-0' ), 0 ],
+			'zero-digits/equal' => [ new DecimalValue( '+0' ), new DecimalValue( '+0.000' ), 0 ],
+			'digits/equal' => [ new DecimalValue( '+2.2' ), new DecimalValue( '+2.2000' ), 0 ],
+			'conversion/equal' => [ new DecimalValue( 2.5 ), new DecimalValue( '+2.50' ), 0 ],
+			'negative/equal' => [ new DecimalValue( '-1.33' ), new DecimalValue( '-1.33' ), 0 ],
 
-			'simple/smaller' => array( new DecimalValue( '+1' ), new DecimalValue( '+2' ), -1 ),
-			'simple/greater' => array( new DecimalValue( '+2' ), new DecimalValue( '+1' ), 1 ),
-			'negative/greater' => array( new DecimalValue( '-1' ), new DecimalValue( '-2' ), 1 ),
-			'negative/smaller' => array( new DecimalValue( '-2' ), new DecimalValue( '-1' ), -1 ),
-			'negative-small/greater' => array( new DecimalValue( '-0.5' ), new DecimalValue( '-0.7' ), 1 ),
-			'negative-small/smaller' => array( new DecimalValue( '-0.7' ), new DecimalValue( '-0.5' ), -1 ),
+			'simple/smaller' => [ new DecimalValue( '+1' ), new DecimalValue( '+2' ), -1 ],
+			'simple/greater' => [ new DecimalValue( '+2' ), new DecimalValue( '+1' ), 1 ],
+			'negative/greater' => [ new DecimalValue( '-1' ), new DecimalValue( '-2' ), 1 ],
+			'negative/smaller' => [ new DecimalValue( '-2' ), new DecimalValue( '-1' ), -1 ],
+			'negative-small/greater' => [ new DecimalValue( '-0.5' ), new DecimalValue( '-0.7' ), 1 ],
+			'negative-small/smaller' => [ new DecimalValue( '-0.7' ), new DecimalValue( '-0.5' ), -1 ],
 
-			'digits/greater' => array( new DecimalValue( '+11' ), new DecimalValue( '+8' ), 1 ),
-			'digits-sub/greater' => array( new DecimalValue( '+11' ), new DecimalValue( '+8.0' ), 1 ),
-			'negative-digits/greater' => array( new DecimalValue( '-11' ), new DecimalValue( '-80' ), 1 ),
-			'small/greater' => array( new DecimalValue( '+0.050' ), new DecimalValue( '+0.005' ), 1 ),
+			'digits/greater' => [ new DecimalValue( '+11' ), new DecimalValue( '+8' ), 1 ],
+			'digits-sub/greater' => [ new DecimalValue( '+11' ), new DecimalValue( '+8.0' ), 1 ],
+			'negative-digits/greater' => [ new DecimalValue( '-11' ), new DecimalValue( '-80' ), 1 ],
+			'small/greater' => [ new DecimalValue( '+0.050' ), new DecimalValue( '+0.005' ), 1 ],
 
-			'signs/greater' => array( new DecimalValue( '+1' ), new DecimalValue( '-8' ), 1 ),
-			'signs/less' => array( new DecimalValue( '-8' ), new DecimalValue( '+1' ), -1 ),
+			'signs/greater' => [ new DecimalValue( '+1' ), new DecimalValue( '-8' ), 1 ],
+			'signs/less' => [ new DecimalValue( '-8' ), new DecimalValue( '+1' ), -1 ],
 
-			'with-and-without-point' => array( new DecimalValue( '+100' ), new DecimalValue( '+100.01' ), -1 ),
-		);
+			'with-and-without-point' => [ new DecimalValue( '+100' ), new DecimalValue( '+100.01' ), -1 ],
+		];
 	}
 
 	/**
@@ -142,15 +142,15 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function getSignProvider() {
-		return array(
-			'zero is positive' => array( new DecimalValue( 0 ), '+' ),
-			'zero is always positive' => array( new DecimalValue( '-0' ), '+' ),
-			'zero is ALWAYS positive' => array( new DecimalValue( '-0.00' ), '+' ),
-			'+1 is positive' => array( new DecimalValue( '+1' ), '+' ),
-			'-1 is negative' => array( new DecimalValue( '-1' ), '-' ),
-			'+0.01 is positive' => array( new DecimalValue( '+0.01' ), '+' ),
-			'-0.01 is negative' => array( new DecimalValue( '-0.01' ), '-' ),
-		);
+		return [
+			'zero is positive' => [ new DecimalValue( 0 ), '+' ],
+			'zero is always positive' => [ new DecimalValue( '-0' ), '+' ],
+			'zero is ALWAYS positive' => [ new DecimalValue( '-0.00' ), '+' ],
+			'+1 is positive' => [ new DecimalValue( '+1' ), '+' ],
+			'-1 is negative' => [ new DecimalValue( '-1' ), '-' ],
+			'+0.01 is positive' => [ new DecimalValue( '+0.01' ), '+' ],
+			'-0.01 is negative' => [ new DecimalValue( '-0.01' ), '-' ],
+		];
 	}
 
 	/**
@@ -162,30 +162,30 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function getValueProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( new DecimalValue( 42 ), '+42' );
-		$argLists[] = array( new DecimalValue( -42 ), '-42' );
-		$argLists[] = array( new DecimalValue( -42.0 ), '-42' );
-		$argLists[] = array( new DecimalValue( '-42' ), '-42' );
-		$argLists[] = array( new DecimalValue( 4.5 ), '+4.5' );
-		$argLists[] = array( new DecimalValue( -4.5 ), '-4.5' );
-		$argLists[] = array( new DecimalValue( '+4.2' ), '+4.2' );
-		$argLists[] = array( new DecimalValue( 0 ), '+0' );
-		$argLists[] = array( new DecimalValue( 0.0 ), '+0' );
-		$argLists[] = array( new DecimalValue( 1.0 ), '+1' );
-		$argLists[] = array( new DecimalValue( 0.5 ), '+0.5' );
-		$argLists[] = array( new DecimalValue( '-0.42' ), '-0.42' );
-		$argLists[] = array( new DecimalValue( '-0.0' ), '+0.0' );
-		$argLists[] = array( new DecimalValue( '-0' ), '+0' );
-		$argLists[] = array( new DecimalValue( '+0.0' ), '+0.0' );
-		$argLists[] = array( new DecimalValue( '+0' ), '+0' );
-		$argLists[] = array( new DecimalValue( 2147483649 ), '+2147483649' );
-		$argLists[] = array( new DecimalValue( 1000000000000000 ), '+1000000000000000' );
-		$argLists[] = array(
+		$argLists[] = [ new DecimalValue( 42 ), '+42' ];
+		$argLists[] = [ new DecimalValue( -42 ), '-42' ];
+		$argLists[] = [ new DecimalValue( -42.0 ), '-42' ];
+		$argLists[] = [ new DecimalValue( '-42' ), '-42' ];
+		$argLists[] = [ new DecimalValue( 4.5 ), '+4.5' ];
+		$argLists[] = [ new DecimalValue( -4.5 ), '-4.5' ];
+		$argLists[] = [ new DecimalValue( '+4.2' ), '+4.2' ];
+		$argLists[] = [ new DecimalValue( 0 ), '+0' ];
+		$argLists[] = [ new DecimalValue( 0.0 ), '+0' ];
+		$argLists[] = [ new DecimalValue( 1.0 ), '+1' ];
+		$argLists[] = [ new DecimalValue( 0.5 ), '+0.5' ];
+		$argLists[] = [ new DecimalValue( '-0.42' ), '-0.42' ];
+		$argLists[] = [ new DecimalValue( '-0.0' ), '+0.0' ];
+		$argLists[] = [ new DecimalValue( '-0' ), '+0' ];
+		$argLists[] = [ new DecimalValue( '+0.0' ), '+0.0' ];
+		$argLists[] = [ new DecimalValue( '+0' ), '+0' ];
+		$argLists[] = [ new DecimalValue( 2147483649 ), '+2147483649' ];
+		$argLists[] = [ new DecimalValue( 1000000000000000 ), '+1000000000000000' ];
+		$argLists[] = [
 			new DecimalValue( 1 + 1e-14 / 3 ),
 			'+1.0000000000000033306690738754696212708950042724609375'
-		);
+		];
 
 		return $argLists;
 	}
@@ -199,21 +199,21 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function getValueFloatProvider() {
-		$argLists = array();
+		$argLists = [];
 
-		$argLists[] = array( new DecimalValue( 42 ), 42.0 );
-		$argLists[] = array( new DecimalValue( -42 ), -42.0 );
-		$argLists[] = array( new DecimalValue( '-42' ), -42.0 );
-		$argLists[] = array( new DecimalValue( 4.5 ), 4.5 );
-		$argLists[] = array( new DecimalValue( -4.5 ), -4.5 );
-		$argLists[] = array( new DecimalValue( '+4.2' ), 4.2 );
-		$argLists[] = array( new DecimalValue( 0 ), 0.0 );
-		$argLists[] = array( new DecimalValue( 0.5 ), 0.5 );
-		$argLists[] = array( new DecimalValue( '-0.42' ), -0.42 );
-		$argLists[] = array( new DecimalValue( '-0.0' ), 0.0 );
-		$argLists[] = array( new DecimalValue( '-0' ), 0.0 );
-		$argLists[] = array( new DecimalValue( '+0.0' ), 0.0 );
-		$argLists[] = array( new DecimalValue( '+0' ), 0.0 );
+		$argLists[] = [ new DecimalValue( 42 ), 42.0 ];
+		$argLists[] = [ new DecimalValue( -42 ), -42.0 ];
+		$argLists[] = [ new DecimalValue( '-42' ), -42.0 ];
+		$argLists[] = [ new DecimalValue( 4.5 ), 4.5 ];
+		$argLists[] = [ new DecimalValue( -4.5 ), -4.5 ];
+		$argLists[] = [ new DecimalValue( '+4.2' ), 4.2 ];
+		$argLists[] = [ new DecimalValue( 0 ), 0.0 ];
+		$argLists[] = [ new DecimalValue( 0.5 ), 0.5 ];
+		$argLists[] = [ new DecimalValue( '-0.42' ), -0.42 ];
+		$argLists[] = [ new DecimalValue( '-0.0' ), 0.0 ];
+		$argLists[] = [ new DecimalValue( '-0' ), 0.0 ];
+		$argLists[] = [ new DecimalValue( '+0.0' ), 0.0 ];
+		$argLists[] = [ new DecimalValue( '+0' ), 0.0 ];
 
 		return $argLists;
 	}
@@ -227,15 +227,15 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function getGetIntegerPartProvider() {
-		return array(
-			array( new DecimalValue( '+0' ), '0' ),
-			array( new DecimalValue( '-0.0' ), '0' ),
-			array( new DecimalValue( '+10' ), '10' ),
-			array( new DecimalValue( '-10' ), '10' ),
-			array( new DecimalValue( '+10.663' ), '10' ),
-			array( new DecimalValue( '-10.001' ), '10' ),
-			array( new DecimalValue( '+0.01' ), '0' ),
-		);
+		return [
+			[ new DecimalValue( '+0' ), '0' ],
+			[ new DecimalValue( '-0.0' ), '0' ],
+			[ new DecimalValue( '+10' ), '10' ],
+			[ new DecimalValue( '-10' ), '10' ],
+			[ new DecimalValue( '+10.663' ), '10' ],
+			[ new DecimalValue( '-10.001' ), '10' ],
+			[ new DecimalValue( '+0.01' ), '0' ],
+		];
 	}
 
 	/**
@@ -247,14 +247,14 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function getGetFractionalPartProvider() {
-		return array(
-			array( new DecimalValue( '+0' ), '' ),
-			array( new DecimalValue( '-0.0' ), '0' ),
-			array( new DecimalValue( '+10' ), '' ),
-			array( new DecimalValue( '+10.663' ), '663' ),
-			array( new DecimalValue( '-10.001' ), '001' ),
-			array( new DecimalValue( '+0.01' ), '01' ),
-		);
+		return [
+			[ new DecimalValue( '+0' ), '' ],
+			[ new DecimalValue( '-0.0' ), '0' ],
+			[ new DecimalValue( '+10' ), '' ],
+			[ new DecimalValue( '+10.663' ), '663' ],
+			[ new DecimalValue( '-10.001' ), '001' ],
+			[ new DecimalValue( '+0.01' ), '01' ],
+		];
 	}
 
 	/**
@@ -269,13 +269,13 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function computeComplementProvider() {
-		return array(
-			array( new DecimalValue( '+0' ), '+0' ),
-			array( new DecimalValue( '+0.00' ), '+0.00' ),
-			array( new DecimalValue( '+1' ), '-1' ),
-			array( new DecimalValue( '+100.663' ), '-100.663' ),
-			array( new DecimalValue( '-0.001' ), '+0.001' ),
-		);
+		return [
+			[ new DecimalValue( '+0' ), '+0' ],
+			[ new DecimalValue( '+0.00' ), '+0.00' ],
+			[ new DecimalValue( '+1' ), '-1' ],
+			[ new DecimalValue( '+100.663' ), '-100.663' ],
+			[ new DecimalValue( '-0.001' ), '+0.001' ],
+		];
 	}
 
 	/**
@@ -290,15 +290,15 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function computeComputeAbsolute() {
-		return array(
-			array( new DecimalValue( '+0' ), '+0' ),
-			array( new DecimalValue( '+1' ), '+1' ),
-			array( new DecimalValue( '-1' ), '+1' ),
-			array( new DecimalValue( '+100.663' ), '+100.663' ),
-			array( new DecimalValue( '-100.663' ), '+100.663' ),
-			array( new DecimalValue( '+0.001' ), '+0.001' ),
-			array( new DecimalValue( '-0.001' ), '+0.001' ),
-		);
+		return [
+			[ new DecimalValue( '+0' ), '+0' ],
+			[ new DecimalValue( '+1' ), '+1' ],
+			[ new DecimalValue( '-1' ), '+1' ],
+			[ new DecimalValue( '+100.663' ), '+100.663' ],
+			[ new DecimalValue( '-100.663' ), '+100.663' ],
+			[ new DecimalValue( '+0.001' ), '+0.001' ],
+			[ new DecimalValue( '-0.001' ), '+0.001' ],
+		];
 	}
 
 	/**
@@ -310,14 +310,14 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function isZeroProvider() {
-		return array(
-			array( new DecimalValue( '+0' ), true ),
-			array( new DecimalValue( '-0.00' ), true ),
+		return [
+			[ new DecimalValue( '+0' ), true ],
+			[ new DecimalValue( '-0.00' ), true ],
 
-			array( new DecimalValue( '+1' ),       false ),
-			array( new DecimalValue( '+100.663' ), false ),
-			array( new DecimalValue( '-0.001' ),   false ),
-		);
+			[ new DecimalValue( '+1' ),       false ],
+			[ new DecimalValue( '+100.663' ), false ],
+			[ new DecimalValue( '-0.001' ),   false ],
+		];
 	}
 
 	/**
@@ -329,18 +329,18 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	public function provideGetTrim() {
-		return array(
-			array( new DecimalValue( '+8' ),     new DecimalValue( '+8' ) ),
-			array( new DecimalValue( '+80' ),    new DecimalValue( '+80' ) ),
-			array( new DecimalValue( '+800' ),   new DecimalValue( '+800' ) ),
-			array( new DecimalValue( '+0' ),     new DecimalValue( '+0' ) ),
-			array( new DecimalValue( '+0.0' ),   new DecimalValue( '+0' ) ),
-			array( new DecimalValue( '+10.00' ), new DecimalValue( '+10' ) ),
-			array( new DecimalValue( '-0.1' ),   new DecimalValue( '-0.1' ) ),
-			array( new DecimalValue( '-0.10' ),  new DecimalValue( '-0.1' ) ),
-			array( new DecimalValue( '-0.010' ), new DecimalValue( '-0.01' ) ),
-			array( new DecimalValue( '-0.001' ), new DecimalValue( '-0.001' ) ),
-		);
+		return [
+			[ new DecimalValue( '+8' ),     new DecimalValue( '+8' ) ],
+			[ new DecimalValue( '+80' ),    new DecimalValue( '+80' ) ],
+			[ new DecimalValue( '+800' ),   new DecimalValue( '+800' ) ],
+			[ new DecimalValue( '+0' ),     new DecimalValue( '+0' ) ],
+			[ new DecimalValue( '+0.0' ),   new DecimalValue( '+0' ) ],
+			[ new DecimalValue( '+10.00' ), new DecimalValue( '+10' ) ],
+			[ new DecimalValue( '-0.1' ),   new DecimalValue( '-0.1' ) ],
+			[ new DecimalValue( '-0.10' ),  new DecimalValue( '-0.1' ) ],
+			[ new DecimalValue( '-0.010' ), new DecimalValue( '-0.01' ) ],
+			[ new DecimalValue( '-0.001' ), new DecimalValue( '-0.001' ) ],
+		];
 	}
 
 }

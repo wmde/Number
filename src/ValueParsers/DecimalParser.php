@@ -56,9 +56,9 @@ class DecimalParser extends StringValueParser {
 	 *
 	 * @since 0.5
 	 *
-	 * @example splitDecimalExponent( '1.2' )  is  array( '1.2', 0 )
-	 * @example splitDecimalExponent( '1.2e3' )  is  array( '1.2', 3 )
-	 * @example splitDecimalExponent( '1.2e-2' )  is  array( '1.2', -2 )
+	 * @example splitDecimalExponent( '1.2' ) is [ '1.2', 0 ]
+	 * @example splitDecimalExponent( '1.2e3' ) is [ '1.2', 3 ]
+	 * @example splitDecimalExponent( '1.2e-2' ) is [ '1.2', -2 ]
 	 *
 	 * @param string $valueString A decimal string, possibly using scientific notation.
 	 *
@@ -69,10 +69,10 @@ class DecimalParser extends StringValueParser {
 	public function splitDecimalExponent( $valueString ) {
 		if ( preg_match( '/^(.*)(?:[eE]|x10\^)([-+]?[\d,]+)$/', $valueString, $matches ) ) {
 			$exponent = (int)str_replace( ',', '', $matches[2] );
-			return array( $matches[1], $exponent );
+			return [ $matches[1], $exponent ];
 		}
 
-		return array( $valueString, 0 );
+		return [ $valueString, 0 ];
 	}
 
 	/**

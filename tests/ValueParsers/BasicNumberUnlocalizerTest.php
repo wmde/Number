@@ -16,33 +16,33 @@ use ValueParsers\BasicNumberUnlocalizer;
 class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 
 	public function provideUnlocalizeNumber() {
-		return array(
-			array( '5', '5' ),
-			array( '+3', '+3' ),
-			array( '-15', '-15' ),
+		return [
+			[ '5', '5' ],
+			[ '+3', '+3' ],
+			[ '-15', '-15' ],
 
-			array( '5.3', '5.3' ),
-			array( '+3.2', '+3.2' ),
-			array( '-15.77', '-15.77' ),
+			[ '5.3', '5.3' ],
+			[ '+3.2', '+3.2' ],
+			[ '-15.77', '-15.77' ],
 
-			array( '.3', '.3' ),
-			array( '+.2', '+.2' ),
-			array( '-.77', '-.77' ),
+			[ '.3', '.3' ],
+			[ '+.2', '+.2' ],
+			[ '-.77', '-.77' ],
 
-			array( '5.3e4', '5.3e4' ),
-			array( '+3.2E-4', '+3.2E-4' ),
-			array( '-15.77e+4.2', '-15.77e+4.2' ),
+			[ '5.3e4', '5.3e4' ],
+			[ '+3.2E-4', '+3.2E-4' ],
+			[ '-15.77e+4.2', '-15.77e+4.2' ],
 
-			array( '0x20', '0x20' ),
-			array( '0X20', '0X20' ),
+			[ '0x20', '0x20' ],
+			[ '0X20', '0X20' ],
 
-			array( '1,335.3', '1335.3' ),
-			array( '+1,333.2', '+1333.2' ),
-			array( '-1,315.77', '-1315.77' ),
+			[ '1,335.3', '1335.3' ],
+			[ '+1,333.2', '+1333.2' ],
+			[ '-1,315.77', '-1315.77' ],
 
-			array( ' 1,333.3', '1333.3' ),
-			array( '1,333.3 ', '1333.3' ),
-		);
+			[ ' 1,333.3', '1333.3' ],
+			[ '1,333.3 ', '1333.3' ],
+		];
 	}
 
 	/**
@@ -56,27 +56,27 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function provideGetNumberRegexMatch() {
-		return array(
-			array( '5' ),
-			array( '+3' ),
-			array( '-15' ),
+		return [
+			[ '5' ],
+			[ '+3' ],
+			[ '-15' ],
 
-			array( '5.3' ),
-			array( '+3.2' ),
-			array( '-15.77' ),
+			[ '5.3' ],
+			[ '+3.2' ],
+			[ '-15.77' ],
 
-			array( '.3' ),
-			array( '+.2' ),
-			array( '-.77' ),
+			[ '.3' ],
+			[ '+.2' ],
+			[ '-.77' ],
 
-			array( '5.3e4' ),
-			array( '+3.2E-4' ),
-			array( '-15.77e+2' ),
+			[ '5.3e4' ],
+			[ '+3.2E-4' ],
+			[ '-15.77e+2' ],
 
-			array( '1,335.3' ),
-			array( '+1,333.2' ),
-			array( '-1,315.77' ),
-		);
+			[ '1,335.3' ],
+			[ '+1,333.2' ],
+			[ '-1,315.77' ],
+		];
 	}
 
 	/**
@@ -90,30 +90,30 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function provideGetNumberRegexMismatch() {
-		return array(
-			array( '' ),
-			array( ' ' ),
-			array( '+' ),
-			array( 'e' ),
+		return [
+			[ '' ],
+			[ ' ' ],
+			[ '+' ],
+			[ 'e' ],
 
-			array( '+.' ),
-			array( '.-' ),
-			array( '...' ),
+			[ '+.' ],
+			[ '.-' ],
+			[ '...' ],
 
-			array( '0x20' ),
-			array( '2x2' ),
-			array( 'x2' ),
-			array( '2x' ),
+			[ '0x20' ],
+			[ '2x2' ],
+			[ 'x2' ],
+			[ '2x' ],
 
-			array( 'e.' ),
-			array( '.e' ),
-			array( '12e' ),
-			array( 'E17' ),
+			[ 'e.' ],
+			[ '.e' ],
+			[ '12e' ],
+			[ 'E17' ],
 
-			array( '+-3' ),
-			array( '++7' ),
-			array( '--5' ),
-		);
+			[ '+-3' ],
+			[ '++7' ],
+			[ '--5' ],
+		];
 	}
 
 	/**
@@ -127,9 +127,9 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function provideGetUnitRegexMatch() {
-		return array(
-			array( '' ),
-		);
+		return [
+			[ '' ],
+		];
 	}
 
 	/**
@@ -143,21 +143,21 @@ class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function provideGetUnitRegexMismatch() {
-		return array(
-			array( ' ' ),
+		return [
+			[ ' ' ],
 
-			array( '^' ),
-			array( '/' ),
+			[ '^' ],
+			[ '/' ],
 
-			array( 'x^' ),
-			array( 'x/' ),
+			[ 'x^' ],
+			[ 'x/' ],
 
-			array( '2' ),
-			array( '2b' ),
+			[ '2' ],
+			[ '2b' ],
 
-			array( '~' ),
-			array( '#' ),
-		);
+			[ '~' ],
+			[ '#' ],
+		];
 	}
 
 	/**

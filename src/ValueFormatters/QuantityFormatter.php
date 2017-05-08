@@ -127,10 +127,10 @@ class QuantityFormatter extends ValueFormatterBase {
 		if ( $unit !== null ) {
 			$formatted = strtr(
 				$this->quantityWithUnitFormat,
-				array(
+				[
 					'$1' => $formatted,
 					'$2' => $unit
-				)
+				]
 			);
 		}
 

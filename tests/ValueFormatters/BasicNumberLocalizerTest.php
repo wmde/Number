@@ -2,6 +2,7 @@
 
 namespace ValueParsers\Test;
 
+use PHPUnit_Framework_TestCase;
 use ValueFormatters\BasicNumberLocalizer;
 
 /**
@@ -13,7 +14,7 @@ use ValueFormatters\BasicNumberLocalizer;
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class BasicNumberLocalizerTest extends \PHPUnit_Framework_TestCase {
+class BasicNumberLocalizerTest extends PHPUnit_Framework_TestCase {
 
 	public function provideLocalizeNumber() {
 		return [

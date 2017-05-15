@@ -2,6 +2,7 @@
 
 namespace ValueParsers\Test;
 
+use PHPUnit_Framework_TestCase;
 use ValueParsers\BasicNumberUnlocalizer;
 
 /**
@@ -13,7 +14,7 @@ use ValueParsers\BasicNumberUnlocalizer;
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
+class BasicNumberUnlocalizerTest extends PHPUnit_Framework_TestCase {
 
 	public function provideUnlocalizeNumber() {
 		return [

@@ -50,9 +50,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
-### 0.8.3 (dev)
+### 0.8.3 (2017-06-23)
 
-* Updated minimal required PHP version to 5.5.9.
+* Fixed `UnboundedQuantityValue::newFromArray` not accepting mixed values.
+* Updated minimal required PHP version from 5.3 to 5.5.9.
 
 ### 0.8.2 (2016-11-17)
 

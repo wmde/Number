@@ -45,10 +45,12 @@
 	},
 	"scripts": {
 		"phpcs": [
-			"vendor/bin/phpcs src/* tests/* --standard=phpcs.xml -sp"
+			"phpcs src/* tests/* --standard=phpcs.xml -sp"
 		],
 		"test": [
-			"vendor/bin/phpunit"
+			"@validate --no-interaction",
+			"@phpcs",
+			"phpunit"
 		]
 	}
 }

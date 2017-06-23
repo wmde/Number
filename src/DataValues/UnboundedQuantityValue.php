@@ -251,12 +251,12 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * depending on the serialization provided. Required for @see DataValueDeserializer. This can
 	 * round-trip with both @see self::getArrayValue as well as @see QuantityValue::getArrayValue.
 	 *
-	 * @param array $data
+	 * @param mixed $data
 	 *
 	 * @return self|QuantityValue Either an unbounded or bounded quantity value object.
 	 * @throws IllegalValueException
 	 */
-	public static function newFromArray( array $data ) {
+	public static function newFromArray( $data ) {
 		self::requireArrayFields( $data, [ 'amount', 'unit' ] );
 
 		if ( !isset( $data['upperBound'] ) && !isset( $data['lowerBound'] ) ) {

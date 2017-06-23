@@ -64,7 +64,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @param string $unit A unit identifier. Must not be empty, use "1" for unit-less quantities.
 	 *
 	 * @return self
-	 * @throws IllegalValueException
+	 * @throws InvalidArgumentException
 	 */
 	public static function newFromNumber( $amount, $unit = '1' ) {
 		$amount = self::asDecimalValue( 'amount', $amount );
@@ -82,7 +82,6 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @param string|int|float|DecimalValue|null $number
 	 * @param DecimalValue|null $default
 	 *
-	 * @throws IllegalValueException
 	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
@@ -248,13 +247,21 @@ class UnboundedQuantityValue extends DataValueObject {
 
 	/**
 	 * Static helper capable of constructing both unbounded and bounded quantity value objects,
-	 * depending on the serialization provided. Required for @see DataValueDeserializer. This can
-	 * round-trip with both @see self::getArrayValue as well as @see QuantityValue::getArrayValue.
+	 * depending on the serialization provided. Required for @see DataValueDeserializer.
+	 * This is expected to round-trip with both @see getArrayValue as well as
+	 * @see QuantityValue::getArrayValue.
 	 *
-	 * @param mixed $data
+	 * @deprecated since 0.8.3. Static DataValue::newFromArray constructors like this are
+	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
+	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *
+	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
+	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  this. This is not even guaranteed to be an array!
+	 *
+	 * @throws IllegalValueException if $data is not in the expected format. Subclasses of
+	 *  InvalidArgumentException are expected and properly handled by @see DataValueDeserializer.
 	 * @return self|QuantityValue Either an unbounded or bounded quantity value object.
-	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
 		self::requireArrayFields( $data, [ 'amount', 'unit' ] );

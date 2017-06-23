@@ -156,6 +156,15 @@ class UnboundedQuantityValueTest extends DataValueTest {
 
 	public function invalidArraySerializationProvider() {
 		return [
+			'not an array (string)' => [
+				'foo'
+			],
+			'not an array (int)' => [
+				303
+			],
+			'not an array (object)' => [
+				new \stdClass()
+			],
 			'no-amount' => [
 				[
 					'unit' => '1',

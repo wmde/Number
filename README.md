@@ -50,7 +50,7 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
-### 0.8.3 (2017-06-23)
+### 0.8.3 (2017-06-26)
 
 * Fixed `UnboundedQuantityValue::newFromArray` not accepting mixed values.
 * Deprecated `DecimalValue::newFromArray` and `UnboundedQuantityValue::newFromArray`.

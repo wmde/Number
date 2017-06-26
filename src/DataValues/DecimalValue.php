@@ -48,7 +48,7 @@ class DecimalValue extends DataValueObject {
 	 * @param string|int|float $value If given as a string, the value must match
 	 *  QUANTITY_VALUE_PATTERN. The leading plus sign is optional.
 	 *
-	 * @throws IllegalValueException
+	 * @throws InvalidArgumentException
 	 */
 	public function __construct( $value ) {
 		if ( is_int( $value ) || is_float( $value ) ) {
@@ -111,8 +111,6 @@ class DecimalValue extends DataValueObject {
 
 	/**
 	 * Compares this DecimalValue to another DecimalValue.
-	 *
-	 * @since 0.1
 	 *
 	 * @param self $that
 	 *
@@ -227,8 +225,6 @@ class DecimalValue extends DataValueObject {
 	/**
 	 * Returns the sign of the amount (+ or -).
 	 *
-	 * @since 0.1
-	 *
 	 * @return string "+" or "-".
 	 */
 	public function getSign() {
@@ -288,8 +284,6 @@ class DecimalValue extends DataValueObject {
 	 * Returns the integer part of the value, that is, the part before the decimal point,
 	 * without the sign.
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getIntegerPart() {
@@ -305,8 +299,6 @@ class DecimalValue extends DataValueObject {
 	/**
 	 * Returns the fractional part of the value, that is, the part after the decimal point,
 	 * if any.
-	 *
-	 * @since 0.1
 	 *
 	 * @return string
 	 */
@@ -342,8 +334,6 @@ class DecimalValue extends DataValueObject {
 	 * Returns the value held by this object, as a float.
 	 * Equivalent to floatval( $this->getvalue() ).
 	 *
-	 * @since 0.1
-	 *
 	 * @return float
 	 */
 	public function getValueFloat() {
@@ -360,13 +350,20 @@ class DecimalValue extends DataValueObject {
 	}
 
 	/**
-	 * Constructs a new instance of the DataValue from the provided data.
-	 * This can round-trip with @see getArrayValue
+	 * Constructs a new instance from the provided data. Required for @see DataValueDeserializer.
+	 * This is expected to round-trip with @see getArrayValue.
 	 *
-	 * @param string|int|float $data
+	 * @deprecated since 0.8.3. Static DataValue::newFromArray constructors like this are
+	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
+	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *
+	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
+	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  this. This is not guaranteed to be a string!
+	 *
+	 * @throws InvalidArgumentException if $data is not in the expected format. Subclasses of
+	 *  InvalidArgumentException are expected and properly handled by @see DataValueDeserializer.
 	 * @return self
-	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
 		return new static( $data );

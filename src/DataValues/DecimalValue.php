@@ -355,10 +355,11 @@ class DecimalValue extends DataValueObject {
 	 *
 	 * @deprecated since 0.8.3. Static DataValue::newFromArray constructors like this are
 	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
-	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
+	 *  newFromArrayValue). Instead, use the constructor or use DataValue builder
+	 *  callbacks. (e.g. @see DataValueDeserializer)
 	 *
 	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
-	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  @see getArrayValue, callers of this specific newFromArray implementation cannot guarantee
 	 *  this. This is not guaranteed to be a string!
 	 *
 	 * @throws InvalidArgumentException if $data is not in the expected format. Subclasses of

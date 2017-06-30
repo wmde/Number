@@ -154,7 +154,7 @@ class DecimalParser extends StringValueParser {
 	 */
 	private function normalizeDecimal( $number ) {
 		// strip fluff
-		$number = preg_replace( '/[ \r\n\t\'_,`]+/u', '', $number );
+		$number = preg_replace( '/[\s\'_,`]+/u', '', $number );
 
 		// strip leading zeros
 		$number = preg_replace( '/^([-+]?)0+([^0]|0$)/', '$1$2', $number );

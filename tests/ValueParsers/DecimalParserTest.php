@@ -30,7 +30,11 @@ class DecimalParserTest extends StringValueParserTest {
 	 * @return DecimalParser
 	 */
 	protected function getInstance() {
-		return new DecimalParser();
+		$unlocalizer = $this->getMock( 'ValueParsers\NumberUnlocalizer' );
+		$unlocalizer->method( 'unlocalizeNumber' )
+			->will( $this->returnArgument( 0 ) );
+
+		return new DecimalParser( null, $unlocalizer );
 	}
 
 	/**
@@ -67,6 +71,13 @@ class DecimalParserTest extends StringValueParserTest {
 			'100,000' => 100000,
 			'100 000' => 100000,
 			'100\'000' => 100000,
+
+			// U+000C (form feed)
+			"5\f" => 5,
+			// U+00A0 (non-break space)
+			"5\xC2\xA0200" => 5200,
+			// U+202F (narrow no-break space)
+			"5\xE2\x80\xAF300" => 5300,
 		];
 
 		foreach ( $valid as $value => $expected ) {

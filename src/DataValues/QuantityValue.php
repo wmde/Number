@@ -50,11 +50,11 @@ class QuantityValue extends UnboundedQuantityValue {
 		parent::__construct( $amount, $unit );
 
 		if ( $lowerBound->compare( $amount ) > 0 ) {
-			throw new IllegalValueException( '$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue() );
+			throw new IllegalValueException( "\$lowerBound $lowerBound must be <= \$amount $amount" );
 		}
 
 		if ( $upperBound->compare( $amount ) < 0 ) {
-			throw new IllegalValueException( '$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue() );
+			throw new IllegalValueException( "\$upperBound $upperBound must be >= \$amount $amount" );
 		}
 
 		$this->upperBound = $upperBound;

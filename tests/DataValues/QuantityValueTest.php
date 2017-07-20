@@ -338,10 +338,7 @@ class QuantityValueTest extends DataValueTest {
 		$callArgs = array_merge( [ 'x', $transformation ], $extraArgs );
 		$actual = call_user_func_array( $call, $callArgs );
 
-		$this->assertSame( 'x', $actual->getUnit() );
-		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
-		$this->assertEquals( $expected->getUpperBound()->getValue(), $actual->getUpperBound()->getValue(), 'upper bound' );
-		$this->assertEquals( $expected->getLowerBound()->getValue(), $actual->getLowerBound()->getValue(), 'lower bound' );
+		$this->assertEquals( $expected, $actual );
 	}
 
 	public function transformProvider() {
@@ -362,28 +359,28 @@ class QuantityValueTest extends DataValueTest {
 			0 => [
 				QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),
 				$identity,
-				QuantityValue::newFromNumber( '+10', '?', '+11', '+9' )
+				QuantityValue::newFromNumber( '+10', 'x', '+11', '+9' )
 			],
 			1 => [
 				QuantityValue::newFromNumber( '-0.5', '1', '-0.4', '-0.6' ),
 				$identity,
-				QuantityValue::newFromNumber( '-0.5', '?', '-0.4', '-0.6' )
+				QuantityValue::newFromNumber( '-0.5', 'x', '-0.4', '-0.6' )
 			],
 			2 => [
 				QuantityValue::newFromNumber( '+0', '1', '+1', '-1' ),
 				$square,
-				QuantityValue::newFromNumber( '+0', '?', '+1', '-1' )
+				QuantityValue::newFromNumber( '+0', 'x', '+1', '-1' )
 			],
 			3 => [
 				QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),
 				$square,
 				// note how rounding applies to bounds
-				QuantityValue::newFromNumber( '+1000', '?', '+1300', '+700' )
+				QuantityValue::newFromNumber( '+1000', 'x', '+1300', '+700' )
 			],
 			4 => [
 				QuantityValue::newFromNumber( '+0.5', '1', '+0.6', '+0.4' ),
 				$scale,
-				QuantityValue::newFromNumber( '+0.25', '?', '+0.30', '+0.20' ),
+				QuantityValue::newFromNumber( '+0.25', 'x', '+0.30', '+0.20' ),
 				0.5
 			],
 
@@ -391,26 +388,26 @@ class QuantityValueTest extends DataValueTest {
 			10 => [
 				QuantityValue::newFromNumber( '+100', '1', '+100', '+100' ),
 				$scale,
-				QuantityValue::newFromNumber( '+12825', '?', '+12825', '+12825' ),
+				QuantityValue::newFromNumber( '+12825', 'x', '+12825', '+12825' ),
 				128.25
 			],
 
 			11 => [
 				QuantityValue::newFromNumber( '+100', '1', '+110', '+90' ),
 				$scale,
-				QuantityValue::newFromNumber( '+330', '?', '+370', '+300' ),
+				QuantityValue::newFromNumber( '+330', 'x', '+370', '+300' ),
 				3.3333
 			],
 			12 => [
 				QuantityValue::newFromNumber( '+100', '1', '+100.1', '+99.9' ),
 				$scale,
-				QuantityValue::newFromNumber( '+333.3', '?', '+333.7', '+333.0' ),
+				QuantityValue::newFromNumber( '+333.3', 'x', '+333.7', '+333.0' ),
 				3.3333
 			],
 			13 => [
 				QuantityValue::newFromNumber( '+100', '1', '+100.01', '+99.99' ),
 				$scale,
-				QuantityValue::newFromNumber( '+333.33', '?', '+333.36', '+333.30' ),
+				QuantityValue::newFromNumber( '+333.33', 'x', '+333.36', '+333.30' ),
 				3.3333
 			],
 		];

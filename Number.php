@@ -16,18 +16,3 @@ if ( defined( 'DATAVALUES_NUMBER_VERSION' ) ) {
 }
 
 define( 'DATAVALUES_NUMBER_VERSION', '0.8.3' );
-
-if ( defined( 'MEDIAWIKI' ) ) {
-	$GLOBALS['wgExtensionCredits']['datavalues'][] = [
-		'path' => __DIR__,
-		'name' => 'DataValues Number',
-		'version' => DATAVALUES_NUMBER_VERSION,
-		'author' => [
-			'Daniel Kinzler',
-			'Thiemo Mättig',
-		],
-		'url' => 'https://github.com/DataValues/Number',
-		'description' => 'Numerical value objects, parsers and formatters',
-		'license-name' => 'GPL-2.0+'
-	];
-}

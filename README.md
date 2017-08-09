@@ -50,6 +50,12 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.9.0 (2017-08-09)
+
+* Remove MediaWiki integration
+* Strip all whitespace in DecimalParser
+* Use Wikibase's CodeSniffer instead of MediaWiki's
+
 ### 0.8.3 (2017-06-26)
 
 * Fixed `UnboundedQuantityValue::newFromArray` not accepting mixed values.

@@ -15,4 +15,4 @@ if ( defined( 'DATAVALUES_NUMBER_VERSION' ) ) {
 	return 1;
 }
 
-define( 'DATAVALUES_NUMBER_VERSION', '0.9.0' );
+define( 'DATAVALUES_NUMBER_VERSION', '0.9.1' );

@@ -19,13 +19,6 @@ use ValueFormatters\NumberLocalizer;
 class DecimalFormatterTest extends ValueFormatterTestBase {
 
 	/**
-	 * @deprecated since DataValues Interfaces 0.2, just use getInstance.
-	 */
-	protected function getFormatterClass() {
-		throw new \LogicException( 'Should not be called, use getInstance' );
-	}
-
-	/**
 	 * @see ValueFormatterTestBase::getInstance
 	 *
 	 * @param FormatterOptions|null $options

@@ -50,6 +50,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.9.1 (2017-08-09)
+
+* Allow use with ~0.4.0 of DataValues/Common
+
 ### 0.9.0 (2017-08-09)
 
 * Remove MediaWiki integration

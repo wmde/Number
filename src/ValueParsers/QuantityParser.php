@@ -7,7 +7,6 @@ use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
-use InvalidArgumentException;
 
 /**
  * ValueParser that parses the string representation of a quantity.
@@ -139,16 +138,11 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @param string $value
 	 *
-	 * @throws InvalidArgumentException If $value is not a string
 	 * @throws ParseException If $value does not match the expected pattern
 	 * @return array list( $amount, $exactness, $margin, $unit ).
 	 *         Parts not present in $value will be null
 	 */
 	private function splitQuantityString( $value ) {
-		if ( !is_string( $value ) ) {
-			throw new InvalidArgumentException( '$value must be a string' );
-		}
-
 		//TODO: allow explicitly specifying the number of significant figures
 		//TODO: allow explicitly specifying the uncertainty interval
 

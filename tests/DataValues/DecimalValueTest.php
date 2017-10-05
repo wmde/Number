@@ -21,7 +21,7 @@ class DecimalValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\DecimalValue';
+		return DecimalValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {

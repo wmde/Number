@@ -157,17 +157,17 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 			],
 			'HTML escaping bounded' => [
 				null,
-				$this->newQuantityValue( 'DataValues\QuantityValue' ),
+				$this->newQuantityValue( QuantityValue::class ),
 				'&lt;b&gt;+2&lt;/b&gt;±&lt;b&gt;+2&lt;/b&gt;'
 			],
 			'HTML escaping bounded with uncertainty' => [
 				null,
-				$this->newQuantityValue( 'DataValues\QuantityValue', 1 ),
+				$this->newQuantityValue( QuantityValue::class, 1 ),
 				'&lt;b&gt;+2&lt;/b&gt;±&lt;b&gt;+2&lt;/b&gt;'
 			],
 			'HTML escaping unbounded' => [
 				null,
-				$this->newQuantityValue( 'DataValues\UnboundedQuantityValue' ),
+				$this->newQuantityValue( UnboundedQuantityValue::class ),
 				'&lt;b&gt;+2&lt;/b&gt;'
 			],
 		];

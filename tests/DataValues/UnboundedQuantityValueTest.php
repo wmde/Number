@@ -3,6 +3,7 @@
 namespace DataValues\Tests;
 
 use DataValues\DecimalValue;
+use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
 
@@ -23,7 +24,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\UnboundedQuantityValue';
+		return UnboundedQuantityValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {
@@ -150,7 +151,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @dataProvider invalidArraySerializationProvider
 	 */
 	public function testNewFromArray_failure( $data ) {
-		$this->setExpectedException( 'DataValues\IllegalValueException' );
+		$this->setExpectedException( IllegalValueException::class );
 		UnboundedQuantityValue::newFromArray( $data );
 	}
 

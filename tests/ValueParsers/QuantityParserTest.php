@@ -5,6 +5,7 @@ namespace ValueParsers\Test;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
 use ValueParsers\NumberUnlocalizer;
+use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
 use ValueParsers\QuantityParser;
 use ValueParsers\ValueParser;
@@ -258,7 +259,7 @@ class QuantityParserTest extends StringValueParserTest {
 
 		$parser = $this->getQuantityParser( $options );
 
-		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$this->setExpectedException( ParseException::class );
 		$parser->parse( $value );
 	}
 

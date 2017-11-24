@@ -14,7 +14,7 @@ use ValueFormatters\ValueFormatter;
  * @covers ValueFormatters\QuantityHtmlFormatter
  *
  * @license GPL-2.0+
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 

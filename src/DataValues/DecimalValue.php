@@ -91,22 +91,29 @@ class DecimalValue extends DataValueObject {
 			throw new InvalidArgumentException( '$number must not be NAN or INF.' );
 		}
 
-		if ( is_int( $number ) || $number === (float)(int)$number ) {
-			$decimal = strval( (int)abs( $number ) );
-		} else {
-			$decimal = trim( number_format( abs( $number ), 100, '.', '' ), '0' );
+		$decimal = strval( abs( $number ) );
+		$decimal = preg_replace_callback(
+			'/(\d*)\.(\d*)E([-+]\d+)/i',
+			function ( $matches ) {
+				list( , $before, $after, $exponent ) = $matches;
 
-			if ( $decimal[0] === '.' ) {
-				$decimal = '0' . $decimal;
-			}
+				// Fill with as many zeros as necessary, and move the decimal point
+				if ( $exponent < 0 ) {
+					$before = str_repeat( '0', -$exponent - strlen( $before ) + 1 ) . $before;
+					$before = substr_replace( $before, '.', $exponent, 0 );
+				} else {
+					$after .= str_repeat( '0', $exponent - strlen( $after ) );
+					$after = substr_replace( $after, '.', $exponent, 0 );
+				}
 
-			if ( substr( $decimal, -1 ) === '.' ) {
-				$decimal = substr( $decimal, 0, -1 );
-			}
-		}
+				// Remove not needed ".0" or just "." from the end
+				return $before . rtrim( rtrim( $after, '0' ), '.' );
+			},
+			$decimal,
+			1
+		);
 
-		$decimal = ( ( $number >= 0.0 ) ? '+' : '-' ) . $decimal;
-		return $decimal;
+		return ( $number < 0 ? '-' : '+' ) . $decimal;
 	}
 
 	/**

@@ -95,6 +95,29 @@ class DecimalValueTest extends DataValueTest {
 	}
 
 	/**
+	 * @dataProvider provideFloats
+	 */
+	public function testFloatInputs( $float, $expectedPrefix ) {
+		$value = DecimalValue::newFromArray( $float );
+
+		$this->assertStringStartsWith( $expectedPrefix, $value->getValue(), 'getValue' );
+	}
+
+	public function provideFloats() {
+		return [
+			[ 0.000000002, '+0.000000002' ],
+			[ 0.000003, '+0.000003' ],
+			[ 0.9, '+0.9' ],
+			[ 1.2, '+1.2' ],
+			[ 1.5, '+1.5' ],
+			[ 123E-1, '+12.3' ],
+			[ 123E+1, '+1230' ],
+			[ 1234567890123456, '+1234567890123' ],
+			[ 1234567890123456789, '+1234567890123' ],
+		];
+	}
+
+	/**
 	 * @dataProvider compareProvider
 	 */
 	public function testCompare( DecimalValue $a, DecimalValue $b, $expected ) {
@@ -183,8 +206,12 @@ class DecimalValueTest extends DataValueTest {
 		$argLists[] = [ new DecimalValue( 2147483649 ), '+2147483649' ];
 		$argLists[] = [ new DecimalValue( 1000000000000000 ), '+1000000000000000' ];
 		$argLists[] = [
+			new DecimalValue( 1 + 1e-12 / 3 ),
+			'+1.0000000000003'
+		];
+		$argLists[] = [
 			new DecimalValue( 1 + 1e-14 / 3 ),
-			'+1.0000000000000033306690738754696212708950042724609375'
+			'+1'
 		];
 
 		return $argLists;

@@ -31,7 +31,7 @@
 	"require-dev": {
 		"ext-bcmath": "*",
 		"phpunit/phpunit": "~4.8",
-		"wikibase/wikibase-codesniffer": "^0.1.0"
+		"wikibase/wikibase-codesniffer": "^0.4.1"
 	},
 	"autoload": {
 		"files" : [
@@ -44,12 +44,9 @@
 		}
 	},
 	"scripts": {
-		"phpcs": [
-			"phpcs src/* tests/* --standard=phpcs.xml -sp"
-		],
 		"test": [
 			"composer validate --no-interaction",
-			"@phpcs",
+			"phpcs -p -s",
 			"phpunit"
 		]
 	}

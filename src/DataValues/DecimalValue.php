@@ -92,38 +92,30 @@ class DecimalValue extends DataValueObject {
 		}
 
 		/**
-		 * As PHP has no other built-in way to format a float with a given number of significant
-		 * digits, use serialize(). While strval() would also work here, it is locale-dependent.
-		 * Intentionally enforce the bigger "serialize_precision" default of 17 to ensure a full
-		 * float-string-float roundtrip.
+		 * The 16 digits after the decimal point are derived from PHP's "serialize_precision"
+		 * default of 17 significant digits (including 1 digit before the decimal point). This
+		 * ensures a full float-string-float roundtrip.
 		 * @see http://php.net/manual/en/ini.core.php#ini.serialize-precision
 		 */
-		$originalPrecision = ini_set( 'serialize_precision', '17' );
-		$decimal = substr( serialize( abs( $number ) ), 2, -1 );
-		ini_set( 'serialize_precision', $originalPrecision );
+		$decimal = sprintf( '%.16e', abs( $number ) );
+		list( $base, $exponent ) = explode( 'e', $decimal );
+		list( $before, $after ) = explode( '.', $base );
 
-		$decimal = preg_replace_callback(
-			'/(\d*)\.(\d*)E([-+]\d+)/i',
-			function ( $matches ) {
-				list( , $before, $after, $exponent ) = $matches;
+		// Fill with as many zeros as necessary, and move the decimal point
+		if ( $exponent < 0 ) {
+			$before = str_repeat( '0', -$exponent - strlen( $before ) + 1 ) . $before;
+			$before = substr_replace( $before, '.', $exponent, 0 );
+		} else {
+			$pad = $exponent - strlen( $after );
+			if ( $pad > 0 ) {
+				$after .= str_repeat( '0', $pad );
+			}
+			// Always add the decimal point back, even if the exponent is 0
+			$after = substr_replace( $after, '.', $exponent, 0 );
+		}
 
-				// Fill with as many zeros as necessary, and move the decimal point
-				if ( $exponent < 0 ) {
-					$before = str_repeat( '0', -$exponent - strlen( $before ) + 1 ) . $before;
-					$before = substr_replace( $before, '.', $exponent, 0 );
-				} else {
-					$after .= str_repeat( '0', $exponent - strlen( $after ) );
-					$after = substr_replace( $after, '.', $exponent, 0 );
-				}
-
-				// Remove not needed ".0" or just "." from the end
-				return $before . rtrim( rtrim( $after, '0' ), '.' );
-			},
-			$decimal,
-			1
-		);
-
-		return ( $number < 0 ? '-' : '+' ) . $decimal;
+		// Remove not needed ".0" or just "." from the end
+		return ( $number < 0 ? '-' : '+' ) . $before . rtrim( rtrim( $after, '0' ), '.' );
 	}
 
 	/**

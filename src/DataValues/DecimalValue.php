@@ -91,7 +91,17 @@ class DecimalValue extends DataValueObject {
 			throw new InvalidArgumentException( '$number must not be NAN or INF.' );
 		}
 
-		$decimal = strval( abs( $number ) );
+		/**
+		 * As PHP has no other built-in way to format a float with a given number of significant
+		 * digits, use serialize(). While strval() would also work here, it is locale-dependent.
+		 * Intentionally enforce the bigger "serialize_precision" default of 17 to ensure a full
+		 * float-string-float roundtrip.
+		 * @see http://php.net/manual/en/ini.core.php#ini.serialize-precision
+		 */
+		$originalPrecision = ini_set( 'serialize_precision', '17' );
+		$decimal = substr( serialize( abs( $number ) ), 2, -1 );
+		ini_set( 'serialize_precision', $originalPrecision );
+
 		$decimal = preg_replace_callback(
 			'/(\d*)\.(\d*)E([-+]\d+)/i',
 			function ( $matches ) {

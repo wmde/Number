@@ -50,9 +50,16 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.10.0 (2018-04-10)
+
+* Changed the float to string conversion algorithm for `DecimalValue`, `QuantityValue`, and
+  `UnboundedQuantityValue`. Instead of a hundred mostly irrelevant decimal places it now uses PHP's
+  "serialize_precision" default of 17 significant digits.
+* Drop compatibility with data-values/interfaces 0.1 and data-values/common 0.2
+
 ### 0.9.1 (2017-08-09)
 
-* Allow use with ~0.4.0 of DataValues/Common
+* Allow use with data-values/common 0.4
 
 ### 0.9.0 (2017-08-09)
 
@@ -103,7 +110,7 @@ the [Wikidata project](https://www.wikidata.org/).
 #### Other changes
 * Fixed `DecimalValue` and `QuantityValue` allowing values with a newline at the end.
 * `DecimalValue` strings are trimmed now, allowing any number of leading and trailing whitespace.
-* Added explicit compatibility with DataValues Common 0.2 and 0.3.
+* Added explicit compatibility with data-values/common 0.2 and 0.3.
 
 ### 0.6.0 (2015-09-09)
 

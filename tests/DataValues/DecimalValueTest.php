@@ -98,7 +98,10 @@ class DecimalValueTest extends DataValueTest {
 	 * @dataProvider provideFloats
 	 */
 	public function testFloatInputs( $float, $expectedPrefix ) {
+		$originalLocale = setlocale( LC_NUMERIC, '0' );
+		setlocale( LC_NUMERIC, 'de_DE.utf8' );
 		$value = DecimalValue::newFromArray( $float );
+		setlocale( LC_NUMERIC, $originalLocale );
 
 		$this->assertStringStartsWith( $expectedPrefix, $value->getValue(), 'getValue' );
 	}
@@ -179,38 +182,61 @@ class DecimalValueTest extends DataValueTest {
 	/**
 	 * @dataProvider getValueProvider
 	 */
-	public function testGetValue( DecimalValue $value, $expected ) {
-		$actual = $value->getValue();
+	public function testGetValue( $value, $expected ) {
+		$precision = ini_set( 'serialize_precision', '2' );
+		$actual = ( new DecimalValue( $value ) )->getValue();
+		ini_set( 'serialize_precision', $precision );
+
 		$this->assertSame( $expected, $actual );
 	}
 
 	public function getValueProvider() {
 		$argLists = [];
 
-		$argLists[] = [ new DecimalValue( 42 ), '+42' ];
-		$argLists[] = [ new DecimalValue( -42 ), '-42' ];
-		$argLists[] = [ new DecimalValue( -42.0 ), '-42' ];
-		$argLists[] = [ new DecimalValue( '-42' ), '-42' ];
-		$argLists[] = [ new DecimalValue( 4.5 ), '+4.5' ];
-		$argLists[] = [ new DecimalValue( -4.5 ), '-4.5' ];
-		$argLists[] = [ new DecimalValue( '+4.2' ), '+4.2' ];
-		$argLists[] = [ new DecimalValue( 0 ), '+0' ];
-		$argLists[] = [ new DecimalValue( 0.0 ), '+0' ];
-		$argLists[] = [ new DecimalValue( 1.0 ), '+1' ];
-		$argLists[] = [ new DecimalValue( 0.5 ), '+0.5' ];
-		$argLists[] = [ new DecimalValue( '-0.42' ), '-0.42' ];
-		$argLists[] = [ new DecimalValue( '-0.0' ), '+0.0' ];
-		$argLists[] = [ new DecimalValue( '-0' ), '+0' ];
-		$argLists[] = [ new DecimalValue( '+0.0' ), '+0.0' ];
-		$argLists[] = [ new DecimalValue( '+0' ), '+0' ];
-		$argLists[] = [ new DecimalValue( 2147483649 ), '+2147483649' ];
-		$argLists[] = [ new DecimalValue( 1000000000000000 ), '+1000000000000000' ];
+		$argLists[] = [ 42, '+42' ];
+		$argLists[] = [ -42, '-42' ];
+		$argLists[] = [ -42.0, '-42' ];
+		$argLists[] = [ '-42', '-42' ];
+		$argLists[] = [ 4.5, '+4.5' ];
+		$argLists[] = [ -4.5, '-4.5' ];
+		$argLists[] = [ '+4.2', '+4.2' ];
+		$argLists[] = [ 0, '+0' ];
+		$argLists[] = [ 0.0, '+0' ];
+		$argLists[] = [ 1.0, '+1' ];
+		$argLists[] = [ 0.5, '+0.5' ];
+		$argLists[] = [ '-0.42', '-0.42' ];
+		$argLists[] = [ '-0.0', '+0.0' ];
+		$argLists[] = [ '-0', '+0' ];
+		$argLists[] = [ '+0.0', '+0.0' ];
+		$argLists[] = [ '+0', '+0' ];
+		$argLists[] = [ 2147483649, '+2147483649' ];
+		$argLists[] = [ 1000000000000000, '+1000000000000000' ];
 		$argLists[] = [
-			new DecimalValue( 1 + 1e-12 / 3 ),
-			'+1.0000000000003'
+			1 + 1e-12 / 3,
+			'+1.0000000000003333'
 		];
 		$argLists[] = [
-			new DecimalValue( 1 + 1e-14 / 3 ),
+			1 + 1e-13 / 3,
+			'+1.0000000000000333'
+		];
+		$argLists[] = [
+			1 + 1e-14 / 3,
+			'+1.0000000000000033'
+		];
+		$argLists[] = [
+			1 + 1e-15 / 3,
+			'+1.0000000000000004'
+		];
+		$argLists[] = [
+			1 + 1e-16 / 3,
+			'+1'
+		];
+		$argLists[] = [
+			1 - 1e-16,
+			'+0.99999999999999989'
+		];
+		$argLists[] = [
+			1 - 1e-17,
 			'+1'
 		];
 

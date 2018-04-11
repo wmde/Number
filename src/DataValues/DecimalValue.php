@@ -91,29 +91,31 @@ class DecimalValue extends DataValueObject {
 			throw new InvalidArgumentException( '$number must not be NAN or INF.' );
 		}
 
-		$decimal = strval( abs( $number ) );
-		$decimal = preg_replace_callback(
-			'/(\d*)\.(\d*)E([-+]\d+)/i',
-			function ( $matches ) {
-				list( , $before, $after, $exponent ) = $matches;
+		/**
+		 * The 16 digits after the decimal point are derived from PHP's "serialize_precision"
+		 * default of 17 significant digits (including 1 digit before the decimal point). This
+		 * ensures a full float-string-float roundtrip.
+		 * @see http://php.net/manual/en/ini.core.php#ini.serialize-precision
+		 */
+		$decimal = sprintf( '%.16e', abs( $number ) );
+		list( $base, $exponent ) = explode( 'e', $decimal );
+		list( $before, $after ) = explode( '.', $base );
 
-				// Fill with as many zeros as necessary, and move the decimal point
-				if ( $exponent < 0 ) {
-					$before = str_repeat( '0', -$exponent - strlen( $before ) + 1 ) . $before;
-					$before = substr_replace( $before, '.', $exponent, 0 );
-				} else {
-					$after .= str_repeat( '0', $exponent - strlen( $after ) );
-					$after = substr_replace( $after, '.', $exponent, 0 );
-				}
+		// Fill with as many zeros as necessary, and move the decimal point
+		if ( $exponent < 0 ) {
+			$before = str_repeat( '0', -$exponent - strlen( $before ) + 1 ) . $before;
+			$before = substr_replace( $before, '.', $exponent, 0 );
+		} else {
+			$pad = $exponent - strlen( $after );
+			if ( $pad > 0 ) {
+				$after .= str_repeat( '0', $pad );
+			}
+			// Always add the decimal point back, even if the exponent is 0
+			$after = substr_replace( $after, '.', $exponent, 0 );
+		}
 
-				// Remove not needed ".0" or just "." from the end
-				return $before . rtrim( rtrim( $after, '0' ), '.' );
-			},
-			$decimal,
-			1
-		);
-
-		return ( $number < 0 ? '-' : '+' ) . $decimal;
+		// Remove not needed ".0" or just "." from the end
+		return ( $number < 0 ? '-' : '+' ) . $before . rtrim( rtrim( $after, '0' ), '.' );
 	}
 
 	/**

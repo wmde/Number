@@ -50,7 +50,7 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
-### 0.10.0 (2018-04-10)
+### 0.10.0 (2018-04-11)
 
 * Changed the float to string conversion algorithm for `DecimalValue`, `QuantityValue`, and
   `UnboundedQuantityValue`. Instead of a hundred mostly irrelevant decimal places it now uses PHP's

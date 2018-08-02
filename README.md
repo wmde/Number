@@ -49,6 +49,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.10.1 (2018-08-02)
+
+* Allow installation together with DataValues 2.x
+
 ### 0.10.0 (2018-04-11)
 
 * Changed the float to string conversion algorithm for `DecimalValue`, `QuantityValue`, and

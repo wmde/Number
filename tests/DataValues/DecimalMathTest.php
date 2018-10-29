@@ -88,7 +88,8 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider productProvider
 	 */
 	public function testProduct( DecimalValue $a, DecimalValue $b, $value ) {
-		$math = new DecimalMath();
+		// FIXME: This should set $useBC to false (bcmath is tested below)
+		$math = new DecimalMath( /* $useBC */ true );
 
 		$actual = $math->product( $a, $b );
 		$this->assertSame( $value, $actual->getValue() );
@@ -134,6 +135,29 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 		return [
 			[ new DecimalValue( '+0.1' ), new DecimalValue( '+0.1' ), '+0.01' ],
 			[ new DecimalValue( '-5000000' ), new DecimalValue( '-0.1' ), '+500000.0' ],
+		];
+	}
+
+	/**
+	 * @dataProvider productLengthOverrunProvider
+	 */
+	public function testProductLengthOverrun( DecimalValue $a, DecimalValue $b ) {
+		$math = new DecimalMath();
+		$actual = $math->product( $a, $b );
+
+		$this->assertSame( 127, strlen( $actual->getValue() ) );
+	}
+
+	public function productLengthOverrunProvider() {
+		return [
+			[
+				new DecimalValue( '+0.' . str_repeat( '3', 124 ) ),
+				new DecimalValue( '+0.' . str_repeat( '6', 124 ) )
+			],
+			[
+				new DecimalValue( '+' . str_repeat( '9', 126 ) ),
+				new DecimalValue( '+0.' . str_repeat( '9', 124 ) )
+			],
 		];
 	}
 

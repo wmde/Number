@@ -61,6 +61,12 @@ class DecimalMath {
 		if ( $this->useBC ) {
 			$scale = strlen( $a->getFractionalPart() ) + strlen( $b->getFractionalPart() );
 			$product = bcmul( $a->getValue(), $b->getValue(), $scale );
+
+			$sign = $product[0] === '-' ? '' : '+';
+
+			// (Potentially) round so that the result fits into a DecimalValue
+			// Note: Product might still be to long if a*b >= 10^126
+			$product = $this->roundDigits( $sign . $product, 126 );
 		} else {
 			$product = $a->getValueFloat() * $b->getValueFloat();
 		}

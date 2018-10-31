@@ -49,9 +49,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
-### 0.10.1 (2018-08-02)
+### 0.10.1 (2018-10-31)
 
 * Allow installation together with DataValues 2.x
+* DecimalMath products now get rounded to 127 characters to avoid a fatal error
 
 ### 0.10.0 (2018-04-11)
 

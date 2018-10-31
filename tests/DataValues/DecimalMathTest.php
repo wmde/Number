@@ -6,7 +6,7 @@ use DataValues\DecimalMath;
 use DataValues\DecimalValue;
 
 /**
- * @covers DataValues\DecimalMath
+ * @covers \DataValues\DecimalMath
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -15,6 +15,12 @@ use DataValues\DecimalValue;
  * @author Daniel Kinzler
  */
 class DecimalMathTest extends \PHPUnit_Framework_TestCase {
+
+	public function setUp() {
+		if ( !\extension_loaded( 'bcmath' ) ) {
+			$this->markTestSkipped( 'bcmath extension not loaded' );
+		}
+	}
 
 	/**
 	 * @dataProvider bumpProvider

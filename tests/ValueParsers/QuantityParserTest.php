@@ -11,7 +11,7 @@ use ValueParsers\QuantityParser;
 use ValueParsers\ValueParser;
 
 /**
- * @covers ValueParsers\QuantityParser
+ * @covers \ValueParsers\QuantityParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -20,6 +20,12 @@ use ValueParsers\ValueParser;
  * @author Daniel Kinzler
  */
 class QuantityParserTest extends StringValueParserTest {
+
+	public function setUp() {
+		if ( !\extension_loaded( 'bcmath' ) ) {
+			$this->markTestSkipped( 'bcmath extension not loaded' );
+		}
+	}
 
 	/**
 	 * @see ValueParserTestBase::getInstance

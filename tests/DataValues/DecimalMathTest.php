@@ -93,9 +93,8 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider productProvider
 	 */
-	public function testProduct( DecimalValue $a, DecimalValue $b, $value ) {
-		// FIXME: This should set $useBC to false (bcmath is tested below)
-		$math = new DecimalMath( /* $useBC */ true );
+	public function testProduct( $useBC, DecimalValue $a, DecimalValue $b, $value ) {
+		$math = new DecimalMath( $useBC );
 
 		$actual = $math->product( $a, $b );
 		$this->assertSame( $value, $actual->getValue() );
@@ -105,7 +104,7 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function productProvider() {
-		return [
+		$cases = [
 			[ new DecimalValue( '+0' ), new DecimalValue( '+0' ), '+0' ],
 			[ new DecimalValue( '+0' ), new DecimalValue( '+1' ), '+0' ],
 			[ new DecimalValue( '+0' ), new DecimalValue( '+2' ), '+0' ],
@@ -122,6 +121,11 @@ class DecimalMathTest extends \PHPUnit_Framework_TestCase {
 			[ new DecimalValue( '+0.5' ), new DecimalValue( '+1' ), '+0.5' ],
 			[ new DecimalValue( '+0.5' ), new DecimalValue( '+2' ), '+1.0' ],
 		];
+
+		foreach ( $cases as $case ) {
+			yield array_merge( [ true ], $case );
+			yield array_merge( [ false ], $case );
+		}
 	}
 
 	/**

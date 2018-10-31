@@ -8,7 +8,7 @@ use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
 
 /**
- * @covers DataValues\QuantityValue
+ * @covers \DataValues\QuantityValue
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -17,6 +17,12 @@ use DataValues\UnboundedQuantityValue;
  * @author Daniel Kinzler
  */
 class QuantityValueTest extends DataValueTest {
+
+	public function setUp() {
+		if ( !\extension_loaded( 'bcmath' ) ) {
+			$this->markTestSkipped( 'bcmath extension not loaded' );
+		}
+	}
 
 	/**
 	 * @see DataValueTest::getClass

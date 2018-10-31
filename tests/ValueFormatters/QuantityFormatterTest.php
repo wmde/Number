@@ -10,7 +10,7 @@ use ValueFormatters\QuantityFormatter;
 use ValueFormatters\ValueFormatter;
 
 /**
- * @covers ValueFormatters\QuantityFormatter
+ * @covers \ValueFormatters\QuantityFormatter
  *
  * @group ValueFormatters
  * @group DataValueExtensions
@@ -19,6 +19,12 @@ use ValueFormatters\ValueFormatter;
  * @author Daniel Kinzler
  */
 class QuantityFormatterTest extends ValueFormatterTestBase {
+
+	public function setUp() {
+		if ( !\extension_loaded( 'bcmath' ) ) {
+			$this->markTestSkipped( 'bcmath extension not loaded' );
+		}
+	}
 
 	/**
 	 * @see ValueFormatterTestBase::getInstance

@@ -98,7 +98,7 @@ class DecimalMath {
 			$product === floor( $product ) &&
 			$a->getFractionalPart() . $b->getFractionalPart() !== ''
 		) {
-			$product .= '.0';
+			$product = strval( $product ) . '.0';
 		}
 
 		return new DecimalValue( $product );

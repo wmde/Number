@@ -59,16 +59,46 @@ class DecimalMath {
 	 */
 	public function product( DecimalValue $a, DecimalValue $b ) {
 		if ( $this->useBC ) {
-			$scale = strlen( $a->getFractionalPart() ) + strlen( $b->getFractionalPart() );
-			$product = bcmul( $a->getValue(), $b->getValue(), $scale );
+			return $this->productWithBC( $a, $b );
+		}
+		return $this->productWithoutBC( $a, $b );
+	}
 
-			$sign = $product[0] === '-' ? '' : '+';
+	/**
+	 * @param DecimalValue $a
+	 * @param DecimalValue $b
+	 *
+	 * @return DecimalValue
+	 */
+	private function productWithBC( DecimalValue $a, DecimalValue $b ) {
+		$scale = strlen( $a->getFractionalPart() ) + strlen( $b->getFractionalPart() );
+		$product = bcmul( $a->getValue(), $b->getValue(), $scale );
 
-			// (Potentially) round so that the result fits into a DecimalValue
-			// Note: Product might still be to long if a*b >= 10^126
-			$product = $this->roundDigits( $sign . $product, 126 );
-		} else {
-			$product = $a->getValueFloat() * $b->getValueFloat();
+		$sign = $product[0] === '-' ? '' : '+';
+
+		// (Potentially) round so that the result fits into a DecimalValue
+		// Note: Product might still be to long if a*b >= 10^126
+		$product = $this->roundDigits( $sign . $product, 126 );
+
+		return new DecimalValue( $product );
+	}
+
+	/**
+	 * @param DecimalValue $a
+	 * @param DecimalValue $b
+	 *
+	 * @return DecimalValue
+	 */
+	private function productWithoutBC( DecimalValue $a, DecimalValue $b ) {
+		$product = $a->getValueFloat() * $b->getValueFloat();
+
+		// Append .0 for consistency, if the result is a whole number,
+		// but $a or $b were specified with decimal places.
+		if (
+			$product === floor( $product ) &&
+			$a->getFractionalPart() . $b->getFractionalPart() !== ''
+		) {
+			$product = strval( $product ) . '.0';
 		}
 
 		return new DecimalValue( $product );

@@ -364,6 +364,8 @@ class DecimalValue extends DataValueObject {
 	 * @deprecated since 0.8.3. Use the constructor instead, or in case of polymorphic calls,
 	 * use @see DataValueDeserializer.
 	 *
+	 * param mixed $data
+	 *
 	 * @throws InvalidArgumentException 
 	 * @return self
 	 */

@@ -31,7 +31,7 @@
 	"require-dev": {
 		"ext-bcmath": "*",
 		"phpunit/phpunit": "~4.8",
-		"wikibase/wikibase-codesniffer": "^0.4.1"
+		"wikibase/wikibase-codesniffer": "^1.2.0"
 	},
 	"autoload": {
 		"files" : [

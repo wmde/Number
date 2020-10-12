@@ -57,7 +57,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * This is a convenience wrapper around the constructor that accepts native values
 	 * instead of DecimalValue objects.
 	 *
-	 * @note: if the amount or a bound is given as a string, the string must conform
+	 * @note if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
 	 * @param string|int|float|DecimalValue $amount
@@ -75,7 +75,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * Converts $number to a DecimalValue if possible and necessary.
 	 *
-	 * @note: if the $number is given as a string, it must conform to the rules
+	 * @note if the $number is given as a string, it must conform to the rules
 	 *        defined by @see DecimalValue.
 	 *
 	 * @param string $name The variable name to use in exception messages

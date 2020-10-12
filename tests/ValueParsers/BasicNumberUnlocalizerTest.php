@@ -13,7 +13,7 @@ use ValueParsers\BasicNumberUnlocalizer;
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {
+class BasicNumberUnlocalizerTest extends \PHPUnit\Framework\TestCase {
 
 	public function provideUnlocalizeNumber() {
 		return [

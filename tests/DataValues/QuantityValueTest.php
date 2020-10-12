@@ -18,7 +18,7 @@ use DataValues\UnboundedQuantityValue;
  */
 class QuantityValueTest extends DataValueTest {
 
-	public function setUp() {
+	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}

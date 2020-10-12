@@ -14,9 +14,9 @@ use DataValues\DecimalValue;
  * @license GPL-2.0+
  * @author Daniel Kinzler
  */
-class DecimalMathTest extends \PHPUnit_Framework_TestCase {
+class DecimalMathTest extends \PHPUnit\Framework\TestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}

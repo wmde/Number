@@ -20,7 +20,7 @@ use ValueFormatters\ValueFormatter;
  */
 class QuantityFormatterTest extends ValueFormatterTestBase {
 
-	public function setUp() {
+	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}

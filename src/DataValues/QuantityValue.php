@@ -69,7 +69,7 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * This is a convenience wrapper around the constructor that accepts native values
 	 * instead of DecimalValue objects.
 	 *
-	 * @note: if the amount or a bound is given as a string, the string must conform
+	 * @note if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
 	 * @since 0.1

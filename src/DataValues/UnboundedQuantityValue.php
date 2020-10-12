@@ -17,7 +17,7 @@ use InvalidArgumentException;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class UnboundedQuantityValue extends DataValueObject {

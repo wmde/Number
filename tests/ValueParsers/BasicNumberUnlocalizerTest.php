@@ -10,7 +10,7 @@ use ValueParsers\BasicNumberUnlocalizer;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class BasicNumberUnlocalizerTest extends \PHPUnit_Framework_TestCase {

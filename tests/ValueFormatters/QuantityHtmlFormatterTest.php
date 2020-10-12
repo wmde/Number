@@ -13,7 +13,7 @@ use ValueFormatters\ValueFormatter;
 /**
  * @covers ValueFormatters\QuantityHtmlFormatter
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class QuantityHtmlFormatterTest extends ValueFormatterTestBase {

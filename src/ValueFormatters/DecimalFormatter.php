@@ -20,7 +20,7 @@ class DecimalFormatter extends ValueFormatterBase {
 	 * formatter's output even if it's "+". The value must
 	 * be a boolean.
 	 */
-	const OPT_FORCE_SIGN = 'forceSign';
+	public const OPT_FORCE_SIGN = 'forceSign';
 
 	/**
 	 * @var NumberLocalizer

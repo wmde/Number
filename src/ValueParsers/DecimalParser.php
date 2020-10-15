@@ -16,7 +16,7 @@ use DataValues\IllegalValueException;
  */
 class DecimalParser extends StringValueParser {
 
-	const FORMAT_NAME = 'decimal';
+	public const FORMAT_NAME = 'decimal';
 
 	/**
 	 * @var DecimalMath

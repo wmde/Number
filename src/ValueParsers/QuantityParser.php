@@ -18,7 +18,7 @@ use DataValues\UnboundedQuantityValue;
  */
 class QuantityParser extends StringValueParser {
 
-	const FORMAT_NAME = 'quantity';
+	public const FORMAT_NAME = 'quantity';
 
 	/**
 	 * The unit of the value to parse. If this option is given, it's illegal to also specify
@@ -26,7 +26,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @since 0.5
 	 */
-	const OPT_UNIT = 'unit';
+	public const OPT_UNIT = 'unit';
 
 	/**
 	 * @var DecimalParser

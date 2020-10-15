@@ -23,7 +23,7 @@
 		"irc": "irc://irc.freenode.net/wikidata"
 	},
 	"require": {
-		"php": ">=5.5.9",
+		"php": ">=7.2",
 		"data-values/data-values": "~2.0|~1.0|~0.1",
 		"data-values/interfaces": "~0.2.0",
 		"data-values/common": "~0.4.0|~0.3.0"
@@ -31,7 +31,7 @@
 	"require-dev": {
 		"ext-bcmath": "*",
 		"phpunit/phpunit": "~4.8",
-		"wikibase/wikibase-codesniffer": "^0.4.1"
+		"wikibase/wikibase-codesniffer": "^1.2.0"
 	},
 	"autoload": {
 		"files" : [
@@ -44,6 +44,7 @@
 		}
 	},
 	"scripts": {
+		"fix": "phpcbf",
 		"test": [
 			"composer validate --no-interaction",
 			"phpcs -p -s",

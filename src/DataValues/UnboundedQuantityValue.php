@@ -17,7 +17,7 @@ use InvalidArgumentException;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class UnboundedQuantityValue extends DataValueObject {
@@ -57,7 +57,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * This is a convenience wrapper around the constructor that accepts native values
 	 * instead of DecimalValue objects.
 	 *
-	 * @note: if the amount or a bound is given as a string, the string must conform
+	 * @note if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
 	 * @param string|int|float|DecimalValue $amount
@@ -75,7 +75,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	/**
 	 * Converts $number to a DecimalValue if possible and necessary.
 	 *
-	 * @note: if the $number is given as a string, it must conform to the rules
+	 * @note if the $number is given as a string, it must conform to the rules
 	 *        defined by @see DecimalValue.
 	 *
 	 * @param string $name The variable name to use in exception messages
@@ -213,7 +213,9 @@ class UnboundedQuantityValue extends DataValueObject {
 		}
 
 		if ( !is_string( $newUnit ) || $newUnit === '' ) {
-			throw new InvalidArgumentException( '$newUnit must be a non-empty string. Use "1" for unit-less quantities.' );
+			throw new InvalidArgumentException(
+				'$newUnit must be a non-empty string. Use "1" for unit-less quantities.'
+			);
 		}
 
 		// Apply transformation by calling the $transform callback.

@@ -10,7 +10,7 @@ use InvalidArgumentException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class DecimalFormatter extends ValueFormatterBase {
@@ -20,7 +20,7 @@ class DecimalFormatter extends ValueFormatterBase {
 	 * formatter's output even if it's "+". The value must
 	 * be a boolean.
 	 */
-	const OPT_FORCE_SIGN = 'forceSign';
+	public const OPT_FORCE_SIGN = 'forceSign';
 
 	/**
 	 * @var NumberLocalizer

@@ -9,7 +9,7 @@ namespace ValueParsers;
  *
  * @since 0.2
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 interface NumberUnlocalizer {
@@ -29,13 +29,13 @@ interface NumberUnlocalizer {
 	 * Returns a PCRE style regular expression (without delimiters)
 	 * that will match localized numbers, including sign and separators.
 	 *
-	 * @note: The expression SHOULD only match valid numbers,
+	 * @note The expression SHOULD only match valid numbers,
 	 * but may be rather lenient.
 	 *
-	 * @note: The expression MUST NOT may contain capturing groups. Callers
+	 * @note The expression MUST NOT may contain capturing groups. Callers
 	 * MUST NOT expect it to be a group at all.
 	 *
-	 * @note: The expression MAY contain multi-byte unicode characters
+	 * @note The expression MAY contain multi-byte unicode characters
 	 * and thus MUST be used with the PCRE "u" switch.
 	 *
 	 * @since 0.3
@@ -50,13 +50,13 @@ interface NumberUnlocalizer {
 	 * Returns a PCRE style regular expression (without delimiters)
 	 * that will match localized unit identifiers.
 	 *
-	 * @note: The expression SHOULD match most commonly used units,
+	 * @note The expression SHOULD match most commonly used units,
 	 * but can not be expected to cover every eventuality.
 	 *
-	 * @note: The expression MUST NOT may contain capturing groups. Callers
+	 * @note The expression MUST NOT may contain capturing groups. Callers
 	 * MUST NOT expect it to be a group at all.
 	 *
-	 * @note: The expression MAY contain multi-byte unicode characters
+	 * @note The expression MAY contain multi-byte unicode characters
 	 * and thus MUST be used with the PCRE "u" switch.
 	 *
 	 * @since 0.3

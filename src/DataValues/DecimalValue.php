@@ -23,7 +23,7 @@ use LogicException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class DecimalValue extends DataValueObject {
@@ -40,7 +40,7 @@ class DecimalValue extends DataValueObject {
 	 * Regular expression for matching decimal strings that conform to the format
 	 * described in the class level documentation of @see DecimalValue.
 	 */
-	const QUANTITY_VALUE_PATTERN = '/^[-+]([1-9]\d*|\d)(\.\d+)?\z/';
+	public const QUANTITY_VALUE_PATTERN = '/^[-+]([1-9]\d*|\d)(\.\d+)?\z/';
 
 	/**
 	 * Constructs a new DecimalValue object, representing the given value.

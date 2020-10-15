@@ -13,12 +13,12 @@ use DataValues\UnboundedQuantityValue;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class QuantityParser extends StringValueParser {
 
-	const FORMAT_NAME = 'quantity';
+	public const FORMAT_NAME = 'quantity';
 
 	/**
 	 * The unit of the value to parse. If this option is given, it's illegal to also specify
@@ -26,7 +26,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @since 0.5
 	 */
-	const OPT_UNIT = 'unit';
+	public const OPT_UNIT = 'unit';
 
 	/**
 	 * @var DecimalParser
@@ -118,7 +118,7 @@ class QuantityParser extends StringValueParser {
 			// NOTE: the pattern for scientific notation is 2e3 +/- 1e2, so the exponents are treated separately.
 			$marginValue = $this->decimalParser->parse( $margin );
 			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
-			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
+			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $marginValue, $unit );
 		} elseif ( $exactness === '~' ) {
 			// derive uncertainty from given decimals
 			// NOTE: with scientific notation, the exponent applies to the uncertainty bounds, too
@@ -204,7 +204,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @return QuantityValue
 	 */
-	private function newUncertainQuantityFromMargin( DecimalValue $amount, $unit = '1', DecimalValue $margin ) {
+	private function newUncertainQuantityFromMargin( DecimalValue $amount, DecimalValue $margin, $unit = '1' ) {
 		$decimalMath = new DecimalMath();
 		$margin = $margin->computeAbsolute();
 

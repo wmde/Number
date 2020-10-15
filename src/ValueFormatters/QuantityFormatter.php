@@ -13,7 +13,7 @@ use InvalidArgumentException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  * @author Thiemo Kreuz
  */
@@ -24,7 +24,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * Per default, the uncertainty margin is included in the output.
 	 * This option must have a boolean value.
 	 */
-	const OPT_SHOW_UNCERTAINTY_MARGIN = 'showQuantityUncertaintyMargin';
+	public const OPT_SHOW_UNCERTAINTY_MARGIN = 'showQuantityUncertaintyMargin';
 
 	/**
 	 * Option key for determining what level of rounding to apply to the numbers
@@ -38,7 +38,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * and true means automatic rounding based on what $quantity->getOrderOfUncertainty()
 	 * returns.
 	 */
-	const OPT_APPLY_ROUNDING = 'applyRounding';
+	public const OPT_APPLY_ROUNDING = 'applyRounding';
 
 	/**
 	 * Option key controlling whether the quantity's unit of measurement should be included
@@ -46,7 +46,7 @@ class QuantityFormatter extends ValueFormatterBase {
 	 *
 	 * @since 0.5
 	 */
-	const OPT_APPLY_UNIT = 'applyUnit';
+	public const OPT_APPLY_UNIT = 'applyUnit';
 
 	/**
 	 * @var DecimalMath
@@ -80,8 +80,8 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * HTML.
 	 */
 	public function __construct(
-		FormatterOptions $options = null,
-		DecimalFormatter $decimalFormatter = null,
+		?FormatterOptions $options,
+		?DecimalFormatter $decimalFormatter,
 		ValueFormatter $vocabularyUriFormatter,
 		$quantityWithUnitFormat = null
 	) {

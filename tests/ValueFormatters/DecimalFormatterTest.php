@@ -13,7 +13,7 @@ use ValueFormatters\NumberLocalizer;
  * @group ValueFormatters
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class DecimalFormatterTest extends ValueFormatterTestBase {

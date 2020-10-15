@@ -13,7 +13,7 @@ use ValueFormatters\ValueFormatter;
 /**
  * @covers ValueFormatters\QuantityHtmlFormatter
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
@@ -116,7 +116,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 * @dataProvider applyUnitOptionProvider
 	 */
 	public function testGivenHtmlCharacters_formatEscapesHtmlCharacters(
-		FormatterOptions $options = null,
+		?FormatterOptions $options,
 		UnboundedQuantityValue $value,
 		$expected
 	) {

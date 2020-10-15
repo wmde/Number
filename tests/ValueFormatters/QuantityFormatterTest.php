@@ -15,12 +15,12 @@ use ValueFormatters\ValueFormatter;
  * @group ValueFormatters
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class QuantityFormatterTest extends ValueFormatterTestBase {
 
-	public function setUp() {
+	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}
@@ -102,16 +102,39 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 			'+0.0/xr' => [ QuantityValue::newFromNumber( '+0.0', '°', '+0.1', '-0.1' ), '0.0 °', $exactRounding ],
 
 			'-1205/nm' => [ QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1200 m', $noMargin ],
-			'-1205/wm' => [ QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $withMargin ],
-			'-1205/nr' => [ QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100 m', $noRounding ],
-			'-1205/xr' => [ QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205 m', $exactRounding ],
+			'-1205/wm' => [
+				QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ),
+				'-1205±100 m',
+				$withMargin
+			],
+			'-1205/nr' => [
+				QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ),
+				'-1205±100 m',
+				$noRounding
+			],
+			'-1205/xr' => [
+				QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ),
+				'-1205 m',
+				$exactRounding
+			],
 			'-1205/nu' => [ QuantityValue::newFromNumber( '-1205', 'm', '-1105', '-1305' ), '-1205±100', $noUnit ],
 
 			'+3.025/nm' => [ QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025', $noMargin ],
-			'+3.025/wm' => [ QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.025±0.0039', $withMargin ],
-			'+3.025/xr' => [ QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ), '3.03', $exactRounding ],
-
-			'+3.125/nr' => [ QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.125±0.125', $noRounding ],
+			'+3.025/wm' => [
+				QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ),
+				'3.025±0.0039',
+				$withMargin
+			],
+			'+3.025/xr' => [
+				QuantityValue::newFromNumber( '+3.025', '1', '+3.02744', '+3.0211' ),
+				'3.03',
+				$exactRounding
+			],
+			'+3.125/nr' => [
+				QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ),
+				'3.125±0.125',
+				$noRounding
+			],
 			'+3.125/xr' => [ QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '3.13', $exactRounding ],
 
 			'+3.125/fs' => [ QuantityValue::newFromNumber( '+3.125', '1', '+3.2', '+3.0' ), '+3.13', $forceSign ],

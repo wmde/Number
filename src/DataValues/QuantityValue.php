@@ -17,7 +17,7 @@ use InvalidArgumentException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class QuantityValue extends UnboundedQuantityValue {
@@ -50,11 +50,15 @@ class QuantityValue extends UnboundedQuantityValue {
 		parent::__construct( $amount, $unit );
 
 		if ( $lowerBound->compare( $amount ) > 0 ) {
-			throw new IllegalValueException( '$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue() );
+			throw new IllegalValueException(
+				'$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue()
+			);
 		}
 
 		if ( $upperBound->compare( $amount ) < 0 ) {
-			throw new IllegalValueException( '$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue() );
+			throw new IllegalValueException(
+				'$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue()
+			);
 		}
 
 		$this->upperBound = $upperBound;
@@ -69,7 +73,7 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * This is a convenience wrapper around the constructor that accepts native values
 	 * instead of DecimalValue objects.
 	 *
-	 * @note: if the amount or a bound is given as a string, the string must conform
+	 * @note if the amount or a bound is given as a string, the string must conform
 	 * to the rules defined by @see DecimalValue.
 	 *
 	 * @since 0.1
@@ -236,7 +240,9 @@ class QuantityValue extends UnboundedQuantityValue {
 		}
 
 		if ( !is_string( $newUnit ) || $newUnit === '' ) {
-			throw new InvalidArgumentException( '$newUnit must be a non-empty string. Use "1" for unit-less quantities.' );
+			throw new InvalidArgumentException(
+				'$newUnit must be a non-empty string. Use "1" for unit-less quantities.'
+			);
 		}
 
 		// Apply transformation by calling the $transform callback.

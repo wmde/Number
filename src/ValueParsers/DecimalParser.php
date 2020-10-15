@@ -11,12 +11,12 @@ use DataValues\IllegalValueException;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class DecimalParser extends StringValueParser {
 
-	const FORMAT_NAME = 'decimal';
+	public const FORMAT_NAME = 'decimal';
 
 	/**
 	 * @var DecimalMath

@@ -10,10 +10,10 @@ use ValueFormatters\BasicNumberLocalizer;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class BasicNumberLocalizerTest extends \PHPUnit_Framework_TestCase {
+class BasicNumberLocalizerTest extends \PHPUnit\Framework\TestCase {
 
 	public function provideLocalizeNumber() {
 		return [

@@ -13,7 +13,7 @@ use DataValues\UnboundedQuantityValue;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
 class UnboundedQuantityValueTest extends DataValueTest {
@@ -241,7 +241,11 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	/**
 	 * @dataProvider transformProvider
 	 */
-	public function testTransform( UnboundedQuantityValue $quantity, $transformation, UnboundedQuantityValue $expected ) {
+	public function testTransform(
+		UnboundedQuantityValue $quantity,
+		$transformation,
+		UnboundedQuantityValue $expected
+	) {
 		$args = func_get_args();
 		$extraArgs = array_slice( $args, 3 );
 

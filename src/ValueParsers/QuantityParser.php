@@ -118,7 +118,7 @@ class QuantityParser extends StringValueParser {
 			// NOTE: the pattern for scientific notation is 2e3 +/- 1e2, so the exponents are treated separately.
 			$marginValue = $this->decimalParser->parse( $margin );
 			$amountValue = $this->decimalParser->applyDecimalExponent( $amountValue, $exponent );
-			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $unit, $marginValue );
+			$quantity = $this->newUncertainQuantityFromMargin( $amountValue, $marginValue, $unit );
 		} elseif ( $exactness === '~' ) {
 			// derive uncertainty from given decimals
 			// NOTE: with scientific notation, the exponent applies to the uncertainty bounds, too
@@ -204,7 +204,7 @@ class QuantityParser extends StringValueParser {
 	 *
 	 * @return QuantityValue
 	 */
-	private function newUncertainQuantityFromMargin( DecimalValue $amount, $unit = '1', DecimalValue $margin ) {
+	private function newUncertainQuantityFromMargin( DecimalValue $amount, DecimalValue $margin, $unit = '1' ) {
 		$decimalMath = new DecimalMath();
 		$margin = $margin->computeAbsolute();
 

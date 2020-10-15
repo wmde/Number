@@ -18,7 +18,7 @@ use DataValues\UnboundedQuantityValue;
  */
 class QuantityValueTest extends DataValueTest {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}
@@ -102,35 +102,54 @@ class QuantityValueTest extends DataValueTest {
 	}
 
 	public function newFromNumberProvider() {
-		return [
-			[
-				42, '1', null, null,
-				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( '+42' ), new DecimalValue( '+42' ) )
-			],
-			[
-				-0.05, '1', null, null,
-				new QuantityValue( new DecimalValue( '-0.05' ), '1', new DecimalValue( '-0.05' ), new DecimalValue( '-0.05' ) )
-			],
-			[
-				0, 'm', 0.5, -0.5,
-				new QuantityValue( new DecimalValue( '+0' ), 'm', new DecimalValue( '+0.5' ), new DecimalValue( '-0.5' ) )
-			],
-			[
-				'+23', '1', null, null,
-				new QuantityValue( new DecimalValue( '+23' ), '1', new DecimalValue( '+23' ), new DecimalValue( '+23' ) )
-			],
-			[
-				'+42', '1', '+43', '+41',
-				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( '+43' ), new DecimalValue( '+41' ) )
-			],
-			[
-				'-0.05', 'm', '-0.04', '-0.06',
-				new QuantityValue( new DecimalValue( '-0.05' ), 'm', new DecimalValue( '-0.04' ), new DecimalValue( '-0.06' ) )
-			],
-			[
-				new DecimalValue( '+42' ), '1', new DecimalValue( 43 ), new DecimalValue( 41.0 ),
-				new QuantityValue( new DecimalValue( '+42' ), '1', new DecimalValue( 43 ), new DecimalValue( 41.0 ) )
-			],
+		$value = new DecimalValue( '+42' );
+		$unit = '1';
+		yield [
+			$value->getValueFloat(), $unit, null, null,
+			new QuantityValue( $value, $unit, $value, $value )
+		];
+		$value = new DecimalValue( '-0.05' );
+		yield [
+			$value->getValueFloat(), $unit, null, null,
+			new QuantityValue( $value, $unit, $value, $value )
+		];
+		$value = new DecimalValue( '+0' );
+		$value1 = new DecimalValue( '+0.5' );
+		$value2 = new DecimalValue( '-0.5' );
+		$unit = 'm';
+		yield [
+			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
+			new QuantityValue( $value, $unit, $value1, $value2 )
+		];
+		$value = new DecimalValue( '+23' );
+		$unit = '1';
+		yield [
+			$value->getValueFloat(), $unit, null, null,
+			new QuantityValue( $value, $unit, $value, $value )
+		];
+		$value = new DecimalValue( '+42' );
+		$value1 = new DecimalValue( '+43' );
+		$value2 = new DecimalValue( '+41' );
+		$unit = '1';
+		yield [
+			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
+			new QuantityValue( $value, $unit, $value1, $value2 )
+		];
+		$value = new DecimalValue( '-0.05' );
+		$value1 = new DecimalValue( '-0.04' );
+		$value2 = new DecimalValue( '-0.06' );
+		$unit = 'm';
+		yield [
+			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
+			new QuantityValue( $value, $unit, $value1, $value2 )
+		];
+		$value = new DecimalValue( '+42' );
+		$value1 = new DecimalValue( 43 );
+		$value2 = new DecimalValue( 41.0 );
+		$unit = '1';
+		yield [
+			$value, $unit, $value1, $value2,
+			new QuantityValue( $value, $unit, $value1, $value2 )
 		];
 	}
 
@@ -345,9 +364,21 @@ class QuantityValueTest extends DataValueTest {
 		$actual = call_user_func_array( $call, $callArgs );
 
 		$this->assertSame( 'x', $actual->getUnit() );
-		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
-		$this->assertEquals( $expected->getUpperBound()->getValue(), $actual->getUpperBound()->getValue(), 'upper bound' );
-		$this->assertEquals( $expected->getLowerBound()->getValue(), $actual->getLowerBound()->getValue(), 'lower bound' );
+		$this->assertEquals(
+			$expected->getAmount()->getValue(),
+			$actual->getAmount()->getValue(),
+			'value'
+		);
+		$this->assertEquals(
+			$expected->getUpperBound()->getValue(),
+			$actual->getUpperBound()->getValue(),
+			'upper bound'
+		);
+		$this->assertEquals(
+			$expected->getLowerBound()->getValue(),
+			$actual->getLowerBound()->getValue(),
+			'lower bound'
+		);
 	}
 
 	public function transformProvider() {

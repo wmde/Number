@@ -213,7 +213,9 @@ class UnboundedQuantityValue extends DataValueObject {
 		}
 
 		if ( !is_string( $newUnit ) || $newUnit === '' ) {
-			throw new InvalidArgumentException( '$newUnit must be a non-empty string. Use "1" for unit-less quantities.' );
+			throw new InvalidArgumentException(
+				'$newUnit must be a non-empty string. Use "1" for unit-less quantities.'
+			);
 		}
 
 		// Apply transformation by calling the $transform callback.

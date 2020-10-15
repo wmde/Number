@@ -50,11 +50,15 @@ class QuantityValue extends UnboundedQuantityValue {
 		parent::__construct( $amount, $unit );
 
 		if ( $lowerBound->compare( $amount ) > 0 ) {
-			throw new IllegalValueException( '$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue() );
+			throw new IllegalValueException(
+				'$lowerBound ' . $lowerBound->getValue() . ' must be <= $amount ' . $amount->getValue()
+			);
 		}
 
 		if ( $upperBound->compare( $amount ) < 0 ) {
-			throw new IllegalValueException( '$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue() );
+			throw new IllegalValueException(
+				'$upperBound ' . $upperBound->getValue() . ' must be >= $amount ' . $amount->getValue()
+			);
 		}
 
 		$this->upperBound = $upperBound;
@@ -236,7 +240,9 @@ class QuantityValue extends UnboundedQuantityValue {
 		}
 
 		if ( !is_string( $newUnit ) || $newUnit === '' ) {
-			throw new InvalidArgumentException( '$newUnit must be a non-empty string. Use "1" for unit-less quantities.' );
+			throw new InvalidArgumentException(
+				'$newUnit must be a non-empty string. Use "1" for unit-less quantities.'
+			);
 		}
 
 		// Apply transformation by calling the $transform callback.

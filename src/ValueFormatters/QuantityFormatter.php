@@ -80,8 +80,8 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * HTML.
 	 */
 	public function __construct(
-		FormatterOptions $options = null,
-		DecimalFormatter $decimalFormatter = null,
+		?FormatterOptions $options,
+		?DecimalFormatter $decimalFormatter,
 		ValueFormatter $vocabularyUriFormatter,
 		$quantityWithUnitFormat = null
 	) {

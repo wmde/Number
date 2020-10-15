@@ -116,7 +116,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 	 * @dataProvider applyUnitOptionProvider
 	 */
 	public function testGivenHtmlCharacters_formatEscapesHtmlCharacters(
-		FormatterOptions $options = null,
+		?FormatterOptions $options,
 		UnboundedQuantityValue $value,
 		$expected
 	) {

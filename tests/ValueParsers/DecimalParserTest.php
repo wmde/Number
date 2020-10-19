@@ -3,6 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\DecimalValue;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\DecimalParser;
 use ValueParsers\NumberUnlocalizer;
 
@@ -15,7 +16,7 @@ use ValueParsers\NumberUnlocalizer;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalParserTest extends StringValueParserTest {
+class DecimalParserTest extends TestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -23,7 +24,7 @@ class DecimalParserTest extends StringValueParserTest {
 	 * @return DecimalParser
 	 */
 	protected function getInstance() {
-		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
+		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 		$unlocalizer->method( 'unlocalizeNumber' )
 			->will( $this->returnArgument( 0 ) );
 
@@ -88,7 +89,7 @@ class DecimalParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = StringValueParserTest::invalidInputProvider();
 
 		$invalid = [
 			'foo',
@@ -110,7 +111,7 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	public function testUnlocalization() {
-		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
+		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 
 		$unlocalizer->expects( $this->once() )
 			->method( 'unlocalizeNumber' )

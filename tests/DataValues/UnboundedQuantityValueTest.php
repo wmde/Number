@@ -6,6 +6,7 @@ use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers DataValues\UnboundedQuantityValue
@@ -16,7 +17,7 @@ use DataValues\UnboundedQuantityValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class UnboundedQuantityValueTest extends DataValueTest {
+class UnboundedQuantityValueTest extends TestCase {
 
 	/**
 	 * @see DataValueTest::getClass
@@ -47,21 +48,21 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetValue( UnboundedQuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $quantity, $quantity->getValue() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetAmount( UnboundedQuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[0], $quantity->getAmount() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetUnit( UnboundedQuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[1], $quantity->getUnit() );
@@ -151,7 +152,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @dataProvider invalidArraySerializationProvider
 	 */
 	public function testNewFromArray_failure( $data ) {
-		$this->setExpectedException( IllegalValueException::class );
+		$this->expectException( IllegalValueException::class );
 		UnboundedQuantityValue::newFromArray( $data );
 	}
 
@@ -232,7 +233,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetSortKey( UnboundedQuantityValue $quantity ) {
 		$this->assertSame( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );

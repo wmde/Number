@@ -4,6 +4,7 @@ namespace ValueFormatters\Test;
 
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit\Framework\TestCase;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityFormatter;
@@ -18,7 +19,7 @@ use ValueFormatters\ValueFormatter;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityFormatterTest extends ValueFormatterTestBase {
+class QuantityFormatterTest extends TestCase {
 
 	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -47,7 +48,7 @@ class QuantityFormatterTest extends ValueFormatterTestBase {
 		FormatterOptions $options = null,
 		$quantityWithUnitFormat = null
 	) {
-		$vocabularyUriFormatter = $this->getMock( ValueFormatter::class );
+		$vocabularyUriFormatter = $this->createMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
 			->will( $this->returnCallback( function( $unit ) {

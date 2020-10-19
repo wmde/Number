@@ -6,6 +6,7 @@ use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DataValues\QuantityValue
@@ -16,7 +17,7 @@ use DataValues\UnboundedQuantityValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityValueTest extends DataValueTest {
+class QuantityValueTest extends TestCase {
 
 	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -56,35 +57,35 @@ class QuantityValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetValue( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $quantity, $quantity->getValue() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetAmount( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[0], $quantity->getAmount() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetUnit( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[1], $quantity->getUnit() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetUpperBound( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[2], $quantity->getUpperBound() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetLowerBound( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[3], $quantity->getLowerBound() );
@@ -195,7 +196,7 @@ class QuantityValueTest extends DataValueTest {
 	 * @dataProvider invalidArraySerializationProvider
 	 */
 	public function testNewFromArray_failure( $data ) {
-		$this->setExpectedException( IllegalValueException::class );
+		$this->expectException( IllegalValueException::class );
 		QuantityValue::newFromArray( $data );
 	}
 
@@ -277,7 +278,7 @@ class QuantityValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetSortKey( QuantityValue $quantity ) {
 		$this->assertSame( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );

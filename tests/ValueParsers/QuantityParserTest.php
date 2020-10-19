@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\NumberUnlocalizer;
 use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
@@ -19,7 +20,7 @@ use ValueParsers\ValueParser;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityParserTest extends StringValueParserTest {
+class QuantityParserTest extends TestCase {
 
 	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -42,7 +43,7 @@ class QuantityParserTest extends StringValueParserTest {
 	 * @return QuantityParser
 	 */
 	private function getQuantityParser( ParserOptions $options = null ) {
-		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
+		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'unlocalizeNumber' )
@@ -145,7 +146,7 @@ class QuantityParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = StringValueParserTest::invalidInputProvider();
 
 		$invalid = [
 			'foo',
@@ -201,7 +202,7 @@ class QuantityParserTest extends StringValueParserTest {
 		$options = new ParserOptions();
 		$options->setOption( ValueParser::OPT_LANG, 'test' );
 
-		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
+		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 
 		$charmap = [
 			' ' => '',
@@ -265,7 +266,7 @@ class QuantityParserTest extends StringValueParserTest {
 
 		$parser = $this->getQuantityParser( $options );
 
-		$this->setExpectedException( ParseException::class );
+		$this->expectException( ParseException::class );
 		$parser->parse( $value );
 	}
 

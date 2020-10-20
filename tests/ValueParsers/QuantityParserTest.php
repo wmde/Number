@@ -4,7 +4,6 @@ namespace ValueParsers\Test;
 
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
-use PHPUnit\Framework\TestCase;
 use ValueParsers\NumberUnlocalizer;
 use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
@@ -20,7 +19,7 @@ use ValueParsers\ValueParser;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityParserTest extends TestCase {
+class QuantityParserTest extends StringValueParserTest {
 
 	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -146,7 +145,7 @@ class QuantityParserTest extends TestCase {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = StringValueParserTest::invalidInputProvider();
+		$argLists = parent::invalidInputProvider();
 
 		$invalid = [
 			'foo',

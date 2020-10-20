@@ -6,7 +6,6 @@ use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers DataValues\UnboundedQuantityValue
@@ -17,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class UnboundedQuantityValueTest extends TestCase {
+class UnboundedQuantityValueTest extends DataValueTest {
 
 	/**
 	 * @see DataValueTest::getClass

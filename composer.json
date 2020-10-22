@@ -43,6 +43,12 @@
 			"ValueParsers\\": "src"
 		}
 	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/ValueParsers",
+			"tests/DataValues"
+		]
+	},
 	"scripts": {
 		"fix": "phpcbf",
 		"test": [

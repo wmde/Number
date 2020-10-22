@@ -6,7 +6,6 @@ use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DataValues\QuantityValue
@@ -17,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityValueTest extends TestCase {
+class QuantityValueTest extends DataValuesTest {
 
 	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -57,35 +56,35 @@ class QuantityValueTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetValue( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $quantity, $quantity->getValue() );
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetAmount( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[0], $quantity->getAmount() );
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetUnit( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[1], $quantity->getUnit() );
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetUpperBound( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[2], $quantity->getUpperBound() );
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetLowerBound( QuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[3], $quantity->getLowerBound() );
@@ -110,9 +109,10 @@ class QuantityValueTest extends TestCase {
 			new QuantityValue( $value, $unit, $value, $value )
 		];
 		$value = new DecimalValue( '-0.05' );
+		$expectedValue = new DecimalValue( $value->getValueFloat() );
 		yield [
 			$value->getValueFloat(), $unit, null, null,
-			new QuantityValue( $value, $unit, $value, $value )
+			new QuantityValue( $expectedValue, $unit, $expectedValue, $expectedValue )
 		];
 		$value = new DecimalValue( '+0' );
 		$value1 = new DecimalValue( '+0.5' );
@@ -139,10 +139,14 @@ class QuantityValueTest extends TestCase {
 		$value = new DecimalValue( '-0.05' );
 		$value1 = new DecimalValue( '-0.04' );
 		$value2 = new DecimalValue( '-0.06' );
+		$expectedValue = new DecimalValue( $value->getValueFloat() );
+		$expectedValue1 = new DecimalValue( $value1->getValueFloat() );
+		$expectedValue2 = new DecimalValue( $value2->getValueFloat() );
+
 		$unit = 'm';
 		yield [
 			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
-			new QuantityValue( $value, $unit, $value1, $value2 )
+			new QuantityValue( $expectedValue, $unit, $expectedValue1, $expectedValue2 )
 		];
 		$value = new DecimalValue( '+42' );
 		$value1 = new DecimalValue( 43 );
@@ -278,7 +282,7 @@ class QuantityValueTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetSortKey( QuantityValue $quantity ) {
 		$this->assertSame( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );

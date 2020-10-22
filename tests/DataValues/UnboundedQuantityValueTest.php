@@ -6,7 +6,6 @@ use DataValues\DecimalValue;
 use DataValues\IllegalValueException;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers DataValues\UnboundedQuantityValue
@@ -17,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class UnboundedQuantityValueTest extends TestCase {
+class UnboundedQuantityValueTest extends DataValuesTest {
 
 	/**
 	 * @see DataValueTest::getClass
@@ -48,21 +47,21 @@ class UnboundedQuantityValueTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetValue( UnboundedQuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $quantity, $quantity->getValue() );
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetAmount( UnboundedQuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[0], $quantity->getAmount() );
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetUnit( UnboundedQuantityValue $quantity, array $arguments ) {
 		$this->assertSame( $arguments[1], $quantity->getUnit() );
@@ -233,7 +232,7 @@ class UnboundedQuantityValueTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider DataValueTest::instanceProvider
+	 * @dataProvider instanceProvider
 	 */
 	public function testGetSortKey( UnboundedQuantityValue $quantity ) {
 		$this->assertSame( $quantity->getAmount()->getValueFloat(), $quantity->getSortKey() );

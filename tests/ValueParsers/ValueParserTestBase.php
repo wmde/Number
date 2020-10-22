@@ -1,8 +1,6 @@
 <?php
 
-
 namespace ValueParsers\Test;
-
 
 use Comparable;
 use DataValues\DataValue;
@@ -19,7 +17,7 @@ use ValueParsers\ValueParser;
  * @group ValueParsers
  * @group DataValueExtensions
  *
- *  @license GPL-2.0-or-later
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class ValueParserTestBase extends TestCase {
@@ -29,21 +27,21 @@ abstract class ValueParserTestBase extends TestCase {
 	 *
 	 * @return array[]
 	 */
-	public abstract function validInputProvider();
+	abstract public function validInputProvider();
 
 	/**
 	 * @since 0.1
 	 *
 	 * @return array[]
 	 */
-	public abstract function invalidInputProvider();
+	abstract public function invalidInputProvider();
 
 	/**
 	 * @since 0.1
 	 *
 	 * @return ValueParser
 	 */
-	protected abstract function getInstance();
+	abstract protected function getInstance();
 
 	/**
 	 * @since 0.1
@@ -76,8 +74,7 @@ abstract class ValueParserTestBase extends TestCase {
 			}
 
 			$this->assertTrue( $expected->equals( $actual ), $msg );
-		}
-		else {
+		} else {
 			$this->assertEquals( $expected, $actual );
 		}
 	}

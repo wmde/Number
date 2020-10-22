@@ -88,14 +88,14 @@ class DecimalParserTest extends ValueParserTestBase {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = array(
-			array( true ),
-			array( false ),
-			array( null ),
-			array( 4.2 ),
-			array( array() ),
-			array( 42 ),
-		);
+		$argLists = [
+			[ true ],
+			[ false ],
+			[ null ],
+			[ 4.2 ],
+			[ [] ],
+			[ 42 ]
+		];
 
 		$invalid = [
 			'foo',

@@ -146,12 +146,12 @@ class QuantityParserTest extends ValueParserTestBase {
 	 */
 	public function invalidInputProvider() {
 		$argLists = [
-			array( true ),
-			array( false ),
-			array( null ),
-			array( 4.2 ),
-			array( array() ),
-			array( 42 ),
+			[ true ],
+			[ false ],
+			[ null ],
+			[ 4.2 ],
+			[ [] ],
+			[ 42 ]
 		];
 
 		$invalid = [

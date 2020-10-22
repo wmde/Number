@@ -15,11 +15,9 @@ use ValueParsers\NumberUnlocalizer;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalParserTest extends ValueParserTestBase {
+class DecimalParserTest extends ValueParserTestCase {
 
 	/**
-	 * @see ValueParserTestBase::getInstance
-	 *
 	 * @return DecimalParser
 	 */
 	protected function getInstance() {
@@ -31,7 +29,7 @@ class DecimalParserTest extends ValueParserTestBase {
 	}
 
 	/**
-	 * @see ValueParserTestBase::validInputProvider
+	 * @see ValueParserTestCase::validInputProvider
 	 */
 	public function validInputProvider() {
 		$argLists = [];
@@ -85,7 +83,7 @@ class DecimalParserTest extends ValueParserTestBase {
 	}
 
 	/**
-	 * @see StringValueParserTest::invalidInputProvider
+	 * @see ValueParserTestCase::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
 		$argLists = [

@@ -19,7 +19,7 @@ use ValueParsers\ValueParser;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityParserTest extends ValueParserTestBase {
+class QuantityParserTest extends ValueParserTestCase {
 
 	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -28,9 +28,9 @@ class QuantityParserTest extends ValueParserTestBase {
 	}
 
 	/**
-	 * @see ValueParserTestBase::getInstance
-	 *
 	 * @return QuantityParser
+	 * @see ValueParserTestCase::getInstance
+	 *
 	 */
 	protected function getInstance() {
 		return $this->getQuantityParser();
@@ -62,7 +62,7 @@ class QuantityParserTest extends ValueParserTestBase {
 	}
 
 	/**
-	 * @see ValueParserTestBase::validInputProvider
+	 * @see ValueParserTestCase::validInputProvider
 	 */
 	public function validInputProvider() {
 		$amounts = [

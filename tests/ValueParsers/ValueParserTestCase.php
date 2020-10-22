@@ -20,7 +20,7 @@ use ValueParsers\ValueParser;
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class ValueParserTestBase extends TestCase {
+abstract class ValueParserTestCase extends TestCase {
 
 	/**
 	 * @since 0.1

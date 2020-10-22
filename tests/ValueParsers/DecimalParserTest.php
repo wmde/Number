@@ -15,7 +15,7 @@ use ValueParsers\NumberUnlocalizer;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalParserTest extends StringValueParserTest {
+class DecimalParserTest extends ValueParserTestBase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -88,7 +88,14 @@ class DecimalParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = array(
+			array( true ),
+			array( false ),
+			array( null ),
+			array( 4.2 ),
+			array( array() ),
+			array( 42 ),
+		);
 
 		$invalid = [
 			'foo',

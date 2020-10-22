@@ -19,7 +19,7 @@ use ValueParsers\ValueParser;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityParserTest extends StringValueParserTest {
+class QuantityParserTest extends ValueParserTestBase {
 
 	public function setUp() : void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -145,7 +145,14 @@ class QuantityParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = [
+			array( true ),
+			array( false ),
+			array( null ),
+			array( 4.2 ),
+			array( array() ),
+			array( 42 ),
+		];
 
 		$invalid = [
 			'foo',

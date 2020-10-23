@@ -73,7 +73,10 @@ class UnboundedQuantityValueTest extends DataValuesTest {
 	public function testNewFromNumber( $amount, $unit, UnboundedQuantityValue $expected ) {
 		$quantity = UnboundedQuantityValue::newFromNumber( $amount, $unit );
 
-		$this->assertEquals( $expected->getAmount()->getValue(), $quantity->getAmount()->getValue() );
+		$this->assertEquals(
+			floatval( $expected->getAmount()->getValue() ),
+			floatval( $quantity->getAmount()->getValue() )
+		);
 	}
 
 	public function newFromNumberProvider() {
@@ -254,7 +257,11 @@ class UnboundedQuantityValueTest extends DataValuesTest {
 		$actual = call_user_func_array( $call, $callArgs );
 
 		$this->assertSame( 'x', $actual->getUnit() );
-		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
+		$this->assertEquals(
+			floatval( $expected->getAmount()->getValue() ),
+			floatval( $actual->getAmount()->getValue() ),
+			'value'
+		);
 	}
 
 	public function transformProvider() {

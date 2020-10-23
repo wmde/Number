@@ -16,7 +16,7 @@ use DataValues\UnboundedQuantityValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityValueTest extends DataValuesTest {
+class QuantityValueTest extends DataValuesTestBase {
 
 	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {

@@ -16,7 +16,7 @@ use DataValues\UnboundedQuantityValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class UnboundedQuantityValueTest extends DataValuesTest {
+class UnboundedQuantityValueTest extends DataValuesTestBase {
 
 	/**
 	 * @see DataValueTest::getClass

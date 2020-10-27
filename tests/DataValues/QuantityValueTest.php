@@ -96,9 +96,9 @@ class QuantityValueTest extends DataValuesTestBase {
 	public function testNewFromNumber( $amount, $unit, $upperBound, $lowerBound, QuantityValue $expected ) {
 		$quantity = QuantityValue::newFromNumber( $amount, $unit, $upperBound, $lowerBound );
 
-		$this->assertEquals( $expected->getAmount()->getValue(), $quantity->getAmount()->getValue() );
-		$this->assertEquals( $expected->getUpperBound()->getValue(), $quantity->getUpperBound()->getValue() );
-		$this->assertEquals( $expected->getLowerBound()->getValue(), $quantity->getLowerBound()->getValue() );
+		$this->assertEquals( $expected->getAmount()->getValueFloat(), $quantity->getAmount()->getValueFloat() );
+		$this->assertEquals( $expected->getUpperBound()->getValueFloat(), $quantity->getUpperBound()->getValueFloat() );
+		$this->assertEquals( $expected->getLowerBound()->getValueFloat(), $quantity->getLowerBound()->getValueFloat() );
 	}
 
 	public function newFromNumberProvider() {
@@ -109,10 +109,9 @@ class QuantityValueTest extends DataValuesTestBase {
 			new QuantityValue( $value, $unit, $value, $value )
 		];
 		$value = new DecimalValue( '-0.05' );
-		$decimalValueFromFloat = new DecimalValue( $value->getValueFloat() );
 		yield [
 			$value->getValueFloat(), $unit, null, null,
-			new QuantityValue( $decimalValueFromFloat, $unit, $decimalValueFromFloat, $decimalValueFromFloat )
+			new QuantityValue( $value, $unit, $value, $value )
 		];
 		$value = new DecimalValue( '+0' );
 		$value1 = new DecimalValue( '+0.5' );
@@ -139,14 +138,11 @@ class QuantityValueTest extends DataValuesTestBase {
 		$value = new DecimalValue( '-0.05' );
 		$value1 = new DecimalValue( '-0.04' );
 		$value2 = new DecimalValue( '-0.06' );
-		$decimalValueFromFloat = new DecimalValue( $value->getValueFloat() );
-		$decimalValueFromFloat1 = new DecimalValue( $value1->getValueFloat() );
-		$decimalValueFromFloat2 = new DecimalValue( $value2->getValueFloat() );
 
 		$unit = 'm';
 		yield [
 			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
-			new QuantityValue( $decimalValueFromFloat, $unit, $decimalValueFromFloat1, $decimalValueFromFloat2 )
+			new QuantityValue( $value, $unit, $value1, $value2 )
 		];
 		$value = new DecimalValue( '+42' );
 		$value1 = new DecimalValue( 43 );

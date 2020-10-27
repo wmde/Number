@@ -71,9 +71,11 @@ class QuantityHtmlFormatterTest extends TestCase {
 		$quantity->expects( $this->any() )
 			->method( 'getAmount' )
 			->will( $this->returnValue( new DecimalValue( 2 ) ) );
-		$quantity->expects( $this->any() )
-			->method( 'getUncertaintyMargin' )
-			->will( $this->returnValue( new DecimalValue( $uncertaintyMargin ) ) );
+		if ( $className === QuantityValue::class ) {
+			$quantity->expects( $this->any() )
+				->method( 'getUncertaintyMargin' )
+				->will( $this->returnValue( new DecimalValue( $uncertaintyMargin ) ) );
+		}
 
 		return $quantity;
 	}

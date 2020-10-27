@@ -109,10 +109,10 @@ class QuantityValueTest extends DataValuesTestBase {
 			new QuantityValue( $value, $unit, $value, $value )
 		];
 		$value = new DecimalValue( '-0.05' );
-		$decimalValue = new DecimalValue( $value->getValueFloat() );
+		$decimalValueFromFloat = new DecimalValue( $value->getValueFloat() );
 		yield [
 			$value->getValueFloat(), $unit, null, null,
-			new QuantityValue( $decimalValue, $unit, $decimalValue, $decimalValue )
+			new QuantityValue( $decimalValueFromFloat, $unit, $decimalValueFromFloat, $decimalValueFromFloat )
 		];
 		$value = new DecimalValue( '+0' );
 		$value1 = new DecimalValue( '+0.5' );
@@ -139,14 +139,14 @@ class QuantityValueTest extends DataValuesTestBase {
 		$value = new DecimalValue( '-0.05' );
 		$value1 = new DecimalValue( '-0.04' );
 		$value2 = new DecimalValue( '-0.06' );
-		$decimalValue = new DecimalValue( $value->getValueFloat() );
-		$decimalValue1 = new DecimalValue( $value1->getValueFloat() );
-		$decimalValue2 = new DecimalValue( $value2->getValueFloat() );
+		$decimalValueFromFloat = new DecimalValue( $value->getValueFloat() );
+		$decimalValueFromFloat1 = new DecimalValue( $value1->getValueFloat() );
+		$decimalValueFromFloat2 = new DecimalValue( $value2->getValueFloat() );
 
 		$unit = 'm';
 		yield [
 			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
-			new QuantityValue( $decimalValue, $unit, $decimalValue1, $decimalValue2 )
+			new QuantityValue( $decimalValueFromFloat, $unit, $decimalValueFromFloat1, $decimalValueFromFloat2 )
 		];
 		$value = new DecimalValue( '+42' );
 		$value1 = new DecimalValue( 43 );

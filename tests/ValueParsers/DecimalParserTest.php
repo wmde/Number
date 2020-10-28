@@ -15,15 +15,13 @@ use ValueParsers\NumberUnlocalizer;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalParserTest extends StringValueParserTest {
+class DecimalParserTest extends ValueParserTestCase {
 
 	/**
-	 * @see ValueParserTestBase::getInstance
-	 *
 	 * @return DecimalParser
 	 */
 	protected function getInstance() {
-		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
+		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 		$unlocalizer->method( 'unlocalizeNumber' )
 			->will( $this->returnArgument( 0 ) );
 
@@ -31,7 +29,7 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	/**
-	 * @see ValueParserTestBase::validInputProvider
+	 * @see ValueParserTestCase::validInputProvider
 	 */
 	public function validInputProvider() {
 		$argLists = [];
@@ -85,10 +83,17 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	/**
-	 * @see StringValueParserTest::invalidInputProvider
+	 * @see ValueParserTestCase::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = [
+			[ true ],
+			[ false ],
+			[ null ],
+			[ 4.2 ],
+			[ [] ],
+			[ 42 ]
+		];
 
 		$invalid = [
 			'foo',
@@ -110,7 +115,7 @@ class DecimalParserTest extends StringValueParserTest {
 	}
 
 	public function testUnlocalization() {
-		$unlocalizer = $this->getMock( NumberUnlocalizer::class );
+		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 
 		$unlocalizer->expects( $this->once() )
 			->method( 'unlocalizeNumber' )

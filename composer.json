@@ -30,7 +30,7 @@
 	},
 	"require-dev": {
 		"ext-bcmath": "*",
-		"phpunit/phpunit": "~4.8",
+		"phpunit/phpunit": "~8.5",
 		"wikibase/wikibase-codesniffer": "^1.2.0"
 	},
 	"autoload": {
@@ -42,6 +42,12 @@
 			"ValueFormatters\\": "src",
 			"ValueParsers\\": "src"
 		}
+	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/ValueParsers",
+			"tests/DataValues"
+		]
 	},
 	"scripts": {
 		"fix": "phpcbf",

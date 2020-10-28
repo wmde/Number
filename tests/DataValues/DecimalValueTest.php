@@ -3,6 +3,7 @@
 namespace DataValues\Tests;
 
 use DataValues\DecimalValue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers DataValues\DecimalValue
@@ -13,7 +14,7 @@ use DataValues\DecimalValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalValueTest extends DataValueTest {
+class DecimalValueTest extends TestCase {
 
 	/**
 	 * @see DataValueTest::getClass

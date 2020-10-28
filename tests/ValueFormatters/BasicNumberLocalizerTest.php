@@ -1,6 +1,6 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace ValueFormatters\Test;
 
 use ValueFormatters\BasicNumberLocalizer;
 

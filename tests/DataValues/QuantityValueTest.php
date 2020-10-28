@@ -16,7 +16,7 @@ use DataValues\UnboundedQuantityValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class QuantityValueTest extends DataValueTest {
+class QuantityValueTest extends DataValuesTestBase {
 
 	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
@@ -96,9 +96,9 @@ class QuantityValueTest extends DataValueTest {
 	public function testNewFromNumber( $amount, $unit, $upperBound, $lowerBound, QuantityValue $expected ) {
 		$quantity = QuantityValue::newFromNumber( $amount, $unit, $upperBound, $lowerBound );
 
-		$this->assertEquals( $expected->getAmount()->getValue(), $quantity->getAmount()->getValue() );
-		$this->assertEquals( $expected->getUpperBound()->getValue(), $quantity->getUpperBound()->getValue() );
-		$this->assertEquals( $expected->getLowerBound()->getValue(), $quantity->getLowerBound()->getValue() );
+		$this->assertEquals( $expected->getAmount()->getValueFloat(), $quantity->getAmount()->getValueFloat() );
+		$this->assertEquals( $expected->getUpperBound()->getValueFloat(), $quantity->getUpperBound()->getValueFloat() );
+		$this->assertEquals( $expected->getLowerBound()->getValueFloat(), $quantity->getLowerBound()->getValueFloat() );
 	}
 
 	public function newFromNumberProvider() {
@@ -138,6 +138,7 @@ class QuantityValueTest extends DataValueTest {
 		$value = new DecimalValue( '-0.05' );
 		$value1 = new DecimalValue( '-0.04' );
 		$value2 = new DecimalValue( '-0.06' );
+
 		$unit = 'm';
 		yield [
 			$value->getValueFloat(), $unit, $value1->getValueFloat(), $value2->getValueFloat(),
@@ -195,7 +196,7 @@ class QuantityValueTest extends DataValueTest {
 	 * @dataProvider invalidArraySerializationProvider
 	 */
 	public function testNewFromArray_failure( $data ) {
-		$this->setExpectedException( IllegalValueException::class );
+		$this->expectException( IllegalValueException::class );
 		QuantityValue::newFromArray( $data );
 	}
 

@@ -5,6 +5,7 @@ namespace ValueFormatters\Test;
 use DataValues\DecimalValue;
 use DataValues\QuantityValue;
 use DataValues\UnboundedQuantityValue;
+use PHPUnit\Framework\TestCase;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\QuantityHtmlFormatter;
@@ -16,7 +17,7 @@ use ValueFormatters\ValueFormatter;
  * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
-class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
+class QuantityHtmlFormatterTest extends TestCase {
 
 	/**
 	 * @see ValueFormatterTestBase::getInstance
@@ -41,7 +42,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		DecimalFormatter $decimalFormatter = null,
 		$quantityWithUnitFormat = null
 	) {
-		$vocabularyUriFormatter = $this->getMock( ValueFormatter::class );
+		$vocabularyUriFormatter = $this->createMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
 			->will( $this->returnCallback( function( $unit ) {
@@ -70,9 +71,11 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		$quantity->expects( $this->any() )
 			->method( 'getAmount' )
 			->will( $this->returnValue( new DecimalValue( 2 ) ) );
-		$quantity->expects( $this->any() )
-			->method( 'getUncertaintyMargin' )
-			->will( $this->returnValue( new DecimalValue( $uncertaintyMargin ) ) );
+		if ( $className === QuantityValue::class ) {
+			$quantity->expects( $this->any() )
+				->method( 'getUncertaintyMargin' )
+				->will( $this->returnValue( new DecimalValue( $uncertaintyMargin ) ) );
+		}
 
 		return $quantity;
 	}
@@ -120,7 +123,7 @@ class QuantityHtmlFormatterTest extends ValueFormatterTestBase {
 		UnboundedQuantityValue $value,
 		$expected
 	) {
-		$decimalFormatter = $this->getMock( DecimalFormatter::class );
+		$decimalFormatter = $this->createMock( DecimalFormatter::class );
 		$decimalFormatter->expects( $this->any() )
 			->method( 'format' )
 			->will( $this->returnValue( '<b>+2</b>' ) );

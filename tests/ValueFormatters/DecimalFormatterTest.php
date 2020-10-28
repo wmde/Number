@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\DecimalValue;
+use PHPUnit\Framework\TestCase;
 use ValueFormatters\DecimalFormatter;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\NumberLocalizer;
@@ -16,7 +17,7 @@ use ValueFormatters\NumberLocalizer;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalFormatterTest extends ValueFormatterTestBase {
+class DecimalFormatterTest extends TestCase {
 
 	/**
 	 * @see ValueFormatterTestBase::getInstance
@@ -57,7 +58,7 @@ class DecimalFormatterTest extends ValueFormatterTestBase {
 	}
 
 	public function testLocalization() {
-		$localizer = $this->getMock( NumberLocalizer::class );
+		$localizer = $this->createMock( NumberLocalizer::class );
 
 		$localizer->expects( $this->once() )
 			->method( 'localizeNumber' )

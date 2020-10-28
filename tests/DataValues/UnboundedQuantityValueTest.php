@@ -16,7 +16,7 @@ use DataValues\UnboundedQuantityValue;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class UnboundedQuantityValueTest extends DataValueTest {
+class UnboundedQuantityValueTest extends DataValuesTestBase {
 
 	/**
 	 * @see DataValueTest::getClass
@@ -73,7 +73,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	public function testNewFromNumber( $amount, $unit, UnboundedQuantityValue $expected ) {
 		$quantity = UnboundedQuantityValue::newFromNumber( $amount, $unit );
 
-		$this->assertEquals( $expected->getAmount()->getValue(), $quantity->getAmount()->getValue() );
+		$this->assertEquals( $expected->getAmount()->getValueFloat(), $quantity->getAmount()->getValueFloat() );
 	}
 
 	public function newFromNumberProvider() {
@@ -151,7 +151,7 @@ class UnboundedQuantityValueTest extends DataValueTest {
 	 * @dataProvider invalidArraySerializationProvider
 	 */
 	public function testNewFromArray_failure( $data ) {
-		$this->setExpectedException( IllegalValueException::class );
+		$this->expectException( IllegalValueException::class );
 		UnboundedQuantityValue::newFromArray( $data );
 	}
 
@@ -254,7 +254,11 @@ class UnboundedQuantityValueTest extends DataValueTest {
 		$actual = call_user_func_array( $call, $callArgs );
 
 		$this->assertSame( 'x', $actual->getUnit() );
-		$this->assertEquals( $expected->getAmount()->getValue(), $actual->getAmount()->getValue(), 'value' );
+		$this->assertEquals(
+			floatval( $expected->getAmount()->getValue() ),
+			floatval( $actual->getAmount()->getValue() ),
+			'value'
+		);
 	}
 
 	public function transformProvider() {

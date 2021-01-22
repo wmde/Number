@@ -119,7 +119,7 @@ class DecimalParserTest extends ValueParserTestCase {
 
 		$unlocalizer->expects( $this->once() )
 			->method( 'unlocalizeNumber' )
-			->will( $this->returnCallback( function( $number ) {
+			->will( $this->returnCallback( function ( $number ) {
 				return str_replace( '#', '', $number );
 			} ) );
 

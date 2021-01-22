@@ -166,7 +166,7 @@ class QuantityParser extends StringValueParser {
 		// Remove $0.
 		array_shift( $groups );
 
-		array_walk( $groups, function( &$element ) {
+		array_walk( $groups, function ( &$element ) {
 			if ( $element === '' ) {
 				$element = null;
 			}

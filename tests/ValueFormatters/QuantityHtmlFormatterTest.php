@@ -45,7 +45,7 @@ class QuantityHtmlFormatterTest extends TestCase {
 		$vocabularyUriFormatter = $this->createMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
-			->will( $this->returnCallback( function( $unit ) {
+			->will( $this->returnCallback( function ( $unit ) {
 				return $unit === '1' ? null : $unit;
 			} ) );
 

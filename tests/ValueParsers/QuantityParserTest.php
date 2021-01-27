@@ -218,7 +218,7 @@ class QuantityParserTest extends ValueParserTestCase {
 		$unlocalizer->expects( $this->any() )
 			->method( 'unlocalizeNumber' )
 			->will( $this->returnCallback(
-				function( $number ) use ( $charmap ) {
+				function ( $number ) use ( $charmap ) {
 					return str_replace( array_keys( $charmap ), array_values( $charmap ), $number );
 				}
 			) );

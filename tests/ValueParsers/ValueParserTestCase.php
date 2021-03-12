@@ -2,7 +2,6 @@
 
 namespace ValueParsers\Test;
 
-use Comparable;
 use DataValues\DataValue;
 use PHPUnit\Framework\TestCase;
 use ValueParsers\ParserOptions;
@@ -64,7 +63,7 @@ abstract class ValueParserTestCase extends TestCase {
 	 * @param DataValue|mixed $actual
 	 */
 	private function assertSmartEquals( $expected, $actual ) {
-		if ( $this->requireDataValue() || $expected instanceof Comparable ) {
+		if ( $this->requireDataValue() ) {
 			if ( $expected instanceof DataValue && $actual instanceof DataValue ) {
 				$msg = "testing equals():\n"
 					. preg_replace( '/\s+/', ' ', print_r( $actual->toArray(), true ) ) . " should equal\n"

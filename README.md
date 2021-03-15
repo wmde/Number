@@ -26,7 +26,7 @@ version 0.8 of this package:
 
     {
         "require": {
-            "data-values/number": "0.8.*"
+            "data-values/number": "0.10.*"
         }
     }
 
@@ -48,6 +48,12 @@ DataValues Number was created by [Wikimedia Deutschland](https://www.wikimedia.d
 the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
+
+### 0.10.2 (2021-03-15)
+
+* Allow use with data-values/common 1.0.0
+* Allow use with data-values/interfaces 1.0.0
+* Allow use with data-values/data-values 3.0.0
 
 ### 0.10.1 (2018-10-31)
 

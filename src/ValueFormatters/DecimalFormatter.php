@@ -13,7 +13,7 @@ use InvalidArgumentException;
  * @license GPL-2.0-or-later
  * @author Daniel Kinzler
  */
-class DecimalFormatter extends ValueFormatterBase {
+class DecimalFormatter implements ValueFormatter {
 
 	/**
 	 * Option key for forcing the sign to be included in the
@@ -21,6 +21,11 @@ class DecimalFormatter extends ValueFormatterBase {
 	 * be a boolean.
 	 */
 	public const OPT_FORCE_SIGN = 'forceSign';
+
+	/**
+	 * @var FormatterOptions
+	 */
+	private $options;
 
 	/**
 	 * @var NumberLocalizer
@@ -32,9 +37,10 @@ class DecimalFormatter extends ValueFormatterBase {
 	 * @param NumberLocalizer|null $localizer
 	 */
 	public function __construct( FormatterOptions $options = null, NumberLocalizer $localizer = null ) {
-		parent::__construct( $options );
+		$this->options = $options ?: new FormatterOptions();
 
-		$this->defaultOption( self::OPT_FORCE_SIGN, false );
+		$this->options->defaultOption( ValueFormatter::OPT_LANG, 'en' );
+		$this->options->defaultOption( self::OPT_FORCE_SIGN, false );
 
 		$this->localizer = $localizer ?: new BasicNumberLocalizer();
 	}
@@ -55,7 +61,7 @@ class DecimalFormatter extends ValueFormatterBase {
 		// TODO: Implement optional rounding/padding
 		$decimal = $dataValue->getValue();
 
-		if ( !$this->getOption( self::OPT_FORCE_SIGN ) ) {
+		if ( !$this->options->getOption( self::OPT_FORCE_SIGN ) ) {
 			// strip leading +
 			$decimal = ltrim( $decimal, '+' );
 		}

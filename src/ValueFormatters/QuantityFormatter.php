@@ -17,7 +17,7 @@ use InvalidArgumentException;
  * @author Daniel Kinzler
  * @author Thiemo Kreuz
  */
-class QuantityFormatter extends ValueFormatterBase {
+class QuantityFormatter implements ValueFormatter {
 
 	/**
 	 * Option key for enabling or disabling output of the uncertainty margin (e.g. "+/-5").
@@ -47,6 +47,11 @@ class QuantityFormatter extends ValueFormatterBase {
 	 * @since 0.5
 	 */
 	public const OPT_APPLY_UNIT = 'applyUnit';
+
+	/**
+	 * @var FormatterOptions
+	 */
+	private $options;
 
 	/**
 	 * @var DecimalMath
@@ -85,11 +90,12 @@ class QuantityFormatter extends ValueFormatterBase {
 		ValueFormatter $vocabularyUriFormatter,
 		$quantityWithUnitFormat = null
 	) {
-		parent::__construct( $options );
+		$this->options = $options ?: new FormatterOptions();
 
-		$this->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
-		$this->defaultOption( self::OPT_APPLY_ROUNDING, true );
-		$this->defaultOption( self::OPT_APPLY_UNIT, true );
+		$this->options->defaultOption( ValueFormatter::OPT_LANG, 'en' );
+		$this->options->defaultOption( self::OPT_SHOW_UNCERTAINTY_MARGIN, true );
+		$this->options->defaultOption( self::OPT_APPLY_ROUNDING, true );
+		$this->options->defaultOption( self::OPT_APPLY_UNIT, true );
 
 		$this->decimalFormatter = $decimalFormatter ?: new DecimalFormatter( $this->options );
 		$this->vocabularyUriFormatter = $vocabularyUriFormatter;

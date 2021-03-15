@@ -141,7 +141,8 @@ class UnboundedQuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * @see DataValue::getSortKey
+	 * @deprecated Kept for compatibility with older DataValues versions.
+	 * Do not use.
 	 *
 	 * @return float
 	 */
@@ -286,7 +287,6 @@ class UnboundedQuantityValue extends DataValueObject {
 	}
 
 	/**
-	 * @see Comparable::equals
 	 *
 	 * @param mixed $target
 	 *

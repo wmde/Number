@@ -5,4 +5,4 @@ if ( defined( 'DATAVALUES_NUMBER_VERSION' ) ) {
 	return 1;
 }
 
-define( 'DATAVALUES_NUMBER_VERSION', '0.10.1' );
+define( 'DATAVALUES_NUMBER_VERSION', '0.10.2' );

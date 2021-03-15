@@ -49,7 +49,7 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
-### 0.10.2 (2020-03-15)
+### 0.10.2 (2021-03-15)
 
 * Allow use with data-values/common 1.0.0
 * Allow use with data-values/interfaces 1.0.0

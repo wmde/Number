@@ -49,6 +49,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.11.0 (2021-03-15)
+
+ * Drop support for php versions older than 7.2 and HHVM
+ 
 ### 0.10.2 (2021-03-15)
 
 * Allow use with data-values/common 1.0.0

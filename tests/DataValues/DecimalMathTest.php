@@ -129,6 +129,34 @@ class DecimalMathTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
+	 * @dataProvider productLargeFloatProvider
+	 */
+	public function testProductLargeFloat( $useBC, DecimalValue $a, DecimalValue $b, $regex ) {
+		$math = new DecimalMath( $useBC );
+
+		$actual = $math->product( $a, $b );
+		$this->assertRegExp( $regex, $actual->getValue() );
+
+		$actual = $math->product( $b, $a );
+		$this->assertRegExp( $regex, $actual->getValue() );
+	}
+
+	public function productLargeFloatProvider() {
+		$cases = [
+			[
+				new DecimalValue( '+1600000000000000000000000000000000000000000000' ),
+				new DecimalValue( '123.45' ),
+				'/^\+1975200000000000\d{32}\.\d+$/'
+			],
+		];
+
+		foreach ( $cases as $case ) {
+			yield array_merge( [ true ], $case );
+			yield array_merge( [ false ], $case );
+		}
+	}
+
+	/**
 	 * @dataProvider productWithBCProvider
 	 */
 	public function testProductWithBC( DecimalValue $a, DecimalValue $b, $value ) {

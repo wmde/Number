@@ -49,9 +49,13 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.11.1 (TBD)
+
+* Fix `DecimalMath::productWithoutBC` for products larger than 2^63-1 (the maximum value of a signed 64 bit integer).
+
 ### 0.11.0 (2021-03-15)
 
- * Drop support for php versions older than 7.2 and HHVM
+* Drop support for php versions older than 7.2 and HHVM
  
 ### 0.10.2 (2021-03-15)
 

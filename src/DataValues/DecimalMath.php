@@ -92,13 +92,13 @@ class DecimalMath {
 	private function productWithoutBC( DecimalValue $a, DecimalValue $b ) {
 		$product = $a->getValueFloat() * $b->getValueFloat();
 
-		// Append .0 for consistency, if the result is a whole number,
+		// Add a decimal digit (.0) for consistency, if the result is a whole number,
 		// but $a or $b were specified with decimal places.
 		if (
 			$product === floor( $product ) &&
 			$a->getFractionalPart() . $b->getFractionalPart() !== ''
 		) {
-			$product = strval( $product ) . '.0';
+			$product = ( new DecimalValue( $product ) )->getValue() . '.0';
 		}
 
 		return new DecimalValue( $product );

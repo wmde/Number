@@ -49,7 +49,7 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
-### 0.11.1 (TBD)
+### 0.11.1 (2021-03-31)
 
 * Fix `DecimalMath::productWithoutBC` for products larger than 2^63-1 (the maximum value of a signed 64 bit integer).
 

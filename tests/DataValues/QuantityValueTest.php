@@ -288,7 +288,11 @@ class QuantityValueTest extends DataValuesTestBase {
 	 * @dataProvider getUncertaintyProvider
 	 */
 	public function testGetUncertainty( QuantityValue $quantity, $expected ) {
-		$this->assertSame( $expected, $quantity->getUncertainty() );
+		$this->assertEqualsWithDelta(
+			$expected,
+			$quantity->getUncertainty(),
+			0.0000000000001
+		);
 	}
 
 	public function getUncertaintyProvider() {

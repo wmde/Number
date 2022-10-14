@@ -189,6 +189,10 @@ class DecimalValue extends DataValueObject {
 		return serialize( $this->value );
 	}
 
+	public function __serialize(): array {
+		return [ $this->value ];
+	}
+
 	/**
 	 * @see Serializable::unserialize
 	 *
@@ -196,6 +200,10 @@ class DecimalValue extends DataValueObject {
 	 */
 	public function unserialize( $data ) {
 		$this->__construct( unserialize( $data ) );
+	}
+
+	public function __unserialize( array $data ): void {
+		$this->__construct( $data[0] );
 	}
 
 	/**

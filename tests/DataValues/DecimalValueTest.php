@@ -88,11 +88,13 @@ class DecimalValueTest extends TestCase {
 		$value = DecimalValue::newFromArray( "-0.0\n" );
 
 		$this->assertTrue( $value->isZero() );
-		$this->assertSame( 'C:23:"DataValues\DecimalValue":11:{s:4:"+0.0";}', serialize( $value ) );
 		$this->assertSame( '+0.0', $value->getValue(), 'getValue' );
 		$this->assertSame( '+0.0', $value->getArrayValue(), 'getArrayValue' );
 		$this->assertSame( '+0.0', $value->__toString(), '__toString' );
 		$this->assertSame( '0', $value->getFractionalPart(), 'getFractionalPart' );
+
+		$referenceValue = unserialize( 'C:23:"DataValues\DecimalValue":11:{s:4:"+0.0";}' );
+		$this->assertTrue( $value->equals( $referenceValue ), 'equal to hard-coded serialization' );
 	}
 
 	/**

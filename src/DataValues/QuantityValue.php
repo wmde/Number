@@ -102,12 +102,16 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( [
+		return serialize( $this->__serialize() );
+	}
+
+	public function __serialize(): array {
+		return [
 			$this->amount,
 			$this->unit,
 			$this->upperBound,
 			$this->lowerBound,
-		] );
+		];
 	}
 
 	/**
@@ -118,7 +122,11 @@ class QuantityValue extends UnboundedQuantityValue {
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
-		list( $amount, $unit, $upperBound, $lowerBound ) = unserialize( $data );
+		$this->__unserialize( unserialize( $data ) );
+	}
+
+	public function __unserialize( array $data ): void {
+		list( $amount, $unit, $upperBound, $lowerBound ) = $data;
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
 	}
 

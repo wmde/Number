@@ -115,10 +115,14 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return serialize( [
+		return serialize( $this->__serialize() );
+	}
+
+	public function __serialize(): array {
+		return [
 			$this->amount,
 			$this->unit
-		] );
+		];
 	}
 
 	/**
@@ -127,7 +131,11 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @param string $data
 	 */
 	public function unserialize( $data ) {
-		list( $amount, $unit ) = unserialize( $data );
+		$this->__unserialize( unserialize( $data ) );
+	}
+
+	public function __unserialize( array $data ): void {
+		list( $amount, $unit ) = $data;
 		$this->__construct( $amount, $unit );
 	}
 

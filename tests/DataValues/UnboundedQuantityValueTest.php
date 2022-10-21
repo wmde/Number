@@ -319,4 +319,21 @@ class UnboundedQuantityValueTest extends DataValuesTestBase {
 		];
 	}
 
+	/** @dataProvider instanceWithHashProvider */
+	public function testGetHashStability( UnboundedQuantityValue $quantity, string $hash ) {
+		$this->assertSame( $hash, $quantity->getHash() );
+	}
+
+	public function instanceWithHashProvider(): iterable {
+		// all hashes obtained from data-values/data-values==3.0.0 data-values/number==0.11.1 under PHP 7.2.34
+		yield '10+-1' => [
+			UnboundedQuantityValue::newFromNumber( '+10', '1' ),
+			'6fc1f325788cfea1bc9c869fbbfe7824',
+		];
+		yield '500 miles, or a little bit more' => [
+			UnboundedQuantityValue::newFromNumber( '+558.84719', 'http://www.wikidata.org/entity/Q253276' ),
+			'8caf675b471b8579d8adae2e9721dbc9',
+		];
+	}
+
 }

@@ -458,4 +458,26 @@ class QuantityValueTest extends DataValuesTestBase {
 		];
 	}
 
+	/** @dataProvider instanceWithHashProvider */
+	public function testGetHashStability( QuantityValue $quantity, string $hash ) {
+		$this->assertSame( $hash, $quantity->getHash() );
+	}
+
+	public function instanceWithHashProvider(): iterable {
+		// all hashes obtained from data-values/data-values==3.0.0 data-values/number==0.11.1 under PHP 7.2.34
+		yield '10+-1' => [
+			QuantityValue::newFromNumber( '+10', '1', '+11', '+9' ),
+			'2eb812346e6bbc1bc47ed7da130bfa5d',
+		];
+		yield '500 miles, or a little bit more' => [
+			QuantityValue::newFromNumber(
+				'+558.84719',
+				'http://www.wikidata.org/entity/Q253276',
+				'+558.84719',
+				'+558.84719'
+			),
+			'5fb8c57f9ba8225146b03abdbb45c431',
+		];
+	}
+
 }

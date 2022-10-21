@@ -49,6 +49,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.12.2 (2022-10-21)
+
+* Fix `QuantityValue` and `UnboundedQuantityValue` hashes to be identical to version 0.11.1.
+
 ### 0.12.1 (2022-10-21)
 
 * Allow use with data-values/data-values 3.1.0

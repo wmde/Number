@@ -34,9 +34,6 @@
 		"mediawiki/mediawiki-codesniffer": "34.0.0"
 	},
 	"autoload": {
-		"files" : [
-			"Number.php"
-		],
 		"psr-0": {
 			"DataValues\\": "src",
 			"ValueFormatters\\": "src",

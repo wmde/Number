@@ -130,6 +130,26 @@ class QuantityValue extends UnboundedQuantityValue {
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
 	}
 
+	public function getSerializationForHash(): string {
+		// mimic a legacy serialization of __serialize() (amount + unit + upperBound + lowerBound)
+		$amountSerialization = method_exists( $this->amount, 'getSerializationForHash' )
+			? $this->amount->getSerializationForHash()
+			: serialize( $this->amount );
+		$unitSerialization = serialize( $this->unit );
+		$upperBoundSerialization = method_exists( $this->upperBound, 'getSerializationForHash' )
+			? $this->upperBound->getSerializationForHash()
+			: serialize( $this->upperBound );
+		$lowerBoundSerialization = method_exists( $this->lowerBound, 'getSerializationForHash' )
+			? $this->lowerBound->getSerializationForHash()
+			: serialize( $this->lowerBound );
+
+		$data = 'a:4:{i:0;' . $amountSerialization . 'i:1;' . $unitSerialization .
+			'i:2;' . $upperBoundSerialization . 'i:3;' . $lowerBoundSerialization . '}';
+
+		return 'C:' . strlen( static::class ) . ':"' . static::class .
+			'":' . strlen( $data ) . ':{' . $data . '}';
+	}
+
 	/**
 	 * Returns this quantity's upper bound.
 	 *

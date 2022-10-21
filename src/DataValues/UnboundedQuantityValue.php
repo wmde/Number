@@ -139,6 +139,19 @@ class UnboundedQuantityValue extends DataValueObject {
 		$this->__construct( $amount, $unit );
 	}
 
+	public function getSerializationForHash(): string {
+		// mimic a legacy serialization of __serialize() (amount + unit)
+		$amountSerialization = method_exists( $this->amount, 'getSerializationForHash' )
+			? $this->amount->getSerializationForHash()
+			: serialize( $this->amount );
+		$unitSerialization = serialize( $this->unit );
+
+		$data = 'a:2:{i:0;' . $amountSerialization . 'i:1;' . $unitSerialization . '}';
+
+		return 'C:' . strlen( static::class ) . ':"' . static::class .
+			'":' . strlen( $data ) . ':{' . $data . '}';
+	}
+
 	/**
 	 * @see DataValue::getType
 	 *

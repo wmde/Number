@@ -49,6 +49,10 @@ the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
 
+### 0.12.1 (2022-10-21)
+
+* Allow use with data-values/data-values 3.1.0
+
 ### 0.12.0 (2022-10-21)
 
 * Improve compatibility with PHP 8.1;

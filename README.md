@@ -26,7 +26,7 @@ version 0.8 of this package:
 
     {
         "require": {
-            "data-values/number": "0.10.*"
+            "data-values/number": "0.12.*"
         }
     }
 
@@ -48,6 +48,14 @@ DataValues Number was created by [Wikimedia Deutschland](https://www.wikimedia.d
 the [Wikidata project](https://www.wikidata.org/).
 
 ## Release notes
+
+### 0.12.0 (2022-10-21)
+
+* Improve compatibility with PHP 8.1;
+  in particular, the new `__serialize`/`__unserialize` methods are implemented now
+  (in addition to the still supported `Serializable` interface).
+  Make sure to also use `data-values/data-values` version 3.1.0 (or later) to keep hashes stable.
+* Remove the `DATAVALUES_NUMBER_VERSION` constant.
 
 ### 0.11.1 (2021-03-31)
 

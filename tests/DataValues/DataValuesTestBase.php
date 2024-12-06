@@ -38,7 +38,7 @@ class DataValuesTestBase extends TestCase {
 		$instanceBuilder = [ $this, 'newInstance' ];
 
 		return array_map(
-			function ( array $args ) use ( $instanceBuilder ) {
+			static function ( array $args ) use ( $instanceBuilder ) {
 				return [
 					call_user_func_array( $instanceBuilder, $args ),
 					$args

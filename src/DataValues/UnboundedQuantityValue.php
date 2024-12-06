@@ -85,7 +85,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	 * @throws InvalidArgumentException
 	 * @return DecimalValue
 	 */
-	protected static function asDecimalValue( $name, $number, DecimalValue $default = null ) {
+	protected static function asDecimalValue( $name, $number, ?DecimalValue $default = null ) {
 		if ( !is_string( $name ) ) {
 			throw new InvalidArgumentException( '$name must be a string' );
 		}
@@ -135,7 +135,7 @@ class UnboundedQuantityValue extends DataValueObject {
 	}
 
 	public function __unserialize( array $data ): void {
-		list( $amount, $unit ) = $data;
+		[ $amount, $unit ] = $data;
 		$this->__construct( $amount, $unit );
 	}
 

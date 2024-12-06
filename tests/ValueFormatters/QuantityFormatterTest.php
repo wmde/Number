@@ -21,7 +21,7 @@ use ValueFormatters\ValueFormatter;
  */
 class QuantityFormatterTest extends TestCase {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}
@@ -34,7 +34,7 @@ class QuantityFormatterTest extends TestCase {
 	 *
 	 * @return QuantityFormatter
 	 */
-	protected function getInstance( FormatterOptions $options = null ) {
+	protected function getInstance( ?FormatterOptions $options = null ) {
 		return $this->getQuantityFormatter( $options );
 	}
 
@@ -45,15 +45,15 @@ class QuantityFormatterTest extends TestCase {
 	 * @return QuantityFormatter
 	 */
 	private function getQuantityFormatter(
-		FormatterOptions $options = null,
-		$quantityWithUnitFormat = null
+		?FormatterOptions $options = null,
+		?string $quantityWithUnitFormat = null
 	) {
 		$vocabularyUriFormatter = $this->createMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
-			->will( $this->returnCallback( function ( $unit ) {
+			->willReturnCallback( static function ( $unit ) {
 				return $unit === '1' ? null : $unit;
-			} ) );
+			} );
 
 		return new QuantityFormatter(
 			$options,

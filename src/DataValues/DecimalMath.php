@@ -238,6 +238,8 @@ class DecimalMath {
 		return $position;
 	}
 
+	// phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+
 	/**
 	 * Returns the given value, with any insignificant digits removed or zeroed.
 	 *
@@ -315,6 +317,8 @@ class DecimalMath {
 
 		return $rounded;
 	}
+
+	// phpcs:enable
 
 	/**
 	 * Increment the least significant digit by one if it is less than 9, and

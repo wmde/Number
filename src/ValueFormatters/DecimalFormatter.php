@@ -36,7 +36,7 @@ class DecimalFormatter implements ValueFormatter {
 	 * @param FormatterOptions|null $options
 	 * @param NumberLocalizer|null $localizer
 	 */
-	public function __construct( FormatterOptions $options = null, NumberLocalizer $localizer = null ) {
+	public function __construct( ?FormatterOptions $options = null, ?NumberLocalizer $localizer = null ) {
 		$this->options = $options ?: new FormatterOptions();
 
 		$this->options->defaultOption( ValueFormatter::OPT_LANG, 'en' );

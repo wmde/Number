@@ -44,7 +44,7 @@ class QuantityParser extends StringValueParser {
 	 * @param ParserOptions|null $options
 	 * @param NumberUnlocalizer|null $unlocalizer
 	 */
-	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
+	public function __construct( ?ParserOptions $options = null, ?NumberUnlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
 
 		$this->defaultOption( self::OPT_UNIT, null );
@@ -64,7 +64,7 @@ class QuantityParser extends StringValueParser {
 	 * @throws ParseException
 	 */
 	protected function stringParse( $value ) {
-		list( $amount, $exactness, $margin, $unit ) = $this->splitQuantityString( $value );
+		[ $amount, $exactness, $margin, $unit ] = $this->splitQuantityString( $value );
 
 		$unitOption = $this->getUnitFromOptions();
 
@@ -106,7 +106,7 @@ class QuantityParser extends StringValueParser {
 	 * @return UnboundedQuantityValue|QuantityValue
 	 */
 	private function newQuantityFromParts( $amount, $exactness, $margin, $unit ) {
-		list( $amount, $exponent ) = $this->decimalParser->splitDecimalExponent( $amount );
+		[ $amount, $exponent ] = $this->decimalParser->splitDecimalExponent( $amount );
 		$amountValue = $this->decimalParser->parse( $amount );
 
 		if ( $exactness === '!' ) {
@@ -166,7 +166,7 @@ class QuantityParser extends StringValueParser {
 		// Remove $0.
 		array_shift( $groups );
 
-		array_walk( $groups, function ( &$element ) {
+		array_walk( $groups, static function ( &$element ) {
 			if ( $element === '' ) {
 				$element = null;
 			}

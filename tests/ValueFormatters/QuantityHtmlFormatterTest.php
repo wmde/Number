@@ -26,28 +26,21 @@ class QuantityHtmlFormatterTest extends TestCase {
 	 *
 	 * @return QuantityHtmlFormatter
 	 */
-	protected function getInstance( FormatterOptions $options = null ) {
+	protected function getInstance( ?FormatterOptions $options = null ) {
 		return $this->getQuantityHtmlFormatter( $options );
 	}
 
-	/**
-	 * @param FormatterOptions|null $options
-	 * @param DecimalFormatter|null $decimalFormatter
-	 * @param string|null $quantityWithUnitFormat
-	 *
-	 * @return QuantityHtmlFormatter
-	 */
 	private function getQuantityHtmlFormatter(
-		FormatterOptions $options = null,
-		DecimalFormatter $decimalFormatter = null,
-		$quantityWithUnitFormat = null
-	) {
+		?FormatterOptions $options = null,
+		?DecimalFormatter $decimalFormatter = null,
+		?string $quantityWithUnitFormat = null
+	): QuantityHtmlFormatter {
 		$vocabularyUriFormatter = $this->createMock( ValueFormatter::class );
 		$vocabularyUriFormatter->expects( $this->any() )
 			->method( 'format' )
-			->will( $this->returnCallback( function ( $unit ) {
+			->willReturnCallback( static function ( $unit ) {
 				return $unit === '1' ? null : $unit;
-			} ) );
+			} );
 
 		return new QuantityHtmlFormatter(
 			$options,
@@ -70,11 +63,11 @@ class QuantityHtmlFormatterTest extends TestCase {
 
 		$quantity->expects( $this->any() )
 			->method( 'getAmount' )
-			->will( $this->returnValue( new DecimalValue( 2 ) ) );
+			->willReturn( new DecimalValue( 2 ) );
 		if ( $className === QuantityValue::class ) {
 			$quantity->expects( $this->any() )
 				->method( 'getUncertaintyMargin' )
-				->will( $this->returnValue( new DecimalValue( $uncertaintyMargin ) ) );
+				->willReturn( new DecimalValue( $uncertaintyMargin ) );
 		}
 
 		return $quantity;
@@ -126,7 +119,7 @@ class QuantityHtmlFormatterTest extends TestCase {
 		$decimalFormatter = $this->createMock( DecimalFormatter::class );
 		$decimalFormatter->expects( $this->any() )
 			->method( 'format' )
-			->will( $this->returnValue( '<b>+2</b>' ) );
+			->willReturn( '<b>+2</b>' );
 
 		$formatter = $this->getQuantityHtmlFormatter( $options, $decimalFormatter );
 		$formatted = $formatter->format( $value );

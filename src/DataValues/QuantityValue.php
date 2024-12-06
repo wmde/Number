@@ -126,7 +126,7 @@ class QuantityValue extends UnboundedQuantityValue {
 	}
 
 	public function __unserialize( array $data ): void {
-		list( $amount, $unit, $upperBound, $lowerBound ) = $data;
+		[ $amount, $unit, $upperBound, $lowerBound ] = $data;
 		$this->__construct( $amount, $unit, $upperBound, $lowerBound );
 	}
 

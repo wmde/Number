@@ -26,7 +26,7 @@ class DecimalFormatterTest extends TestCase {
 	 *
 	 * @return DecimalFormatter
 	 */
-	protected function getInstance( FormatterOptions $options = null ) {
+	protected function getInstance( ?FormatterOptions $options = null ) {
 		return new DecimalFormatter( $options );
 	}
 
@@ -62,9 +62,9 @@ class DecimalFormatterTest extends TestCase {
 
 		$localizer->expects( $this->once() )
 			->method( 'localizeNumber' )
-			->will( $this->returnCallback( function ( $number ) {
+			->willReturnCallback( static function ( $number ) {
 				return "n:$number";
-			} ) );
+			} );
 
 		$value = new DecimalValue( '+12345' );
 		$formatter = new DecimalFormatter( null, $localizer );

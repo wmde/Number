@@ -98,8 +98,8 @@ class DecimalValue extends DataValueObject {
 		 * @see http://php.net/manual/en/ini.core.php#ini.serialize-precision
 		 */
 		$decimal = sprintf( '%.16e', abs( $number ) );
-		list( $base, $exponent ) = explode( 'e', $decimal );
-		list( $before, $after ) = explode( '.', $base );
+		[ $base, $exponent ] = explode( 'e', $decimal );
+		[ $before, $after ] = explode( '.', $base );
 
 		// Fill with as many zeros as necessary, and move the decimal point
 		if ( $exponent < 0 ) {
@@ -117,6 +117,8 @@ class DecimalValue extends DataValueObject {
 		// Remove not needed ".0" or just "." from the end
 		return ( $number < 0 ? '-' : '+' ) . $before . rtrim( rtrim( $after, '0' ), '.' );
 	}
+
+	// phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
 
 	/**
 	 * Compares this DecimalValue to another DecimalValue.
@@ -179,6 +181,8 @@ class DecimalValue extends DataValueObject {
 		$cmp = strcmp( $aFract, $bFract );
 		return $cmp === 0 ? 0 : ( $cmp < 0 ? -$sense : $sense );
 	}
+
+	// phpcs:enable
 
 	/**
 	 * @see Serializable::serialize

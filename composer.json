@@ -23,7 +23,7 @@
 		"irc": "irc://irc.freenode.net/wikidata"
 	},
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"data-values/data-values": "~3.0|~2.0|~1.0|~0.1",
 		"data-values/interfaces": "~1.0|~0.2.0",
 		"data-values/common": "~1.0|~0.4.0|~0.3.0"
@@ -31,7 +31,7 @@
 	"require-dev": {
 		"ext-bcmath": "*",
 		"phpunit/phpunit": "~8.5",
-		"mediawiki/mediawiki-codesniffer": "34.0.0"
+		"mediawiki/mediawiki-codesniffer": "45.0.0"
 	},
 	"autoload": {
 		"psr-0": {
@@ -53,5 +53,10 @@
 			"phpcs -p -s",
 			"phpunit"
 		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }

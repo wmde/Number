@@ -387,16 +387,16 @@ class QuantityValueTest extends DataValuesTestBase {
 	}
 
 	public function transformProvider() {
-		$identity = function ( DecimalValue $value ) {
+		$identity = static function ( DecimalValue $value ) {
 			return $value;
 		};
 
-		$square = function ( DecimalValue $value ) {
+		$square = static function ( DecimalValue $value ) {
 			$v = $value->getValueFloat();
 			return new DecimalValue( $v * $v * $v );
 		};
 
-		$scale = function ( DecimalValue $value, $factor ) {
+		$scale = static function ( DecimalValue $value, $factor ) {
 			return new DecimalValue( $value->getValueFloat() * $factor );
 		};
 

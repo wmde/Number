@@ -370,9 +370,9 @@ class DecimalValueTest extends TestCase {
 			[ new DecimalValue( '+0' ), true ],
 			[ new DecimalValue( '-0.00' ), true ],
 
-			[ new DecimalValue( '+1' ),       false ],
+			[ new DecimalValue( '+1' ), false ],
 			[ new DecimalValue( '+100.663' ), false ],
-			[ new DecimalValue( '-0.001' ),   false ],
+			[ new DecimalValue( '-0.001' ), false ],
 		];
 	}
 
@@ -386,14 +386,14 @@ class DecimalValueTest extends TestCase {
 
 	public function provideGetTrim() {
 		return [
-			[ new DecimalValue( '+8' ),     new DecimalValue( '+8' ) ],
-			[ new DecimalValue( '+80' ),    new DecimalValue( '+80' ) ],
-			[ new DecimalValue( '+800' ),   new DecimalValue( '+800' ) ],
-			[ new DecimalValue( '+0' ),     new DecimalValue( '+0' ) ],
-			[ new DecimalValue( '+0.0' ),   new DecimalValue( '+0' ) ],
+			[ new DecimalValue( '+8' ), new DecimalValue( '+8' ) ],
+			[ new DecimalValue( '+80' ), new DecimalValue( '+80' ) ],
+			[ new DecimalValue( '+800' ), new DecimalValue( '+800' ) ],
+			[ new DecimalValue( '+0' ), new DecimalValue( '+0' ) ],
+			[ new DecimalValue( '+0.0' ), new DecimalValue( '+0' ) ],
 			[ new DecimalValue( '+10.00' ), new DecimalValue( '+10' ) ],
-			[ new DecimalValue( '-0.1' ),   new DecimalValue( '-0.1' ) ],
-			[ new DecimalValue( '-0.10' ),  new DecimalValue( '-0.1' ) ],
+			[ new DecimalValue( '-0.1' ), new DecimalValue( '-0.1' ) ],
+			[ new DecimalValue( '-0.10' ), new DecimalValue( '-0.1' ) ],
 			[ new DecimalValue( '-0.010' ), new DecimalValue( '-0.01' ) ],
 			[ new DecimalValue( '-0.001' ), new DecimalValue( '-0.001' ) ],
 		];

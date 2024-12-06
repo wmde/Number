@@ -16,7 +16,7 @@ use DataValues\DecimalValue;
  */
 class DecimalMathTest extends \PHPUnit\Framework\TestCase {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}

@@ -23,7 +23,7 @@ class DecimalParserTest extends ValueParserTestCase {
 	protected function getInstance() {
 		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 		$unlocalizer->method( 'unlocalizeNumber' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		return new DecimalParser( null, $unlocalizer );
 	}
@@ -119,9 +119,9 @@ class DecimalParserTest extends ValueParserTestCase {
 
 		$unlocalizer->expects( $this->once() )
 			->method( 'unlocalizeNumber' )
-			->will( $this->returnCallback( function ( $number ) {
+			->willReturnCallback( static function ( $number ) {
 				return str_replace( '#', '', $number );
-			} ) );
+			} );
 
 		$unlocalizer->expects( $this->never() )
 			->method( 'getNumberRegex' );
@@ -160,7 +160,7 @@ class DecimalParserTest extends ValueParserTestCase {
 	 */
 	public function testSplitDecimalExponent( $valueString, $expectedDecimal, $expectedExponent ) {
 		$parser = new DecimalParser();
-		list( $decimal, $exponent ) = $parser->splitDecimalExponent( $valueString );
+		[ $decimal, $exponent ] = $parser->splitDecimalExponent( $valueString );
 
 		$this->assertSame( $expectedDecimal, $decimal );
 		$this->assertSame( $expectedExponent, $exponent );

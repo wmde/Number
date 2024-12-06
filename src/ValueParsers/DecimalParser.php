@@ -34,7 +34,7 @@ class DecimalParser extends StringValueParser {
 	 * @param ParserOptions|null $options
 	 * @param NumberUnlocalizer|null $unlocalizer
 	 */
-	public function __construct( ParserOptions $options = null, NumberUnlocalizer $unlocalizer = null ) {
+	public function __construct( ?ParserOptions $options = null, ?NumberUnlocalizer $unlocalizer = null ) {
 		parent::__construct( $options );
 
 		$this->unlocalizer = $unlocalizer ?: new BasicNumberUnlocalizer();
@@ -127,7 +127,7 @@ class DecimalParser extends StringValueParser {
 		$value = $this->unlocalizer->unlocalizeNumber( $value );
 
 		//handle scientific notation
-		list( $value, $exponent ) = $this->splitDecimalExponent( $value );
+		[ $value, $exponent ] = $this->splitDecimalExponent( $value );
 
 		$value = $this->normalizeDecimal( $value );
 

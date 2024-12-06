@@ -21,7 +21,7 @@ use ValueParsers\ValueParser;
  */
 class QuantityParserTest extends ValueParserTestCase {
 
-	public function setUp() : void {
+	public function setUp(): void {
 		if ( !\extension_loaded( 'bcmath' ) ) {
 			$this->markTestSkipped( 'bcmath extension not loaded' );
 		}
@@ -41,22 +41,22 @@ class QuantityParserTest extends ValueParserTestCase {
 	 *
 	 * @return QuantityParser
 	 */
-	private function getQuantityParser( ParserOptions $options = null ) {
+	private function getQuantityParser( ?ParserOptions $options = null ) {
 		$unlocalizer = $this->createMock( NumberUnlocalizer::class );
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'unlocalizeNumber' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		// The most minimal regex that accepts all the test cases below.
 		$unlocalizer->expects( $this->any() )
 			->method( 'getNumberRegex' )
-			->will( $this->returnValue( '[-+]? *(?:\d+\.\d*|\.?\d+)(?:e-?\d+)?' ) );
+			->willReturn( '[-+]? *(?:\d+\.\d*|\.?\d+)(?:e-?\d+)?' );
 
 		// This minimal regex supports % and letters, optionally followed by a digit.
 		$unlocalizer->expects( $this->any() )
 			->method( 'getUnitRegex' )
-			->will( $this->returnValue( '[\p{L}%]+[\d³]?' ) );
+			->willReturn( '[\p{L}%]+[\d³]?' );
 
 		return new QuantityParser( $options, $unlocalizer );
 	}
@@ -217,19 +217,19 @@ class QuantityParserTest extends ValueParserTestCase {
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'unlocalizeNumber' )
-			->will( $this->returnCallback(
-				function ( $number ) use ( $charmap ) {
+			->willReturnCallback(
+				static function ( $number ) use ( $charmap ) {
 					return str_replace( array_keys( $charmap ), array_values( $charmap ), $number );
 				}
-			) );
+			);
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'getNumberRegex' )
-			->will( $this->returnValue( '[\d ]+(?:,\d+)?' ) );
+			->willReturn( '[\d ]+(?:,\d+)?' );
 
 		$unlocalizer->expects( $this->any() )
 			->method( 'getUnitRegex' )
-			->will( $this->returnValue( '[a-z~]+' ) );
+			->willReturn( '[a-z~]+' );
 
 		$parser = new QuantityParser( $options, $unlocalizer );
 

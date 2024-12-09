@@ -5,7 +5,7 @@ into such value objects, and formatters to turn them back into user consumable r
 
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
-[![Build Status](https://secure.travis-ci.org/wmde/Number.png?branch=master)](http://travis-ci.org/wmde/Number)
+[![Build Status](https://github.com/wmde/Number/actions/workflows/lint-and-test.yaml/badge.svg?branch=master)](https://github.com/wmde/Number/actions/workflows/lint-and-test.yaml)
 [![Code Coverage](https://scrutinizer-ci.com/g/wmde/Number/badges/coverage.png?s=a62dd85d05eaf0c5505deed4e2bd53d34e50d158)](https://scrutinizer-ci.com/g/wmde/Number/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/wmde/Number/badges/quality-score.png?s=03279530fa55439de3ce094b985f861959ee7162)](https://scrutinizer-ci.com/g/wmde/Number/)
 
